@@ -1,0 +1,2417 @@
+{
+  "timestamp": "2025-09-29T12:36:50.366197",
+  "total_entries": 219,
+  "source": "Coffee Keywords + Web Scraping",
+  "description": "Hashtag knowledge base for coffee content RAG system",
+  "hashtags": [
+    {
+      "hashtag": "#almondmilk",
+      "content": "Hashtag #almondmilk is relevant for 'almond milk' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about almond milk.",
+      "metadata": {
+        "keyword": "almond milk",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#nutmilk",
+      "content": "Hashtag #nutmilk is relevant for 'almond milk' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about almond milk.",
+      "metadata": {
+        "keyword": "almond milk",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#plantbased",
+      "content": "Hashtag #plantbased is relevant for 'almond milk' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about almond milk.",
+      "metadata": {
+        "keyword": "almond milk",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffee",
+      "content": "Hashtag #coffee is relevant for 'almond milk' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about almond milk.",
+      "metadata": {
+        "keyword": "almond milk",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeelover",
+      "content": "Hashtag #coffeelover is relevant for 'almond milk' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about almond milk.",
+      "metadata": {
+        "keyword": "almond milk",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeetime",
+      "content": "Hashtag #coffeetime is relevant for 'almond milk' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about almond milk.",
+      "metadata": {
+        "keyword": "almond milk",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caffeine",
+      "content": "Hashtag #caffeine is relevant for 'almond milk' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about almond milk.",
+      "metadata": {
+        "keyword": "almond milk",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeegram",
+      "content": "Hashtag #coffeegram is relevant for 'almond milk' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about almond milk.",
+      "metadata": {
+        "keyword": "almond milk",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#almond",
+      "content": "Hashtag #almond is relevant for 'almond milk' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about almond milk.",
+      "metadata": {
+        "keyword": "almond milk",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#milk",
+      "content": "Hashtag #milk is relevant for 'almond milk' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about almond milk.",
+      "metadata": {
+        "keyword": "almond milk",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffee",
+      "content": "Hashtag #coffee is relevant for 'caramel flavored coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about caramel flavored coffee.",
+      "metadata": {
+        "keyword": "caramel flavored coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeelover",
+      "content": "Hashtag #coffeelover is relevant for 'caramel flavored coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about caramel flavored coffee.",
+      "metadata": {
+        "keyword": "caramel flavored coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeetime",
+      "content": "Hashtag #coffeetime is relevant for 'caramel flavored coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about caramel flavored coffee.",
+      "metadata": {
+        "keyword": "caramel flavored coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caffeine",
+      "content": "Hashtag #caffeine is relevant for 'caramel flavored coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about caramel flavored coffee.",
+      "metadata": {
+        "keyword": "caramel flavored coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeegram",
+      "content": "Hashtag #coffeegram is relevant for 'caramel flavored coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about caramel flavored coffee.",
+      "metadata": {
+        "keyword": "caramel flavored coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caramelflavoredcoffee",
+      "content": "Hashtag #caramelflavoredcoffee is relevant for 'caramel flavored coffee' coffee content. It has popularity score 70 and relevance 1.00. Use this hashtag for posts about caramel flavored coffee.",
+      "metadata": {
+        "keyword": "caramel flavored coffee",
+        "popularity_score": 70,
+        "relevance_score": 1.0,
+        "source": "generated_direct",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caramel",
+      "content": "Hashtag #caramel is relevant for 'caramel flavored coffee' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about caramel flavored coffee.",
+      "metadata": {
+        "keyword": "caramel flavored coffee",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#flavored",
+      "content": "Hashtag #flavored is relevant for 'caramel flavored coffee' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about caramel flavored coffee.",
+      "metadata": {
+        "keyword": "caramel flavored coffee",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#matcha",
+      "content": "Hashtag #matcha is relevant for 'matcha tea latte' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about matcha tea latte.",
+      "metadata": {
+        "keyword": "matcha tea latte",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#latte",
+      "content": "Hashtag #latte is relevant for 'matcha tea latte' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about matcha tea latte.",
+      "metadata": {
+        "keyword": "matcha tea latte",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#latteart",
+      "content": "Hashtag #latteart is relevant for 'matcha tea latte' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about matcha tea latte.",
+      "metadata": {
+        "keyword": "matcha tea latte",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeeart",
+      "content": "Hashtag #coffeeart is relevant for 'matcha tea latte' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about matcha tea latte.",
+      "metadata": {
+        "keyword": "matcha tea latte",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#matchalatte",
+      "content": "Hashtag #matchalatte is relevant for 'matcha tea latte' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about matcha tea latte.",
+      "metadata": {
+        "keyword": "matcha tea latte",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#greentea",
+      "content": "Hashtag #greentea is relevant for 'matcha tea latte' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about matcha tea latte.",
+      "metadata": {
+        "keyword": "matcha tea latte",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffee",
+      "content": "Hashtag #coffee is relevant for 'matcha tea latte' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about matcha tea latte.",
+      "metadata": {
+        "keyword": "matcha tea latte",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeelover",
+      "content": "Hashtag #coffeelover is relevant for 'matcha tea latte' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about matcha tea latte.",
+      "metadata": {
+        "keyword": "matcha tea latte",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeetime",
+      "content": "Hashtag #coffeetime is relevant for 'matcha tea latte' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about matcha tea latte.",
+      "metadata": {
+        "keyword": "matcha tea latte",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caffeine",
+      "content": "Hashtag #caffeine is relevant for 'matcha tea latte' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about matcha tea latte.",
+      "metadata": {
+        "keyword": "matcha tea latte",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeegram",
+      "content": "Hashtag #coffeegram is relevant for 'matcha tea latte' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about matcha tea latte.",
+      "metadata": {
+        "keyword": "matcha tea latte",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#matchatealatte",
+      "content": "Hashtag #matchatealatte is relevant for 'matcha tea latte' coffee content. It has popularity score 70 and relevance 1.00. Use this hashtag for posts about matcha tea latte.",
+      "metadata": {
+        "keyword": "matcha tea latte",
+        "popularity_score": 70,
+        "relevance_score": 1.0,
+        "source": "generated_direct",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#tea",
+      "content": "Hashtag #tea is relevant for 'matcha tea latte' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about matcha tea latte.",
+      "metadata": {
+        "keyword": "matcha tea latte",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffee",
+      "content": "Hashtag #coffee is relevant for 'the best mushroom coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about the best mushroom coffee.",
+      "metadata": {
+        "keyword": "the best mushroom coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#mushroomcoffee",
+      "content": "Hashtag #mushroomcoffee is relevant for 'the best mushroom coffee' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about the best mushroom coffee.",
+      "metadata": {
+        "keyword": "the best mushroom coffee",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#functionalcoffee",
+      "content": "Hashtag #functionalcoffee is relevant for 'the best mushroom coffee' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about the best mushroom coffee.",
+      "metadata": {
+        "keyword": "the best mushroom coffee",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeelover",
+      "content": "Hashtag #coffeelover is relevant for 'the best mushroom coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about the best mushroom coffee.",
+      "metadata": {
+        "keyword": "the best mushroom coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeetime",
+      "content": "Hashtag #coffeetime is relevant for 'the best mushroom coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about the best mushroom coffee.",
+      "metadata": {
+        "keyword": "the best mushroom coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caffeine",
+      "content": "Hashtag #caffeine is relevant for 'the best mushroom coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about the best mushroom coffee.",
+      "metadata": {
+        "keyword": "the best mushroom coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeegram",
+      "content": "Hashtag #coffeegram is relevant for 'the best mushroom coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about the best mushroom coffee.",
+      "metadata": {
+        "keyword": "the best mushroom coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#thebestmushroomcoffee",
+      "content": "Hashtag #thebestmushroomcoffee is relevant for 'the best mushroom coffee' coffee content. It has popularity score 70 and relevance 1.00. Use this hashtag for posts about the best mushroom coffee.",
+      "metadata": {
+        "keyword": "the best mushroom coffee",
+        "popularity_score": 70,
+        "relevance_score": 1.0,
+        "source": "generated_direct",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#best",
+      "content": "Hashtag #best is relevant for 'the best mushroom coffee' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about the best mushroom coffee.",
+      "metadata": {
+        "keyword": "the best mushroom coffee",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#mushroom",
+      "content": "Hashtag #mushroom is relevant for 'the best mushroom coffee' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about the best mushroom coffee.",
+      "metadata": {
+        "keyword": "the best mushroom coffee",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#espresso",
+      "content": "Hashtag #espresso is relevant for 'cold brew espresso' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about cold brew espresso.",
+      "metadata": {
+        "keyword": "cold brew espresso",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coldbrew",
+      "content": "Hashtag #coldbrew is relevant for 'cold brew espresso' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about cold brew espresso.",
+      "metadata": {
+        "keyword": "cold brew espresso",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coldbrewcoffee",
+      "content": "Hashtag #coldbrewcoffee is relevant for 'cold brew espresso' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about cold brew espresso.",
+      "metadata": {
+        "keyword": "cold brew espresso",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#icedcoffee",
+      "content": "Hashtag #icedcoffee is relevant for 'cold brew espresso' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about cold brew espresso.",
+      "metadata": {
+        "keyword": "cold brew espresso",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#espressoshot",
+      "content": "Hashtag #espressoshot is relevant for 'cold brew espresso' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about cold brew espresso.",
+      "metadata": {
+        "keyword": "cold brew espresso",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#strongcoffee",
+      "content": "Hashtag #strongcoffee is relevant for 'cold brew espresso' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about cold brew espresso.",
+      "metadata": {
+        "keyword": "cold brew espresso",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffee",
+      "content": "Hashtag #coffee is relevant for 'cold brew espresso' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about cold brew espresso.",
+      "metadata": {
+        "keyword": "cold brew espresso",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeelover",
+      "content": "Hashtag #coffeelover is relevant for 'cold brew espresso' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about cold brew espresso.",
+      "metadata": {
+        "keyword": "cold brew espresso",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeetime",
+      "content": "Hashtag #coffeetime is relevant for 'cold brew espresso' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about cold brew espresso.",
+      "metadata": {
+        "keyword": "cold brew espresso",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caffeine",
+      "content": "Hashtag #caffeine is relevant for 'cold brew espresso' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about cold brew espresso.",
+      "metadata": {
+        "keyword": "cold brew espresso",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeegram",
+      "content": "Hashtag #coffeegram is relevant for 'cold brew espresso' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about cold brew espresso.",
+      "metadata": {
+        "keyword": "cold brew espresso",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coldbrewespresso",
+      "content": "Hashtag #coldbrewespresso is relevant for 'cold brew espresso' coffee content. It has popularity score 70 and relevance 1.00. Use this hashtag for posts about cold brew espresso.",
+      "metadata": {
+        "keyword": "cold brew espresso",
+        "popularity_score": 70,
+        "relevance_score": 1.0,
+        "source": "generated_direct",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#cold",
+      "content": "Hashtag #cold is relevant for 'cold brew espresso' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about cold brew espresso.",
+      "metadata": {
+        "keyword": "cold brew espresso",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#brew",
+      "content": "Hashtag #brew is relevant for 'cold brew espresso' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about cold brew espresso.",
+      "metadata": {
+        "keyword": "cold brew espresso",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#decaf",
+      "content": "Hashtag #decaf is relevant for 'decaf coffee pregnancy' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about decaf coffee pregnancy.",
+      "metadata": {
+        "keyword": "decaf coffee pregnancy",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffee",
+      "content": "Hashtag #coffee is relevant for 'decaf coffee pregnancy' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about decaf coffee pregnancy.",
+      "metadata": {
+        "keyword": "decaf coffee pregnancy",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#decafcoffee",
+      "content": "Hashtag #decafcoffee is relevant for 'decaf coffee pregnancy' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about decaf coffee pregnancy.",
+      "metadata": {
+        "keyword": "decaf coffee pregnancy",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caffeinefree",
+      "content": "Hashtag #caffeinefree is relevant for 'decaf coffee pregnancy' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about decaf coffee pregnancy.",
+      "metadata": {
+        "keyword": "decaf coffee pregnancy",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeelover",
+      "content": "Hashtag #coffeelover is relevant for 'decaf coffee pregnancy' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about decaf coffee pregnancy.",
+      "metadata": {
+        "keyword": "decaf coffee pregnancy",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeetime",
+      "content": "Hashtag #coffeetime is relevant for 'decaf coffee pregnancy' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about decaf coffee pregnancy.",
+      "metadata": {
+        "keyword": "decaf coffee pregnancy",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caffeine",
+      "content": "Hashtag #caffeine is relevant for 'decaf coffee pregnancy' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about decaf coffee pregnancy.",
+      "metadata": {
+        "keyword": "decaf coffee pregnancy",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeegram",
+      "content": "Hashtag #coffeegram is relevant for 'decaf coffee pregnancy' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about decaf coffee pregnancy.",
+      "metadata": {
+        "keyword": "decaf coffee pregnancy",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#decafcoffeepregnancy",
+      "content": "Hashtag #decafcoffeepregnancy is relevant for 'decaf coffee pregnancy' coffee content. It has popularity score 70 and relevance 1.00. Use this hashtag for posts about decaf coffee pregnancy.",
+      "metadata": {
+        "keyword": "decaf coffee pregnancy",
+        "popularity_score": 70,
+        "relevance_score": 1.0,
+        "source": "generated_direct",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#pregnancy",
+      "content": "Hashtag #pregnancy is relevant for 'decaf coffee pregnancy' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about decaf coffee pregnancy.",
+      "metadata": {
+        "keyword": "decaf coffee pregnancy",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffee",
+      "content": "Hashtag #coffee is relevant for 'cat and cloud coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about cat and cloud coffee.",
+      "metadata": {
+        "keyword": "cat and cloud coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeelover",
+      "content": "Hashtag #coffeelover is relevant for 'cat and cloud coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about cat and cloud coffee.",
+      "metadata": {
+        "keyword": "cat and cloud coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeetime",
+      "content": "Hashtag #coffeetime is relevant for 'cat and cloud coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about cat and cloud coffee.",
+      "metadata": {
+        "keyword": "cat and cloud coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caffeine",
+      "content": "Hashtag #caffeine is relevant for 'cat and cloud coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about cat and cloud coffee.",
+      "metadata": {
+        "keyword": "cat and cloud coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeegram",
+      "content": "Hashtag #coffeegram is relevant for 'cat and cloud coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about cat and cloud coffee.",
+      "metadata": {
+        "keyword": "cat and cloud coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#catandcloudcoffee",
+      "content": "Hashtag #catandcloudcoffee is relevant for 'cat and cloud coffee' coffee content. It has popularity score 70 and relevance 1.00. Use this hashtag for posts about cat and cloud coffee.",
+      "metadata": {
+        "keyword": "cat and cloud coffee",
+        "popularity_score": 70,
+        "relevance_score": 1.0,
+        "source": "generated_direct",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#cat",
+      "content": "Hashtag #cat is relevant for 'cat and cloud coffee' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about cat and cloud coffee.",
+      "metadata": {
+        "keyword": "cat and cloud coffee",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#cloud",
+      "content": "Hashtag #cloud is relevant for 'cat and cloud coffee' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about cat and cloud coffee.",
+      "metadata": {
+        "keyword": "cat and cloud coffee",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffee",
+      "content": "Hashtag #coffee is relevant for 'dose coffee mushroom' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about dose coffee mushroom.",
+      "metadata": {
+        "keyword": "dose coffee mushroom",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeelover",
+      "content": "Hashtag #coffeelover is relevant for 'dose coffee mushroom' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about dose coffee mushroom.",
+      "metadata": {
+        "keyword": "dose coffee mushroom",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeetime",
+      "content": "Hashtag #coffeetime is relevant for 'dose coffee mushroom' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about dose coffee mushroom.",
+      "metadata": {
+        "keyword": "dose coffee mushroom",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caffeine",
+      "content": "Hashtag #caffeine is relevant for 'dose coffee mushroom' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about dose coffee mushroom.",
+      "metadata": {
+        "keyword": "dose coffee mushroom",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeegram",
+      "content": "Hashtag #coffeegram is relevant for 'dose coffee mushroom' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about dose coffee mushroom.",
+      "metadata": {
+        "keyword": "dose coffee mushroom",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#dosecoffeemushroom",
+      "content": "Hashtag #dosecoffeemushroom is relevant for 'dose coffee mushroom' coffee content. It has popularity score 70 and relevance 1.00. Use this hashtag for posts about dose coffee mushroom.",
+      "metadata": {
+        "keyword": "dose coffee mushroom",
+        "popularity_score": 70,
+        "relevance_score": 1.0,
+        "source": "generated_direct",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#dose",
+      "content": "Hashtag #dose is relevant for 'dose coffee mushroom' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about dose coffee mushroom.",
+      "metadata": {
+        "keyword": "dose coffee mushroom",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#mushroom",
+      "content": "Hashtag #mushroom is relevant for 'dose coffee mushroom' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about dose coffee mushroom.",
+      "metadata": {
+        "keyword": "dose coffee mushroom",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#latte",
+      "content": "Hashtag #latte is relevant for 'iced latte with oat milk' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about iced latte with oat milk.",
+      "metadata": {
+        "keyword": "iced latte with oat milk",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#latteart",
+      "content": "Hashtag #latteart is relevant for 'iced latte with oat milk' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about iced latte with oat milk.",
+      "metadata": {
+        "keyword": "iced latte with oat milk",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeeart",
+      "content": "Hashtag #coffeeart is relevant for 'iced latte with oat milk' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about iced latte with oat milk.",
+      "metadata": {
+        "keyword": "iced latte with oat milk",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#oatmilk",
+      "content": "Hashtag #oatmilk is relevant for 'iced latte with oat milk' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about iced latte with oat milk.",
+      "metadata": {
+        "keyword": "iced latte with oat milk",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#plantbased",
+      "content": "Hashtag #plantbased is relevant for 'iced latte with oat milk' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about iced latte with oat milk.",
+      "metadata": {
+        "keyword": "iced latte with oat milk",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#dairyfreecoffee",
+      "content": "Hashtag #dairyfreecoffee is relevant for 'iced latte with oat milk' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about iced latte with oat milk.",
+      "metadata": {
+        "keyword": "iced latte with oat milk",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffee",
+      "content": "Hashtag #coffee is relevant for 'iced latte with oat milk' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about iced latte with oat milk.",
+      "metadata": {
+        "keyword": "iced latte with oat milk",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeelover",
+      "content": "Hashtag #coffeelover is relevant for 'iced latte with oat milk' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about iced latte with oat milk.",
+      "metadata": {
+        "keyword": "iced latte with oat milk",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeetime",
+      "content": "Hashtag #coffeetime is relevant for 'iced latte with oat milk' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about iced latte with oat milk.",
+      "metadata": {
+        "keyword": "iced latte with oat milk",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caffeine",
+      "content": "Hashtag #caffeine is relevant for 'iced latte with oat milk' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about iced latte with oat milk.",
+      "metadata": {
+        "keyword": "iced latte with oat milk",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeegram",
+      "content": "Hashtag #coffeegram is relevant for 'iced latte with oat milk' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about iced latte with oat milk.",
+      "metadata": {
+        "keyword": "iced latte with oat milk",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#icedlattewithoatmilk",
+      "content": "Hashtag #icedlattewithoatmilk is relevant for 'iced latte with oat milk' coffee content. It has popularity score 70 and relevance 1.00. Use this hashtag for posts about iced latte with oat milk.",
+      "metadata": {
+        "keyword": "iced latte with oat milk",
+        "popularity_score": 70,
+        "relevance_score": 1.0,
+        "source": "generated_direct",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#iced",
+      "content": "Hashtag #iced is relevant for 'iced latte with oat milk' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about iced latte with oat milk.",
+      "metadata": {
+        "keyword": "iced latte with oat milk",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#oat",
+      "content": "Hashtag #oat is relevant for 'iced latte with oat milk' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about iced latte with oat milk.",
+      "metadata": {
+        "keyword": "iced latte with oat milk",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#milk",
+      "content": "Hashtag #milk is relevant for 'iced latte with oat milk' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about iced latte with oat milk.",
+      "metadata": {
+        "keyword": "iced latte with oat milk",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#matcha",
+      "content": "Hashtag #matcha is relevant for 'matcha coffee' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about matcha coffee.",
+      "metadata": {
+        "keyword": "matcha coffee",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffee",
+      "content": "Hashtag #coffee is relevant for 'matcha coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about matcha coffee.",
+      "metadata": {
+        "keyword": "matcha coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#matchalatte",
+      "content": "Hashtag #matchalatte is relevant for 'matcha coffee' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about matcha coffee.",
+      "metadata": {
+        "keyword": "matcha coffee",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#greentea",
+      "content": "Hashtag #greentea is relevant for 'matcha coffee' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about matcha coffee.",
+      "metadata": {
+        "keyword": "matcha coffee",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeelover",
+      "content": "Hashtag #coffeelover is relevant for 'matcha coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about matcha coffee.",
+      "metadata": {
+        "keyword": "matcha coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeetime",
+      "content": "Hashtag #coffeetime is relevant for 'matcha coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about matcha coffee.",
+      "metadata": {
+        "keyword": "matcha coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caffeine",
+      "content": "Hashtag #caffeine is relevant for 'matcha coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about matcha coffee.",
+      "metadata": {
+        "keyword": "matcha coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeegram",
+      "content": "Hashtag #coffeegram is relevant for 'matcha coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about matcha coffee.",
+      "metadata": {
+        "keyword": "matcha coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#matchacoffee",
+      "content": "Hashtag #matchacoffee is relevant for 'matcha coffee' coffee content. It has popularity score 70 and relevance 1.00. Use this hashtag for posts about matcha coffee.",
+      "metadata": {
+        "keyword": "matcha coffee",
+        "popularity_score": 70,
+        "relevance_score": 1.0,
+        "source": "generated_direct",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffee",
+      "content": "Hashtag #coffee is relevant for 'how to make flavored coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about how to make flavored coffee.",
+      "metadata": {
+        "keyword": "how to make flavored coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeelover",
+      "content": "Hashtag #coffeelover is relevant for 'how to make flavored coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about how to make flavored coffee.",
+      "metadata": {
+        "keyword": "how to make flavored coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeetime",
+      "content": "Hashtag #coffeetime is relevant for 'how to make flavored coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about how to make flavored coffee.",
+      "metadata": {
+        "keyword": "how to make flavored coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caffeine",
+      "content": "Hashtag #caffeine is relevant for 'how to make flavored coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about how to make flavored coffee.",
+      "metadata": {
+        "keyword": "how to make flavored coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeegram",
+      "content": "Hashtag #coffeegram is relevant for 'how to make flavored coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about how to make flavored coffee.",
+      "metadata": {
+        "keyword": "how to make flavored coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#howtomakeflavoredcoffee",
+      "content": "Hashtag #howtomakeflavoredcoffee is relevant for 'how to make flavored coffee' coffee content. It has popularity score 70 and relevance 1.00. Use this hashtag for posts about how to make flavored coffee.",
+      "metadata": {
+        "keyword": "how to make flavored coffee",
+        "popularity_score": 70,
+        "relevance_score": 1.0,
+        "source": "generated_direct",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#make",
+      "content": "Hashtag #make is relevant for 'how to make flavored coffee' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about how to make flavored coffee.",
+      "metadata": {
+        "keyword": "how to make flavored coffee",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#flavored",
+      "content": "Hashtag #flavored is relevant for 'how to make flavored coffee' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about how to make flavored coffee.",
+      "metadata": {
+        "keyword": "how to make flavored coffee",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#oatmilk",
+      "content": "Hashtag #oatmilk is relevant for 'oat milk calories' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about oat milk calories.",
+      "metadata": {
+        "keyword": "oat milk calories",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#plantbased",
+      "content": "Hashtag #plantbased is relevant for 'oat milk calories' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about oat milk calories.",
+      "metadata": {
+        "keyword": "oat milk calories",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#dairyfreecoffee",
+      "content": "Hashtag #dairyfreecoffee is relevant for 'oat milk calories' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about oat milk calories.",
+      "metadata": {
+        "keyword": "oat milk calories",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffee",
+      "content": "Hashtag #coffee is relevant for 'oat milk calories' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about oat milk calories.",
+      "metadata": {
+        "keyword": "oat milk calories",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeelover",
+      "content": "Hashtag #coffeelover is relevant for 'oat milk calories' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about oat milk calories.",
+      "metadata": {
+        "keyword": "oat milk calories",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeetime",
+      "content": "Hashtag #coffeetime is relevant for 'oat milk calories' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about oat milk calories.",
+      "metadata": {
+        "keyword": "oat milk calories",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caffeine",
+      "content": "Hashtag #caffeine is relevant for 'oat milk calories' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about oat milk calories.",
+      "metadata": {
+        "keyword": "oat milk calories",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeegram",
+      "content": "Hashtag #coffeegram is relevant for 'oat milk calories' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about oat milk calories.",
+      "metadata": {
+        "keyword": "oat milk calories",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#oatmilkcalories",
+      "content": "Hashtag #oatmilkcalories is relevant for 'oat milk calories' coffee content. It has popularity score 70 and relevance 1.00. Use this hashtag for posts about oat milk calories.",
+      "metadata": {
+        "keyword": "oat milk calories",
+        "popularity_score": 70,
+        "relevance_score": 1.0,
+        "source": "generated_direct",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#oat",
+      "content": "Hashtag #oat is relevant for 'oat milk calories' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about oat milk calories.",
+      "metadata": {
+        "keyword": "oat milk calories",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#milk",
+      "content": "Hashtag #milk is relevant for 'oat milk calories' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about oat milk calories.",
+      "metadata": {
+        "keyword": "oat milk calories",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#calories",
+      "content": "Hashtag #calories is relevant for 'oat milk calories' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about oat milk calories.",
+      "metadata": {
+        "keyword": "oat milk calories",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#decaf",
+      "content": "Hashtag #decaf is relevant for 'organic decaf coffee' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about organic decaf coffee.",
+      "metadata": {
+        "keyword": "organic decaf coffee",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffee",
+      "content": "Hashtag #coffee is relevant for 'organic decaf coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about organic decaf coffee.",
+      "metadata": {
+        "keyword": "organic decaf coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#decafcoffee",
+      "content": "Hashtag #decafcoffee is relevant for 'organic decaf coffee' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about organic decaf coffee.",
+      "metadata": {
+        "keyword": "organic decaf coffee",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caffeinefree",
+      "content": "Hashtag #caffeinefree is relevant for 'organic decaf coffee' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about organic decaf coffee.",
+      "metadata": {
+        "keyword": "organic decaf coffee",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeelover",
+      "content": "Hashtag #coffeelover is relevant for 'organic decaf coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about organic decaf coffee.",
+      "metadata": {
+        "keyword": "organic decaf coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeetime",
+      "content": "Hashtag #coffeetime is relevant for 'organic decaf coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about organic decaf coffee.",
+      "metadata": {
+        "keyword": "organic decaf coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caffeine",
+      "content": "Hashtag #caffeine is relevant for 'organic decaf coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about organic decaf coffee.",
+      "metadata": {
+        "keyword": "organic decaf coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeegram",
+      "content": "Hashtag #coffeegram is relevant for 'organic decaf coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about organic decaf coffee.",
+      "metadata": {
+        "keyword": "organic decaf coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#organicdecafcoffee",
+      "content": "Hashtag #organicdecafcoffee is relevant for 'organic decaf coffee' coffee content. It has popularity score 70 and relevance 1.00. Use this hashtag for posts about organic decaf coffee.",
+      "metadata": {
+        "keyword": "organic decaf coffee",
+        "popularity_score": 70,
+        "relevance_score": 1.0,
+        "source": "generated_direct",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#organic",
+      "content": "Hashtag #organic is relevant for 'organic decaf coffee' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about organic decaf coffee.",
+      "metadata": {
+        "keyword": "organic decaf coffee",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffee",
+      "content": "Hashtag #coffee is relevant for 'specialty coffee drinks' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about specialty coffee drinks.",
+      "metadata": {
+        "keyword": "specialty coffee drinks",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#specialtycoffee",
+      "content": "Hashtag #specialtycoffee is relevant for 'specialty coffee drinks' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about specialty coffee drinks.",
+      "metadata": {
+        "keyword": "specialty coffee drinks",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#craftcoffee",
+      "content": "Hashtag #craftcoffee is relevant for 'specialty coffee drinks' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about specialty coffee drinks.",
+      "metadata": {
+        "keyword": "specialty coffee drinks",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#artisancoffee",
+      "content": "Hashtag #artisancoffee is relevant for 'specialty coffee drinks' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about specialty coffee drinks.",
+      "metadata": {
+        "keyword": "specialty coffee drinks",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeelover",
+      "content": "Hashtag #coffeelover is relevant for 'specialty coffee drinks' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about specialty coffee drinks.",
+      "metadata": {
+        "keyword": "specialty coffee drinks",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeetime",
+      "content": "Hashtag #coffeetime is relevant for 'specialty coffee drinks' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about specialty coffee drinks.",
+      "metadata": {
+        "keyword": "specialty coffee drinks",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caffeine",
+      "content": "Hashtag #caffeine is relevant for 'specialty coffee drinks' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about specialty coffee drinks.",
+      "metadata": {
+        "keyword": "specialty coffee drinks",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeegram",
+      "content": "Hashtag #coffeegram is relevant for 'specialty coffee drinks' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about specialty coffee drinks.",
+      "metadata": {
+        "keyword": "specialty coffee drinks",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#specialtycoffeedrinks",
+      "content": "Hashtag #specialtycoffeedrinks is relevant for 'specialty coffee drinks' coffee content. It has popularity score 70 and relevance 1.00. Use this hashtag for posts about specialty coffee drinks.",
+      "metadata": {
+        "keyword": "specialty coffee drinks",
+        "popularity_score": 70,
+        "relevance_score": 1.0,
+        "source": "generated_direct",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#specialty",
+      "content": "Hashtag #specialty is relevant for 'specialty coffee drinks' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about specialty coffee drinks.",
+      "metadata": {
+        "keyword": "specialty coffee drinks",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#drinks",
+      "content": "Hashtag #drinks is relevant for 'specialty coffee drinks' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about specialty coffee drinks.",
+      "metadata": {
+        "keyword": "specialty coffee drinks",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#latte",
+      "content": "Hashtag #latte is relevant for 'latte with oat milk' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about latte with oat milk.",
+      "metadata": {
+        "keyword": "latte with oat milk",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#latteart",
+      "content": "Hashtag #latteart is relevant for 'latte with oat milk' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about latte with oat milk.",
+      "metadata": {
+        "keyword": "latte with oat milk",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeeart",
+      "content": "Hashtag #coffeeart is relevant for 'latte with oat milk' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about latte with oat milk.",
+      "metadata": {
+        "keyword": "latte with oat milk",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#oatmilk",
+      "content": "Hashtag #oatmilk is relevant for 'latte with oat milk' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about latte with oat milk.",
+      "metadata": {
+        "keyword": "latte with oat milk",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#plantbased",
+      "content": "Hashtag #plantbased is relevant for 'latte with oat milk' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about latte with oat milk.",
+      "metadata": {
+        "keyword": "latte with oat milk",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#dairyfreecoffee",
+      "content": "Hashtag #dairyfreecoffee is relevant for 'latte with oat milk' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about latte with oat milk.",
+      "metadata": {
+        "keyword": "latte with oat milk",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffee",
+      "content": "Hashtag #coffee is relevant for 'latte with oat milk' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about latte with oat milk.",
+      "metadata": {
+        "keyword": "latte with oat milk",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeelover",
+      "content": "Hashtag #coffeelover is relevant for 'latte with oat milk' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about latte with oat milk.",
+      "metadata": {
+        "keyword": "latte with oat milk",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeetime",
+      "content": "Hashtag #coffeetime is relevant for 'latte with oat milk' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about latte with oat milk.",
+      "metadata": {
+        "keyword": "latte with oat milk",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caffeine",
+      "content": "Hashtag #caffeine is relevant for 'latte with oat milk' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about latte with oat milk.",
+      "metadata": {
+        "keyword": "latte with oat milk",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeegram",
+      "content": "Hashtag #coffeegram is relevant for 'latte with oat milk' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about latte with oat milk.",
+      "metadata": {
+        "keyword": "latte with oat milk",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#lattewithoatmilk",
+      "content": "Hashtag #lattewithoatmilk is relevant for 'latte with oat milk' coffee content. It has popularity score 70 and relevance 1.00. Use this hashtag for posts about latte with oat milk.",
+      "metadata": {
+        "keyword": "latte with oat milk",
+        "popularity_score": 70,
+        "relevance_score": 1.0,
+        "source": "generated_direct",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#oat",
+      "content": "Hashtag #oat is relevant for 'latte with oat milk' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about latte with oat milk.",
+      "metadata": {
+        "keyword": "latte with oat milk",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#milk",
+      "content": "Hashtag #milk is relevant for 'latte with oat milk' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about latte with oat milk.",
+      "metadata": {
+        "keyword": "latte with oat milk",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffee",
+      "content": "Hashtag #coffee is relevant for 'specialty coffee beans' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about specialty coffee beans.",
+      "metadata": {
+        "keyword": "specialty coffee beans",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#specialtycoffee",
+      "content": "Hashtag #specialtycoffee is relevant for 'specialty coffee beans' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about specialty coffee beans.",
+      "metadata": {
+        "keyword": "specialty coffee beans",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#craftcoffee",
+      "content": "Hashtag #craftcoffee is relevant for 'specialty coffee beans' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about specialty coffee beans.",
+      "metadata": {
+        "keyword": "specialty coffee beans",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#artisancoffee",
+      "content": "Hashtag #artisancoffee is relevant for 'specialty coffee beans' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about specialty coffee beans.",
+      "metadata": {
+        "keyword": "specialty coffee beans",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeelover",
+      "content": "Hashtag #coffeelover is relevant for 'specialty coffee beans' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about specialty coffee beans.",
+      "metadata": {
+        "keyword": "specialty coffee beans",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeetime",
+      "content": "Hashtag #coffeetime is relevant for 'specialty coffee beans' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about specialty coffee beans.",
+      "metadata": {
+        "keyword": "specialty coffee beans",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caffeine",
+      "content": "Hashtag #caffeine is relevant for 'specialty coffee beans' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about specialty coffee beans.",
+      "metadata": {
+        "keyword": "specialty coffee beans",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeegram",
+      "content": "Hashtag #coffeegram is relevant for 'specialty coffee beans' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about specialty coffee beans.",
+      "metadata": {
+        "keyword": "specialty coffee beans",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#specialtycoffeebeans",
+      "content": "Hashtag #specialtycoffeebeans is relevant for 'specialty coffee beans' coffee content. It has popularity score 70 and relevance 1.00. Use this hashtag for posts about specialty coffee beans.",
+      "metadata": {
+        "keyword": "specialty coffee beans",
+        "popularity_score": 70,
+        "relevance_score": 1.0,
+        "source": "generated_direct",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#specialty",
+      "content": "Hashtag #specialty is relevant for 'specialty coffee beans' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about specialty coffee beans.",
+      "metadata": {
+        "keyword": "specialty coffee beans",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#beans",
+      "content": "Hashtag #beans is relevant for 'specialty coffee beans' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about specialty coffee beans.",
+      "metadata": {
+        "keyword": "specialty coffee beans",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffee",
+      "content": "Hashtag #coffee is relevant for 'what is nitro coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about what is nitro coffee.",
+      "metadata": {
+        "keyword": "what is nitro coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#nitrocoffee",
+      "content": "Hashtag #nitrocoffee is relevant for 'what is nitro coffee' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about what is nitro coffee.",
+      "metadata": {
+        "keyword": "what is nitro coffee",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#nitrobrew",
+      "content": "Hashtag #nitrobrew is relevant for 'what is nitro coffee' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about what is nitro coffee.",
+      "metadata": {
+        "keyword": "what is nitro coffee",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeelover",
+      "content": "Hashtag #coffeelover is relevant for 'what is nitro coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about what is nitro coffee.",
+      "metadata": {
+        "keyword": "what is nitro coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeetime",
+      "content": "Hashtag #coffeetime is relevant for 'what is nitro coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about what is nitro coffee.",
+      "metadata": {
+        "keyword": "what is nitro coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caffeine",
+      "content": "Hashtag #caffeine is relevant for 'what is nitro coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about what is nitro coffee.",
+      "metadata": {
+        "keyword": "what is nitro coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeegram",
+      "content": "Hashtag #coffeegram is relevant for 'what is nitro coffee' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about what is nitro coffee.",
+      "metadata": {
+        "keyword": "what is nitro coffee",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#whatisnitrocoffee",
+      "content": "Hashtag #whatisnitrocoffee is relevant for 'what is nitro coffee' coffee content. It has popularity score 70 and relevance 1.00. Use this hashtag for posts about what is nitro coffee.",
+      "metadata": {
+        "keyword": "what is nitro coffee",
+        "popularity_score": 70,
+        "relevance_score": 1.0,
+        "source": "generated_direct",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#nitro",
+      "content": "Hashtag #nitro is relevant for 'what is nitro coffee' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about what is nitro coffee.",
+      "metadata": {
+        "keyword": "what is nitro coffee",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#latte",
+      "content": "Hashtag #latte is relevant for 'iced oat milk latte' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about iced oat milk latte.",
+      "metadata": {
+        "keyword": "iced oat milk latte",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#latteart",
+      "content": "Hashtag #latteart is relevant for 'iced oat milk latte' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about iced oat milk latte.",
+      "metadata": {
+        "keyword": "iced oat milk latte",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeeart",
+      "content": "Hashtag #coffeeart is relevant for 'iced oat milk latte' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about iced oat milk latte.",
+      "metadata": {
+        "keyword": "iced oat milk latte",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#oatmilk",
+      "content": "Hashtag #oatmilk is relevant for 'iced oat milk latte' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about iced oat milk latte.",
+      "metadata": {
+        "keyword": "iced oat milk latte",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#plantbased",
+      "content": "Hashtag #plantbased is relevant for 'iced oat milk latte' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about iced oat milk latte.",
+      "metadata": {
+        "keyword": "iced oat milk latte",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#dairyfreecoffee",
+      "content": "Hashtag #dairyfreecoffee is relevant for 'iced oat milk latte' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about iced oat milk latte.",
+      "metadata": {
+        "keyword": "iced oat milk latte",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffee",
+      "content": "Hashtag #coffee is relevant for 'iced oat milk latte' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about iced oat milk latte.",
+      "metadata": {
+        "keyword": "iced oat milk latte",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeelover",
+      "content": "Hashtag #coffeelover is relevant for 'iced oat milk latte' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about iced oat milk latte.",
+      "metadata": {
+        "keyword": "iced oat milk latte",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeetime",
+      "content": "Hashtag #coffeetime is relevant for 'iced oat milk latte' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about iced oat milk latte.",
+      "metadata": {
+        "keyword": "iced oat milk latte",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caffeine",
+      "content": "Hashtag #caffeine is relevant for 'iced oat milk latte' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about iced oat milk latte.",
+      "metadata": {
+        "keyword": "iced oat milk latte",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeegram",
+      "content": "Hashtag #coffeegram is relevant for 'iced oat milk latte' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about iced oat milk latte.",
+      "metadata": {
+        "keyword": "iced oat milk latte",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#icedoatmilklatte",
+      "content": "Hashtag #icedoatmilklatte is relevant for 'iced oat milk latte' coffee content. It has popularity score 70 and relevance 1.00. Use this hashtag for posts about iced oat milk latte.",
+      "metadata": {
+        "keyword": "iced oat milk latte",
+        "popularity_score": 70,
+        "relevance_score": 1.0,
+        "source": "generated_direct",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#iced",
+      "content": "Hashtag #iced is relevant for 'iced oat milk latte' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about iced oat milk latte.",
+      "metadata": {
+        "keyword": "iced oat milk latte",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#oat",
+      "content": "Hashtag #oat is relevant for 'iced oat milk latte' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about iced oat milk latte.",
+      "metadata": {
+        "keyword": "iced oat milk latte",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#milk",
+      "content": "Hashtag #milk is relevant for 'iced oat milk latte' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about iced oat milk latte.",
+      "metadata": {
+        "keyword": "iced oat milk latte",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coldbrew",
+      "content": "Hashtag #coldbrew is relevant for 'vanilla cream cold brew' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about vanilla cream cold brew.",
+      "metadata": {
+        "keyword": "vanilla cream cold brew",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coldbrewcoffee",
+      "content": "Hashtag #coldbrewcoffee is relevant for 'vanilla cream cold brew' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about vanilla cream cold brew.",
+      "metadata": {
+        "keyword": "vanilla cream cold brew",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#icedcoffee",
+      "content": "Hashtag #icedcoffee is relevant for 'vanilla cream cold brew' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about vanilla cream cold brew.",
+      "metadata": {
+        "keyword": "vanilla cream cold brew",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffee",
+      "content": "Hashtag #coffee is relevant for 'vanilla cream cold brew' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about vanilla cream cold brew.",
+      "metadata": {
+        "keyword": "vanilla cream cold brew",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeelover",
+      "content": "Hashtag #coffeelover is relevant for 'vanilla cream cold brew' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about vanilla cream cold brew.",
+      "metadata": {
+        "keyword": "vanilla cream cold brew",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeetime",
+      "content": "Hashtag #coffeetime is relevant for 'vanilla cream cold brew' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about vanilla cream cold brew.",
+      "metadata": {
+        "keyword": "vanilla cream cold brew",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caffeine",
+      "content": "Hashtag #caffeine is relevant for 'vanilla cream cold brew' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about vanilla cream cold brew.",
+      "metadata": {
+        "keyword": "vanilla cream cold brew",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeegram",
+      "content": "Hashtag #coffeegram is relevant for 'vanilla cream cold brew' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about vanilla cream cold brew.",
+      "metadata": {
+        "keyword": "vanilla cream cold brew",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#vanillacreamcoldbrew",
+      "content": "Hashtag #vanillacreamcoldbrew is relevant for 'vanilla cream cold brew' coffee content. It has popularity score 70 and relevance 1.00. Use this hashtag for posts about vanilla cream cold brew.",
+      "metadata": {
+        "keyword": "vanilla cream cold brew",
+        "popularity_score": 70,
+        "relevance_score": 1.0,
+        "source": "generated_direct",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#vanilla",
+      "content": "Hashtag #vanilla is relevant for 'vanilla cream cold brew' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about vanilla cream cold brew.",
+      "metadata": {
+        "keyword": "vanilla cream cold brew",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#cream",
+      "content": "Hashtag #cream is relevant for 'vanilla cream cold brew' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about vanilla cream cold brew.",
+      "metadata": {
+        "keyword": "vanilla cream cold brew",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#cold",
+      "content": "Hashtag #cold is relevant for 'vanilla cream cold brew' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about vanilla cream cold brew.",
+      "metadata": {
+        "keyword": "vanilla cream cold brew",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#brew",
+      "content": "Hashtag #brew is relevant for 'vanilla cream cold brew' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about vanilla cream cold brew.",
+      "metadata": {
+        "keyword": "vanilla cream cold brew",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caffeine",
+      "content": "Hashtag #caffeine is relevant for 'caffeine in cold brew' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about caffeine in cold brew.",
+      "metadata": {
+        "keyword": "caffeine in cold brew",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coldbrew",
+      "content": "Hashtag #coldbrew is relevant for 'caffeine in cold brew' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about caffeine in cold brew.",
+      "metadata": {
+        "keyword": "caffeine in cold brew",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coldbrewcoffee",
+      "content": "Hashtag #coldbrewcoffee is relevant for 'caffeine in cold brew' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about caffeine in cold brew.",
+      "metadata": {
+        "keyword": "caffeine in cold brew",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#icedcoffee",
+      "content": "Hashtag #icedcoffee is relevant for 'caffeine in cold brew' coffee content. It has popularity score 85 and relevance 0.90. Use this hashtag for posts about caffeine in cold brew.",
+      "metadata": {
+        "keyword": "caffeine in cold brew",
+        "popularity_score": 85,
+        "relevance_score": 0.9,
+        "source": "generated_mapped",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffee",
+      "content": "Hashtag #coffee is relevant for 'caffeine in cold brew' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about caffeine in cold brew.",
+      "metadata": {
+        "keyword": "caffeine in cold brew",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeelover",
+      "content": "Hashtag #coffeelover is relevant for 'caffeine in cold brew' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about caffeine in cold brew.",
+      "metadata": {
+        "keyword": "caffeine in cold brew",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeetime",
+      "content": "Hashtag #coffeetime is relevant for 'caffeine in cold brew' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about caffeine in cold brew.",
+      "metadata": {
+        "keyword": "caffeine in cold brew",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#coffeegram",
+      "content": "Hashtag #coffeegram is relevant for 'caffeine in cold brew' coffee content. It has popularity score 95 and relevance 0.70. Use this hashtag for posts about caffeine in cold brew.",
+      "metadata": {
+        "keyword": "caffeine in cold brew",
+        "popularity_score": 95,
+        "relevance_score": 0.7,
+        "source": "generated_general",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#caffeineincoldbrew",
+      "content": "Hashtag #caffeineincoldbrew is relevant for 'caffeine in cold brew' coffee content. It has popularity score 70 and relevance 1.00. Use this hashtag for posts about caffeine in cold brew.",
+      "metadata": {
+        "keyword": "caffeine in cold brew",
+        "popularity_score": 70,
+        "relevance_score": 1.0,
+        "source": "generated_direct",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#cold",
+      "content": "Hashtag #cold is relevant for 'caffeine in cold brew' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about caffeine in cold brew.",
+      "metadata": {
+        "keyword": "caffeine in cold brew",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    },
+    {
+      "hashtag": "#brew",
+      "content": "Hashtag #brew is relevant for 'caffeine in cold brew' coffee content. It has popularity score 60 and relevance 0.80. Use this hashtag for posts about caffeine in cold brew.",
+      "metadata": {
+        "keyword": "caffeine in cold brew",
+        "popularity_score": 60,
+        "relevance_score": 0.8,
+        "source": "generated_word",
+        "type": "hashtag_knowledge"
+      }
+    }
+  ]
+}

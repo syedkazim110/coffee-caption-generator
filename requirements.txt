@@ -1,0 +1,21 @@
+praw
+psycopg2-binary
+pytrends
+pandas
+tweepy
+requests
+beautifulsoup4
+lxml
+python-dateutil
+scikit-learn
+numpy
+
+# Web Application Dependencies
+fastapi
+uvicorn[standard]
+google-genai
+python-dotenv
+Pillow
+
+# Image Generation via Hugging Face Inference API
+# No heavy dependencies needed - using API calls instead

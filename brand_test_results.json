@@ -1,0 +1,39 @@
+{
+  "brand_name": "Luna Verde Coffee",
+  "brand_image_style": "Bright, airy, natural aesthetic. Soft morning light, organic textures, earth tones with pops of green. Show reusable cups, plants, natural materials. Lifestyle shots with eco-friendly props. Instagram-worthy, minimalist composition.\n",
+  "test_keyword": "decaf",
+  "generated_post": {
+    "caption": "Sip on Serenity at Luna Verde Coffee \u2013 where our pale brown decaf treasures are as eco-conscious in spirit as they are mildly nutty to your taste buds! Dive into a cup that's not just coffee but an experience of being planet-friendly, zero-waste comfort. Ready for this sustain...",
+    "hashtags": [
+      "#decaf",
+      "#coffee",
+      "#caffeine",
+      "#coffeegram",
+      "#coffeetime"
+    ],
+    "full_caption": "Sip on Serenity at Luna Verde Coffee \u2013 where our pale brown decaf treasures are as eco-conscious in spirit as they are mildly nutty to your taste buds! Dive into a cup that's not just coffee but an experience of being planet-friendly, zero-waste comfort. Ready for this sustain...\n\n#decaf #coffee #caffeine #coffeegram #coffeetime",
+    "image_prompt": "A warmly lit morning scene features an elegant, reusable cup with pale brown hues and smooth granules on its surface. Grounded in nature's palette of greens against earthy browns within a lush indoor plant terrarium setting showcases the decaf experience as eco-friendly living\u2014a perfect Instagram moment that embodies our brand\u2019s commitment to sustainability and natural beauty.",
+    "keyword": "decaf",
+    "context_snippets": [
+      "In the face of an increasingly divisive world, this series of drinks brings together coffee professionals from every continentand each beverage tells a powerful story of its own",
+      "BY CAROLINE CORMIER FOR BARISTA MAGAZINE Photos by Laura Vied Allen for Little Waves Coffee In a world too often defined by division, Durham, N",
+      "San Fran Coffee: Cold Brew Nogroni and Pineapple Cold Brew Photos courtesy of San Fran Coffee",
+      "With over 30 years of experience in the industry, San Fran Coffee knows how to create a memorable drinkand theyve pulled out all of the stops for their summer 2025 menu",
+      "Coffee shops across the U"
+    ],
+    "visual_style": "minimalist",
+    "generation_method": "LLM + Content RAG + Hashtag RAG + Image Prompt",
+    "timestamp": "2025-10-07T12:18:20.423190",
+    "metadata": {
+      "content_sources": 22,
+      "hashtag_knowledge": 219,
+      "llm_model": "phi3:mini"
+    }
+  },
+  "verification": {
+    "brand_keywords_found": [],
+    "generic_terms_found": [
+      "cup"
+    ]
+  }
+}

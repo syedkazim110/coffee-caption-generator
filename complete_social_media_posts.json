@@ -1,0 +1,98 @@
+{
+  "timestamp": "2025-09-29T14:35:58.539044",
+  "total_posts": 3,
+  "generation_method": "Complete Social Media Content Generation",
+  "features": [
+    "LLM Caption Generation",
+    "Content RAG",
+    "Hashtag RAG Selection",
+    "Image Prompt Generation",
+    "Visual Style Detection"
+  ],
+  "posts": [
+    {
+      "caption": "Unlock the secret to an unparalleled coffee experience with our Cold Brew Recipe! Perfect for those who love that bold acidity mixed with sweet undertones in every sip \u2013 no heat necessary. Say goodbye to scorching mornings and hello to a refreshing, smooth start with cold-brew...",
+      "hashtags": [
+        "#coffee",
+        "#coffeegram",
+        "#coffeetime",
+        "#coffeelover",
+        "#caffeine"
+      ],
+      "full_caption": "Unlock the secret to an unparalleled coffee experience with our Cold Brew Recipe! Perfect for those who love that bold acidity mixed with sweet undertones in every sip \u2013 no heat necessary. Say goodbye to scorching mornings and hello to a refreshing, smooth start with cold-brew...\n\n#coffee #coffeegram #coffeetime #coffeelover #caffeine",
+      "image_prompt": "A rustic wooden table stands in a cozy kitchen adorned by autumnal decorations\u2014a vibrant pumpkin on one end and an array of seasonally inspired throw pillows scattered across armchairs, all bathed under warm golden morning light pouring through sheer curtains. A crystal pitcher filled with dark-roasted coffee grounds sits atop.",
+      "keyword": "cold brew recipe",
+      "context_snippets": [
+        "Brewing with hot water preserves a coffees acidity (aka the juiciness, brightness, fruit-like qualities) and complexity, and flash-cooling it preserves its sweetness",
+        "This method is especially great when you want iced coffee immediately, and cant wait for a cold brew to steep",
+        "San Fran Coffee: Cold Brew Nogroni and Pineapple Cold Brew Photos courtesy of San Fran Coffee",
+        "With over 30 years of experience in the industry, San Fran Coffee knows how to create a memorable drinkand theyve pulled out all of the stops for their summer 2025 menu",
+        "In the face of an increasingly divisive world, this series of drinks brings together coffee professionals from every continentand each beverage tells a powerful story of its own"
+      ],
+      "visual_style": "artistic",
+      "generation_method": "LLM + Content RAG + Hashtag RAG + Image Prompt",
+      "timestamp": "2025-09-29T14:34:50.805677",
+      "metadata": {
+        "content_sources": 22,
+        "hashtag_knowledge": 219,
+        "llm_model": "phi3:mini"
+      }
+    },
+    {
+      "caption": "Dive into the world's richest tales with our global coffee extravaganza! Each sip is an instant journey through diverse cultures - no espresso machine needed when you can savor this caffeinated odyssey right at home. Perfect for both seasoned baristas and your first-time java ...",
+      "hashtags": [
+        "#espresso",
+        "#coffee",
+        "#caffeine",
+        "#coffeetime",
+        "#coffeegram"
+      ],
+      "full_caption": "Dive into the world's richest tales with our global coffee extravaganza! Each sip is an instant journey through diverse cultures - no espresso machine needed when you can savor this caffeinated odyssey right at home. Perfect for both seasoned baristas and your first-time java ...\n\n#espresso #coffee #caffeine #coffeetime #coffeegram",
+      "image_prompt": "An autumnal kitchen tableau presents a rustic yet elegant mug of instant coffee powder tea set before an open window where sunlight filters in to cast golden hues on its surface\u2014a rich amber shade signifying warmth and comfort. The steam rises gracefully, carrying with it the delicate scent reminiscent of.",
+      "keyword": "instant coffee powder",
+      "context_snippets": [
+        "In the face of an increasingly divisive world, this series of drinks brings together coffee professionals from every continentand each beverage tells a powerful story of its own",
+        "BY CAROLINE CORMIER FOR BARISTA MAGAZINE Photos by Laura Vied Allen for Little Waves Coffee In a world too often defined by division, Durham, N",
+        "San Fran Coffee: Cold Brew Nogroni and Pineapple Cold Brew Photos courtesy of San Fran Coffee",
+        "With over 30 years of experience in the industry, San Fran Coffee knows how to create a memorable drinkand theyve pulled out all of the stops for their summer 2025 menu",
+        "Its a very gentle way of extracting flavor from coffee grounds with hot water, so all of our tips revolve around making sure enough coffee solubles get extracted for a sweet and balanced taste"
+      ],
+      "visual_style": "artistic",
+      "generation_method": "LLM + Content RAG + Hashtag RAG + Image Prompt",
+      "timestamp": "2025-09-29T14:35:27.417865",
+      "metadata": {
+        "content_sources": 22,
+        "hashtag_knowledge": 219,
+        "llm_model": "phi3:mini"
+      }
+    },
+    {
+      "caption": "Unleash the power within your cup with pure caffeine in every sip! Join us for an instant coffee journey where each brew is more than just wake-up call\u2014it's a global love affair that bridges continents. Let\u2019thy taste buds travel worldwide this morning and be part of our #Coffe...",
+      "hashtags": [
+        "#caffeine",
+        "#coffee",
+        "#coffeegram",
+        "#coffeelover",
+        "#coffeetime"
+      ],
+      "full_caption": "Unleash the power within your cup with pure caffeine in every sip! Join us for an instant coffee journey where each brew is more than just wake-up call\u2014it's a global love affair that bridges continents. Let\u2019thy taste buds travel worldwide this morning and be part of our #Coffe...\n\n#caffeine #coffee #coffeegram #coffeelover #coffeetime",
+      "image_prompt": "A steaming cup of pure caffeine awaits on an aged wooden table in autumn's embrace; golden leaves mingle among porcelain and stainless steel elements that speak to timeless craftsmanship, each reflective surface catches the morning light streaming through lace curtain drapes. Crisp amber liquid swirls atop a velvety brown coffee.",
+      "keyword": "caffeine in instant coffee",
+      "context_snippets": [
+        "In the face of an increasingly divisive world, this series of drinks brings together coffee professionals from every continentand each beverage tells a powerful story of its own",
+        "BY CAROLINE CORMIER FOR BARISTA MAGAZINE Photos by Laura Vied Allen for Little Waves Coffee In a world too often defined by division, Durham, N",
+        "San Fran Coffee: Cold Brew Nogroni and Pineapple Cold Brew Photos courtesy of San Fran Coffee",
+        "With over 30 years of experience in the industry, San Fran Coffee knows how to create a memorable drinkand theyve pulled out all of the stops for their summer 2025 menu",
+        "Its a very gentle way of extracting flavor from coffee grounds with hot water, so all of our tips revolve around making sure enough coffee solubles get extracted for a sweet and balanced taste"
+      ],
+      "visual_style": "rustic",
+      "generation_method": "LLM + Content RAG + Hashtag RAG + Image Prompt",
+      "timestamp": "2025-09-29T14:35:58.538957",
+      "metadata": {
+        "content_sources": 22,
+        "hashtag_knowledge": 219,
+        "llm_model": "phi3:mini"
+      }
+    }
+  ]
+}
