@@ -35,9 +35,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize caption generator
+# Initialize caption generator with environment variables
 logger.info("Initializing caption generator...")
-caption_generator = LLMRAGCaptionGenerator()
+OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "phi3:mini")
+logger.info(f"Using Ollama URL: {OLLAMA_URL}")
+logger.info(f"Using Ollama Model: {OLLAMA_MODEL}")
+caption_generator = LLMRAGCaptionGenerator(
+    ollama_url=OLLAMA_URL,
+    ollama_model=OLLAMA_MODEL
+)
 
 # Initialize brand manager and platform strategy
 logger.info("Initializing brand manager...")

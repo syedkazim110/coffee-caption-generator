@@ -12,6 +12,25 @@ A RAG-based system that generates viral-style coffee captions using trending Goo
 
 ## 🚀 Quick Start
 
+### Option 1: Docker (Recommended)
+
+1. **Create environment file:**
+   ```bash
+   cp .env.example .env
+   # Edit .env and add your API keys
+   ```
+
+2. **Start the application:**
+   ```bash
+   docker compose up --build
+   ```
+
+3. **Access the application:**
+   - Web Interface: http://localhost:8000
+   - API Docs: http://localhost:8000/docs
+
+### Option 2: Manual Setup
+
 1. **Generate trending keywords:**
    ```bash
    python GetCoffeTrend.py
@@ -26,6 +45,108 @@ A RAG-based system that generates viral-style coffee captions using trending Goo
    ```bash
    python caption_generator_cli.py
    ```
+
+## 🐳 Docker Setup
+
+The application is fully dockerized for easy deployment. The Docker setup includes:
+
+- **PostgreSQL Database**: Persistent data storage with automatic initialization
+- **Ollama LLM Service**: Local AI model for caption generation (phi3:mini)
+- **FastAPI Web Application**: Python backend with hot-reload for development
+- **Networking**: Internal Docker network for secure service communication
+- **Health Checks**: Automatic service health monitoring
+
+### Quick Start with Docker
+
+**1. Start all services:**
+```bash
+docker compose up --build -d
+```
+
+**2. Setup Ollama model (first time only):**
+```bash
+./setup-ollama.sh
+```
+
+This downloads the phi3:mini model (~2GB). The model is cached and only needs to be downloaded once.
+
+**3. Access the application:**
+- Web Interface: http://localhost:8000
+- API Docs: http://localhost:8000/docs
+
+### Docker Commands
+
+**Start services:**
+```bash
+docker compose up -d
+```
+
+**View logs:**
+```bash
+docker compose logs -f
+
+# View specific service logs
+docker compose logs -f web
+docker compose logs -f ollama
+docker compose logs -f postgres
+```
+
+**Stop services:**
+```bash
+docker compose down
+```
+
+**Rebuild after changes:**
+```bash
+docker compose up --build
+```
+
+**Access database:**
+```bash
+docker compose exec postgres psql -U postgres -d reddit_db
+```
+
+**Check Ollama models:**
+```bash
+docker compose exec ollama ollama list
+```
+
+**Pull different Ollama model:**
+```bash
+docker compose exec ollama ollama pull llama2
+```
+
+### Ports
+- **Web Application**: http://localhost:8000
+- **PostgreSQL**: localhost:5434
+- **Ollama API**: localhost:11434
+
+### GPU Support (Optional)
+
+For faster LLM generation with NVIDIA GPU:
+
+1. Install [nvidia-docker](https://github.com/NVIDIA/nvidia-docker)
+2. Uncomment the GPU section in `docker-compose.yml` under the `ollama` service
+3. Restart services: `docker compose up -d`
+
+### Available Ollama Models
+
+Default: `phi3:mini` (2GB, fast, good quality)
+
+Other options:
+- `llama2` (3.8GB, higher quality)
+- `mistral` (4.1GB, excellent performance)
+- `codellama` (3.8GB, code-focused)
+- `gemma:2b` (1.4GB, fastest, lower quality)
+
+To change model, update `OLLAMA_MODEL` in `.env` file.
+
+### System Requirements
+
+- **CPU**: 2+ cores recommended
+- **RAM**: 4GB minimum, 8GB recommended
+- **Disk**: ~5-10GB (includes models and data)
+- **GPU**: Optional (NVIDIA GPU with nvidia-docker for acceleration)
 
 ## 📁 Files Overview
 
