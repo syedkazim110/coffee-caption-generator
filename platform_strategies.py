@@ -146,31 +146,49 @@ Your caption:"""
         }
     
     def truncate_caption(self, caption: str, platform: str) -> str:
-        """Truncate caption to fit platform limits"""
+        """Truncate caption to fit platform limits - improved to avoid incomplete sentences"""
         spec = self.get_platform_spec(platform)
         max_chars = spec['max_chars']
         
         if len(caption) <= max_chars:
             return caption
         
-        # Truncate at sentence boundary if possible
-        truncated = caption[:max_chars-3]  # Leave room for "..."
+        logger.warning(f"Truncating caption for {platform}: {len(caption)} > {max_chars} chars")
         
-        # Try to end at sentence
+        # Try to find the last complete sentence within the limit
+        truncated = caption[:max_chars]
+        
+        # Look for sentence endings
         last_period = truncated.rfind('.')
         last_exclaim = truncated.rfind('!')
         last_question = truncated.rfind('?')
         
         sentence_end = max(last_period, last_exclaim, last_question)
         
-        if sentence_end > max_chars // 2:  # If we have at least half the content
-            return truncated[:sentence_end+1].strip()
-        else:
-            # Truncate at word boundary
-            last_space = truncated.rfind(' ')
-            if last_space > 0:
-                return truncated[:last_space].strip() + '...'
-            return truncated + '...'
+        # If we have at least 60% of the content with a sentence ending, use it
+        if sentence_end > max_chars * 0.6:
+            result = caption[:sentence_end + 1].strip()
+            logger.info(f"Truncated at sentence boundary: {len(result)} chars")
+            return result
+        
+        # Otherwise, truncate at word boundary and add period (no "...")
+        last_space = truncated.rfind(' ')
+        if last_space > max_chars * 0.5:
+            truncated_at_word = caption[:last_space].strip()
+            # Add period only if it doesn't already end with punctuation
+            if truncated_at_word and truncated_at_word[-1] not in '.!?,;:':
+                result = truncated_at_word + '.'
+            else:
+                result = truncated_at_word
+            logger.info(f"Truncated at word boundary: {len(result)} chars")
+            return result
+        
+        # Last resort: cut at limit and add period
+        result = truncated.strip()
+        if result and result[-1] not in '.!?':
+            result += '.'
+        logger.info(f"Truncated at character limit: {len(result)} chars")
+        return result
     
     def format_hashtags_for_platform(self, hashtags: list, platform: str) -> str:
         """Format hashtags according to platform best practices"""

@@ -958,6 +958,38 @@ Write a complete, engaging caption without emojis. Make it align with the brand 
         
         return f"{base_caption} {' '.join(emoji_combo)}"
     
+    def intelligent_truncate(self, caption: str, max_chars: int) -> str:
+        """Intelligently truncate caption without adding '...' - clean ending"""
+        if len(caption) <= max_chars:
+            return caption
+        
+        # Try to find the last complete sentence within the limit
+        truncated = caption[:max_chars]
+        
+        # Look for sentence endings
+        last_period = truncated.rfind('.')
+        last_exclaim = truncated.rfind('!')
+        last_question = truncated.rfind('?')
+        
+        sentence_end = max(last_period, last_exclaim, last_question)
+        
+        # If we have at least 60% of the content with a sentence ending, use it
+        if sentence_end > max_chars * 0.6:
+            return caption[:sentence_end + 1].strip()
+        
+        # Otherwise, truncate at word boundary without "..."
+        last_space = truncated.rfind(' ')
+        if last_space > max_chars * 0.5:
+            # Check if the last word before space ends with punctuation
+            truncated_at_word = caption[:last_space].strip()
+            if truncated_at_word and truncated_at_word[-1] not in '.!?,;:':
+                # Add period for clean ending
+                return truncated_at_word + '.'
+            return truncated_at_word
+        
+        # Last resort: just cut at the limit and add period
+        return truncated.strip() + '.'
+    
     def clean_keyword(self, keyword: str) -> str:
         """Clean keyword for better readability"""
         prefixes_to_remove = ['what is ', 'how to make ', 'best ', 'how much caffeine in ', 'how to ']
@@ -1382,16 +1414,16 @@ Write ONLY a direct image description (2-3 sentences) that strictly follows the 
         
         return prompt
 
-    def generate_complete_post(self, keyword: str = None, platform: str = 'instagram') -> Dict[str, Any]:
+    def generate_complete_post(self, keyword: str = None, platform: str = 'instagram', scenario: str = None) -> Dict[str, Any]:
         """Generate complete social media post with platform-specific caption, hashtags, and image prompt"""
         
-        logger.info(f"Generating post for platform: {platform}")
+        logger.info(f"Generating post for platform: {platform}, scenario: {scenario}")
         
         # Get platform specifications
         platform_spec = self.platform_strategy.get_platform_spec(platform)
         
-        # Step 1: Generate caption with platform-specific requirements
-        caption_data = self.generate_platform_specific_caption(keyword, platform, platform_spec)
+        # Step 1: Generate caption with platform-specific requirements and scenario
+        caption_data = self.generate_platform_specific_caption(keyword, platform, platform_spec, scenario)
         
         # Step 2: Use hashtag RAG to select better hashtags
         rag_hashtags = self.select_hashtags_with_rag(
@@ -1447,14 +1479,14 @@ Write ONLY a direct image description (2-3 sentences) that strictly follows the 
         
         return complete_post
     
-    def generate_platform_specific_caption(self, keyword: str, platform: str, platform_spec: Dict[str, Any]) -> Dict[str, Any]:
-        """Generate caption tailored to platform specifications"""
+    def generate_platform_specific_caption(self, keyword: str, platform: str, platform_spec: Dict[str, Any], scenario: str = None) -> Dict[str, Any]:
+        """Generate caption tailored to platform specifications with optional scenario context"""
         
-        # Select keyword
-        if not keyword:
-            selected_keyword = random.choice(self.trending_keywords)
-        else:
+        # Simple logic: use provided keyword, or fall back to random trending keyword
+        if keyword:
             selected_keyword = keyword
+        else:
+            selected_keyword = random.choice(self.trending_keywords)
         
         selected_keyword = self.clean_keyword(selected_keyword)
         
@@ -1464,14 +1496,15 @@ Write ONLY a direct image description (2-3 sentences) that strictly follows the 
         # Retrieve relevant context using RAG
         context_snippets = self.retrieve_relevant_context(selected_keyword)
         
-        # Generate caption using platform-specific prompt
+        # Generate caption using platform-specific prompt with scenario
         if self.use_ollama:
             base_caption = self.generate_platform_aware_caption_ollama(
                 selected_keyword, 
                 context_snippets, 
                 coffee_knowledge,
                 platform,
-                platform_spec
+                platform_spec,
+                scenario
             )
         else:
             base_caption = self.generate_local_caption(selected_keyword, context_snippets)
@@ -1492,79 +1525,322 @@ Write ONLY a direct image description (2-3 sentences) that strictly follows the 
         context_snippets: List[str], 
         knowledge: Dict[str, Any],
         platform: str,
-        platform_spec: Dict[str, Any]
+        platform_spec: Dict[str, Any],
+        scenario: str = None
     ) -> str:
-        """Generate platform-aware caption using Ollama with platform specifications"""
-        try:
-            # Use platform strategy to build the prompt
-            brand_voice = {
-                'core_adjectives': self.brand_voice_adjectives,
-                'lexicon_always_use': self.brand_lexicon_always,
-                'lexicon_never_use': self.brand_lexicon_never
-            }
-            
-            prompt = self.platform_strategy.build_platform_prompt(
-                platform,
-                brand_voice,
-                keyword,
-                context_snippets
-            )
-            
-            # Add coffee knowledge context
-            if knowledge:
-                knowledge_text = f"""
+        """Generate platform-aware caption using Ollama with platform specifications and optional scenario"""
+        max_retries = 3
+        
+        # Dynamic num_predict based on platform character limits
+        max_chars = platform_spec['max_chars']
+        min_chars = platform_spec['min_chars']
+        
+        # Calculate appropriate num_predict (roughly 1 token = 4 characters)
+        # Add buffer for safety
+        num_predict = min(200, int((max_chars * 0.8) / 4))
+        
+        for attempt in range(max_retries):
+            try:
+                # If scenario is provided, build a completely different prompt focused on the scenario
+                if scenario:
+                    # Extract key scenario elements for validation
+                    scenario_keywords = self.extract_scenario_keywords(scenario)
+                    
+                    # Build increasingly aggressive prompts on retries
+                    if attempt == 0:
+                        prompt = self.build_scenario_prompt_level1(scenario, keyword, platform, platform_spec)
+                    elif attempt == 1:
+                        prompt = self.build_scenario_prompt_level2(scenario, keyword, platform, platform_spec, scenario_keywords)
+                    else:
+                        prompt = self.build_scenario_prompt_level3(scenario, keyword, platform, platform_spec, scenario_keywords)
+                    
+                    # Use lower temperature for scenario-based generation
+                    temperature = 0.3
+                    repeat_penalty = 1.3
+                else:
+                    # Use platform strategy to build the normal prompt with STRONG character limit emphasis
+                    brand_voice = {
+                        'core_adjectives': self.brand_voice_adjectives,
+                        'lexicon_always_use': self.brand_lexicon_always,
+                        'lexicon_never_use': self.brand_lexicon_never
+                    }
+                    
+                    prompt = self.platform_strategy.build_platform_prompt(
+                        platform,
+                        brand_voice,
+                        keyword,
+                        context_snippets
+                    )
+                    
+                    # Add coffee knowledge context
+                    if knowledge:
+                        knowledge_text = f"""
 Coffee Details:
 - Color: {knowledge.get('color', '')}
 - Nature: {knowledge.get('nature', '')}
 - Flavor: {', '.join(knowledge.get('flavor_profile', [])[:3])}
 
 """
-                prompt = prompt.replace('CONTEXT:', f'{knowledge_text}CONTEXT:')
-            
-            # Make request to Ollama
-            response = requests.post(
-                f"{self.ollama_url}/api/generate",
-                json={
-                    "model": self.ollama_model,
-                    "prompt": prompt,
-                    "stream": False,
-                    "options": {
-                        "temperature": 0.7,
-                        "top_p": 0.9,
-                        "num_predict": 200,
-                        "stop": ["\n\n", "Context:", "Hashtags:"],
-                        "num_ctx": 2048,
-                        "repeat_penalty": 1.1
-                    }
-                },
-                timeout=90
-            )
-            
-            if response.status_code == 200:
-                result = response.json()
-                caption = result.get('response', '').strip()
-                caption = self.clean_generated_caption(caption)
+                        prompt = prompt.replace('CONTEXT:', f'{knowledge_text}CONTEXT:')
+                    
+                    # CRITICAL: Add explicit character limit enforcement
+                    char_limit_reminder = f"""
+
+⚠️ CRITICAL CHARACTER LIMIT: {min_chars}-{max_chars} characters MAXIMUM
+- Current attempt: {attempt + 1}/{max_retries}
+- You have EXACTLY {max_chars} characters available
+- Write a COMPLETE sentence that ENDS within {max_chars} characters
+- DO NOT exceed {max_chars} characters or the caption will be cut off
+- Count your characters carefully as you write
+"""
+                    prompt += char_limit_reminder
+                    
+                    # Use normal temperature for non-scenario generation
+                    temperature = 0.7
+                    repeat_penalty = 1.1
+                    scenario_keywords = []
                 
-                # Ensure caption meets platform requirements
-                min_chars = platform_spec['min_chars']
-                max_chars = platform_spec['max_chars']
+                # Make request to Ollama with dynamic num_predict
+                response = requests.post(
+                    f"{self.ollama_url}/api/generate",
+                    json={
+                        "model": self.ollama_model,
+                        "prompt": prompt,
+                        "stream": False,
+                        "options": {
+                            "temperature": temperature,
+                            "top_p": 0.9,
+                            "num_predict": num_predict,  # Dynamic based on platform
+                            "stop": ["\n\n", "Context:", "Hashtags:", "Example:", "⚠️"],
+                            "num_ctx": 2048,
+                            "repeat_penalty": repeat_penalty
+                        }
+                    },
+                    timeout=90
+                )
                 
-                if len(caption) < min_chars:
-                    logger.warning(f"Caption too short for {platform} ({len(caption)} < {min_chars}), regenerating...")
-                    # Add more context
-                    caption = f"{caption} {self.brand_name}"
-                elif len(caption) > max_chars:
-                    # Truncate will be handled later
-                    pass
+                if response.status_code == 200:
+                    result = response.json()
+                    caption = result.get('response', '').strip()
+                    caption = self.clean_generated_caption(caption)
+                    
+                    # Validate scenario compliance if scenario was provided
+                    if scenario and scenario_keywords:
+                        validation_passed, missing_keywords = self.validate_scenario_compliance(caption, scenario_keywords)
+                        
+                        if not validation_passed:
+                            logger.warning(f"Attempt {attempt + 1}: Caption missing scenario keywords: {missing_keywords}")
+                            if attempt < max_retries - 1:
+                                continue  # Retry with stronger prompt
+                            else:
+                                logger.error(f"Failed to generate scenario-compliant caption after {max_retries} attempts")
+                                # Force include missing keywords
+                                caption = self.force_scenario_compliance(caption, scenario_keywords, missing_keywords)
+                    
+                    # CRITICAL: Validate caption length and regenerate if needed
+                    caption_length = len(caption)
+                    
+                    if caption_length > max_chars:
+                        logger.warning(f"Attempt {attempt + 1}: Caption too long ({caption_length} > {max_chars})")
+                        
+                        if attempt < max_retries - 1:
+                            # Retry with even stricter prompt
+                            logger.info(f"Regenerating with stricter character limit...")
+                            continue
+                        else:
+                            # Last resort: truncate intelligently without "..."
+                            logger.warning(f"Final attempt exceeded limit, truncating intelligently")
+                            caption = self.intelligent_truncate(caption, max_chars)
+                    
+                    elif caption_length < min_chars:
+                        logger.warning(f"Caption too short for {platform} ({caption_length} < {min_chars})")
+                        
+                        if attempt < max_retries - 1:
+                            # Retry to get longer caption
+                            continue
+                        else:
+                            # Extend caption slightly
+                            caption = f"{caption} {self.brand_name}"
+                    
+                    else:
+                        # Caption is within limits - success!
+                        logger.info(f"✅ Generated caption within limits: {caption_length} chars ({min_chars}-{max_chars})")
+                        return caption
+                    
+                    return caption
+                else:
+                    logger.error(f"Ollama API error: {response.status_code}")
+                    if attempt == max_retries - 1:
+                        return self.generate_local_caption(keyword, context_snippets)
                 
-                return caption
+            except Exception as e:
+                logger.error(f"Ollama platform-aware generation error (attempt {attempt + 1}): {e}")
+                if attempt == max_retries - 1:
+                    return self.generate_local_caption(keyword, context_snippets)
+        
+        return self.generate_local_caption(keyword, context_snippets)
+    
+    def extract_scenario_keywords(self, scenario: str) -> List[str]:
+        """Extract critical keywords from scenario for validation"""
+        import re
+        
+        keywords = []
+        
+        # Extract discount percentages (e.g., "10% off", "20% discount")
+        discount_matches = re.findall(r'\d+%\s*(?:off|discount)', scenario.lower())
+        keywords.extend(discount_matches)
+        
+        # Extract product names (capitalized words, typically 2-4 words)
+        # Look for patterns like "Italian Frogman Espresso"
+        product_matches = re.findall(r'[A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,3}', scenario)
+        keywords.extend(product_matches)
+        
+        # Extract key promotional words
+        promo_words = ['sale', 'offer', 'deal', 'promotion', 'launch', 'new', 'limited']
+        for word in promo_words:
+            if word in scenario.lower():
+                keywords.append(word)
+        
+        return keywords
+    
+    def validate_scenario_compliance(self, caption: str, scenario_keywords: List[str]) -> tuple[bool, List[str]]:
+        """Validate that caption includes critical scenario keywords"""
+        caption_lower = caption.lower()
+        missing_keywords = []
+        
+        for keyword in scenario_keywords:
+            keyword_lower = keyword.lower()
+            # For product names, check if all words appear (order doesn't matter)
+            if ' ' in keyword:
+                words = keyword_lower.split()
+                if not all(word in caption_lower for word in words):
+                    missing_keywords.append(keyword)
             else:
-                logger.error(f"Ollama API error: {response.status_code}")
-                return self.generate_local_caption(keyword, context_snippets)
+                if keyword_lower not in caption_lower:
+                    missing_keywords.append(keyword)
+        
+        validation_passed = len(missing_keywords) == 0
+        return validation_passed, missing_keywords
+    
+    def force_scenario_compliance(self, caption: str, all_keywords: List[str], missing_keywords: List[str]) -> str:
+        """Force include missing scenario keywords in caption - AGGRESSIVE VERSION"""
+        import re
+        
+        # Prioritize most important missing keywords (discounts and product names)
+        important_missing = []
+        
+        for keyword in missing_keywords:
+            # Include discounts (with %), product names (capitalized), and sale-related words
+            if '%' in keyword or any(char.isupper() for char in keyword) or keyword.lower() in ['sale', 'offer', 'deal']:
+                important_missing.append(keyword)
+        
+        if important_missing:
+            # More aggressive approach: rebuild caption with scenario at the start
+            # Remove any existing promotional fluff
+            caption_clean = re.sub(r'^(Get ready to|Indulge in|Enjoy|Experience|Discover)\s+', '', caption, flags=re.IGNORECASE)
             
-        except Exception as e:
-            logger.error(f"Ollama platform-aware generation error: {e}")
-            return self.generate_local_caption(keyword, context_snippets)
+            # Build strong promotional prefix with all missing elements
+            if any('%' in kw for kw in important_missing):
+                # Has discount
+                discount = next((kw for kw in important_missing if '%' in kw), '')
+                product = next((kw for kw in important_missing if any(c.isupper() for c in kw)), '')
+                
+                if discount and product:
+                    # Perfect: we have both discount and product name
+                    forced_caption = f"🔥 SALE! {discount} on {product}! {caption_clean}"
+                elif discount:
+                    forced_caption = f"🔥 SALE! {discount}! {caption_clean}"
+                else:
+                    forced_caption = f"{' '.join(important_missing)}! {caption_clean}"
+            else:
+                # No discount, just product name or other keywords
+                forced_caption = f"{'🔥 ' if 'sale' in missing_keywords else ''}{' '.join(important_missing)}! {caption_clean}"
+            
+            logger.info(f"✅ FORCED scenario compliance: '{forced_caption[:100]}...'")
+            return forced_caption
+        
+        return caption
+    
+    def build_scenario_prompt_level1(self, scenario: str, keyword: str, platform: str, platform_spec: Dict[str, Any]) -> str:
+        """Build first-level scenario prompt (polite but firm)"""
+        return f"""⚠️ CRITICAL SCENARIO REQUIREMENT ⚠️
+
+SCENARIO TO FOLLOW: "{scenario}"
+
+Create a social media caption for {keyword} that DIRECTLY addresses this scenario.
+
+MANDATORY REQUIREMENTS:
+1. If the scenario mentions a discount (e.g., "10% off"), YOU MUST include it prominently
+2. If the scenario mentions a specific product name, use that EXACT name
+3. Match the scenario tone: Sale = promotional/urgent, Launch = exciting/new
+4. The scenario details must be in the caption, not just implied
+
+Brand: {self.brand_name}
+Platform: {platform} ({platform_spec['min_chars']}-{platform_spec['max_chars']} characters)
+Voice: {', '.join(self.brand_voice_adjectives[:2]) if self.brand_voice_adjectives else 'engaging'}
+
+Generate ONLY the caption (no explanations):"""
+    
+    def build_scenario_prompt_level2(self, scenario: str, keyword: str, platform: str, platform_spec: Dict[str, Any], keywords: List[str]) -> str:
+        """Build second-level scenario prompt (more aggressive with examples)"""
+        # Create example based on scenario
+        example_caption = self.create_example_from_scenario(scenario, keyword)
+        
+        return f"""🚨 CRITICAL: YOU MUST FOLLOW THE SCENARIO EXACTLY 🚨
+
+SCENARIO: "{scenario}"
+
+REQUIRED KEYWORDS THAT MUST APPEAR:
+{chr(10).join(f"✓ {kw}" for kw in keywords[:5])}
+
+CORRECT EXAMPLE:
+"{example_caption}"
+
+WRONG (what NOT to do):
+"Sip on Italy with our Espresso..." ❌ (missing scenario details)
+
+YOUR TASK:
+Create a caption for {keyword} following the EXACT scenario above.
+Brand: {self.brand_name}
+
+Generate caption with ALL required keywords:"""
+    
+    def build_scenario_prompt_level3(self, scenario: str, keyword: str, platform: str, platform_spec: Dict[str, Any], keywords: List[str]) -> str:
+        """Build third-level scenario prompt (maximum aggression)"""
+        keyword_list = ", ".join(keywords[:5])
+        
+        return f"""FINAL WARNING - FOLLOW INSTRUCTIONS OR FAIL
+
+SCENARIO (MUST BE IN CAPTION): "{scenario}"
+
+YOU MUST INCLUDE THESE EXACT WORDS:
+{keyword_list}
+
+Template to follow:
+[DISCOUNT/OFFER] for [PRODUCT NAME]! [Additional appeal]. Brand: {self.brand_name}
+
+Generate caption NOW with ALL required elements:"""
+    
+    def create_example_from_scenario(self, scenario: str, keyword: str) -> str:
+        """Create a concrete example caption from scenario"""
+        scenario_lower = scenario.lower()
+        
+        # Extract discount if present
+        import re
+        discount_match = re.search(r'(\d+%\s*(?:off|discount))', scenario_lower)
+        discount = discount_match.group(1) if discount_match else ""
+        
+        # Extract product name
+        product_match = re.search(r'([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,3})', scenario)
+        product = product_match.group(1) if product_match else keyword
+        
+        # Build example
+        if discount and 'sale' in scenario_lower:
+            return f"🔥 Sale! {discount} on {product}! Limited time offer from {self.brand_name}. Don't miss out!"
+        elif 'launch' in scenario_lower or 'new' in scenario_lower:
+            return f"Introducing {product}! Now available from {self.brand_name}. Experience the difference!"
+        else:
+            return f"{product} - {discount if discount else 'Special offer'} from {self.brand_name}!"
 
     def detect_visual_style(self, caption: str) -> str:
         """Detect appropriate visual style from caption"""

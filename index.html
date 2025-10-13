@@ -44,6 +44,30 @@
                     </select>
                 </div>
 
+                <!-- Scenario and Keyword Inputs -->
+                <div class="scenario-input-container">
+                    <label for="scenarioInput" class="scenario-label">🎯 Scenario (Optional):</label>
+                    <input 
+                        type="text" 
+                        id="scenarioInput" 
+                        class="scenario-input" 
+                        placeholder="e.g., First time launch, Holiday sale, New product introduction..."
+                    />
+                    <small class="scenario-hint">Leave empty to use normal trending keywords workflow</small>
+                </div>
+
+                <!-- Keyword Input (for scenarios) -->
+                <div class="keyword-input-container">
+                    <label for="keywordInput" class="keyword-label">☕ Product/Keyword (Optional):</label>
+                    <input 
+                        type="text" 
+                        id="keywordInput" 
+                        class="keyword-input" 
+                        placeholder="e.g., Italian Frogman Espresso, Cold Brew, Matcha Latte..."
+                    />
+                    <small class="keyword-hint">Specify the product when using a scenario</small>
+                </div>
+
                 <!-- Platform Selection -->
                 <div class="platform-selector-container">
                     <label class="platform-label">📱 Select Platform:</label>

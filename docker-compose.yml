@@ -20,7 +20,11 @@ services:
       - coffee_network
 
   ollama:
-    image: ollama/ollama:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.ollama
+      args:
+        OLLAMA_MODEL: ${OLLAMA_MODEL:-phi3:mini}
     container_name: coffee_ollama
     ports:
       - "11434:11434"

@@ -121,15 +121,24 @@ async function generatePost() {
         const brandSelect = document.getElementById('brandSelect');
         const brandId = brandSelect.value ? parseInt(brandSelect.value) : null;
         
+        // Get scenario input (optional)
+        const scenarioInput = document.getElementById('scenarioInput');
+        const scenario = scenarioInput.value.trim() || null;
+        
+        // Get keyword input (optional)
+        const keywordInput = document.getElementById('keywordInput');
+        const keyword = keywordInput.value.trim() || null;
+        
         const response = await fetch('/generate-post', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                keyword: null, // Random keyword
+                keyword: keyword, // Use provided keyword or null for random
                 brand_id: brandId,
-                platform: selectedPlatform
+                platform: selectedPlatform,
+                scenario: scenario
             })
         });
         

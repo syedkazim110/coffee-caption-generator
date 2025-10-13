@@ -1,0 +1,12 @@
+FROM ollama/ollama:latest
+
+# Set environment variable for model (can be overridden)
+ARG OLLAMA_MODEL=phi3:mini
+
+# Start Ollama service in background and pull the model
+RUN ollama serve & \
+    sleep 5 && \
+    ollama pull ${OLLAMA_MODEL} && \
+    pkill ollama
+
+# The model is now cached in the image

@@ -186,6 +186,108 @@ body {
     box-shadow: 0 0 0 3px rgba(111, 78, 55, 0.1);
 }
 
+/* Scenario Input */
+.scenario-input-container {
+    margin: 25px 0;
+    text-align: center;
+}
+
+.scenario-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 10px;
+}
+
+.scenario-input {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px 16px;
+    font-size: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.scenario-input::placeholder {
+    color: #999;
+    font-size: 14px;
+}
+
+.scenario-input:hover {
+    border-color: rgba(255, 255, 255, 0.8);
+    background: white;
+}
+
+.scenario-input:focus {
+    outline: none;
+    border-color: white;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+}
+
+.scenario-hint {
+    display: block;
+    margin-top: 8px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    font-style: italic;
+}
+
+/* Keyword Input */
+.keyword-input-container {
+    margin: 25px 0;
+    text-align: center;
+}
+
+.keyword-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 10px;
+}
+
+.keyword-input {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px 16px;
+    font-size: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.keyword-input::placeholder {
+    color: #999;
+    font-size: 14px;
+}
+
+.keyword-input:hover {
+    border-color: rgba(255, 255, 255, 0.8);
+    background: white;
+}
+
+.keyword-input:focus {
+    outline: none;
+    border-color: white;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+}
+
+.keyword-hint {
+    display: block;
+    margin-top: 8px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    font-style: italic;
+}
+
 /* Platform Selector */
 .platform-selector-container {
     margin: 30px 0;

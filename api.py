@@ -63,6 +63,7 @@ class PostRequest(BaseModel):
     keyword: Optional[str] = None
     brand_id: Optional[int] = None
     platform: Optional[str] = 'instagram'
+    scenario: Optional[str] = None
 
 class BrandCreateRequest(BaseModel):
     brand_name: str
@@ -183,8 +184,12 @@ async def generate_post(request: PostRequest):
             # Load active brand if no specific brand requested
             caption_generator.load_brand_profile()
         
-        # Step 1: Generate complete post data with platform-specific requirements
-        post_data = caption_generator.generate_complete_post(keyword=request.keyword, platform=platform)
+        # Step 1: Generate complete post data with platform-specific requirements and scenario
+        post_data = caption_generator.generate_complete_post(
+            keyword=request.keyword, 
+            platform=platform,
+            scenario=request.scenario
+        )
         
         logger.info(f"Generated caption: {post_data['caption'][:50]}...")
         logger.info(f"Image prompt: {post_data['image_prompt'][:100]}...")
