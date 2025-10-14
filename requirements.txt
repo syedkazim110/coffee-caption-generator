@@ -10,6 +10,10 @@ python-dateutil
 scikit-learn
 numpy
 
+# Embeddings and ML
+sentence-transformers>=2.2.0
+torch>=2.0.0
+
 # Web Application Dependencies
 fastapi
 uvicorn[standard]

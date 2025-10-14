@@ -11,9 +11,19 @@ import logging
 import hashlib
 import requests
 import os
+import pickle
+from pathlib import Path
 from typing import List, Dict, Any
 from dotenv import load_dotenv
 from platform_strategies import PlatformStrategy
+
+# Try to import sentence-transformers for embeddings
+try:
+    from sentence_transformers import SentenceTransformer
+    EMBEDDINGS_AVAILABLE = True
+except ImportError:
+    EMBEDDINGS_AVAILABLE = False
+    logging.warning("sentence-transformers not available. Install with: pip install sentence-transformers")
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -32,14 +42,18 @@ DB_CONFIG = {
 }
 
 class LLMRAGCaptionGenerator:
-    def __init__(self, ollama_model="phi3:mini", ollama_url="http://localhost:11434", brand_id=None):
-        """Initialize LLM + RAG Caption Generator with Ollama"""
+    def __init__(self, ollama_model="phi3:mini", ollama_url="http://localhost:11434", brand_id=None, use_embeddings=True):
+        """Initialize LLM + RAG Caption Generator with Ollama and optional embeddings"""
         self.ollama_url = ollama_url
         self.ollama_model = ollama_model
         self.use_ollama = self.check_ollama_connection()
+        self.use_embeddings = use_embeddings and EMBEDDINGS_AVAILABLE
         
         if not self.use_ollama:
             logger.warning("Ollama not available. Using local fallback generation.")
+        
+        if not self.use_embeddings and use_embeddings:
+            logger.warning("Embeddings requested but not available. Install with: pip install sentence-transformers")
         
         # Brand profile context (loaded dynamically)
         self.brand_profile = None
@@ -57,7 +71,13 @@ class LLMRAGCaptionGenerator:
         self.load_brand_profile(brand_id)
         
         self.load_fresh_content()
-        self.setup_vectorizer()
+        
+        # Setup embeddings if available, otherwise fall back to TF-IDF
+        if self.use_embeddings:
+            self.setup_embeddings()
+        else:
+            self.setup_vectorizer()
+        
         self.caption_history = set()  # Track generated captions to avoid duplicates
         self.image_prompt_history = set()  # Track generated image prompts to avoid duplicates
         
@@ -522,7 +542,7 @@ Now describe {keyword}:"""
             logger.warning(f"Error loading blog content: {e}")
     
     def setup_vectorizer(self):
-        """Setup TF-IDF vectorizer"""
+        """Setup TF-IDF vectorizer (fallback method)"""
         self.vectorizer = TfidfVectorizer(
             max_features=2000,
             stop_words='english',
@@ -534,9 +554,164 @@ Now describe {keyword}:"""
         
         if self.documents:
             self.doc_vectors = self.vectorizer.fit_transform(self.documents)
-            logger.info(f"Vectorized {len(self.documents)} documents")
+            logger.info(f"✅ Vectorized {len(self.documents)} documents with TF-IDF")
         else:
             logger.warning("No documents to vectorize")
+    
+    def setup_embeddings(self):
+        """Setup embedding model and create/load embeddings with caching"""
+        if not EMBEDDINGS_AVAILABLE:
+            logger.error("Embeddings not available, falling back to TF-IDF")
+            self.use_embeddings = False
+            self.setup_vectorizer()
+            return
+        
+        try:
+            # Initialize embedding model
+            logger.info("Loading sentence-transformer model: all-MiniLM-L6-v2")
+            self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
+            logger.info("✅ Embedding model loaded successfully")
+            
+            # Try to load cached embeddings
+            cache_loaded = self.load_cached_embeddings()
+            
+            if not cache_loaded:
+                # Generate new embeddings
+                logger.info(f"Generating embeddings for {len(self.documents)} documents...")
+                self.doc_embeddings = self.embedding_model.encode(
+                    self.documents,
+                    show_progress_bar=True,
+                    batch_size=32
+                )
+                logger.info(f"✅ Generated embeddings with shape: {self.doc_embeddings.shape}")
+                
+                # Cache the embeddings
+                self.cache_embeddings()
+            
+        except Exception as e:
+            logger.error(f"Error setting up embeddings: {e}")
+            logger.info("Falling back to TF-IDF vectorization")
+            self.use_embeddings = False
+            self.setup_vectorizer()
+    
+    def get_cache_path(self) -> Path:
+        """Get path for embeddings cache"""
+        cache_dir = Path('embeddings_cache')
+        cache_dir.mkdir(exist_ok=True)
+        
+        # Create hash of documents to detect changes
+        docs_hash = hashlib.md5(''.join(self.documents[:100]).encode()).hexdigest()[:8]
+        cache_file = cache_dir / f'embeddings_{len(self.documents)}_{docs_hash}.pkl'
+        
+        return cache_file
+    
+    def load_cached_embeddings(self) -> bool:
+        """Load cached embeddings if available"""
+        cache_file = self.get_cache_path()
+        
+        if cache_file.exists():
+            try:
+                logger.info(f"Loading cached embeddings from {cache_file}")
+                with open(cache_file, 'rb') as f:
+                    cache_data = pickle.load(f)
+                
+                self.doc_embeddings = cache_data['embeddings']
+                logger.info(f"✅ Loaded cached embeddings with shape: {self.doc_embeddings.shape}")
+                return True
+            except Exception as e:
+                logger.warning(f"Error loading cached embeddings: {e}")
+                return False
+        
+        logger.info("No cached embeddings found")
+        return False
+    
+    def cache_embeddings(self):
+        """Cache embeddings to disk"""
+        try:
+            cache_file = self.get_cache_path()
+            
+            cache_data = {
+                'embeddings': self.doc_embeddings,
+                'num_documents': len(self.documents),
+                'timestamp': datetime.now().isoformat()
+            }
+            
+            with open(cache_file, 'wb') as f:
+                pickle.dump(cache_data, f)
+            
+            logger.info(f"✅ Cached embeddings to {cache_file}")
+        except Exception as e:
+            logger.warning(f"Error caching embeddings: {e}")
+    
+    def retrieve_relevant_context_with_embeddings(self, keyword: str, top_k: int = 8) -> List[str]:
+        """Enhanced RAG retrieval using semantic embeddings"""
+        if not hasattr(self, 'doc_embeddings') or self.doc_embeddings is None:
+            logger.warning("No embeddings available, falling back to TF-IDF")
+            return self.retrieve_relevant_context(keyword, top_k)
+        
+        try:
+            # Expand keyword for better semantic matching
+            expanded_query = self.expand_keyword_for_search(keyword)
+            logger.info(f"Semantic search for: '{expanded_query}'")
+            
+            # Generate query embedding
+            query_embedding = self.embedding_model.encode([expanded_query])
+            
+            # Calculate semantic similarity
+            similarity_scores = cosine_similarity(query_embedding, self.doc_embeddings).flatten()
+            
+            # Apply freshness and engagement boosts
+            boosted_scores = []
+            for i, score in enumerate(similarity_scores):
+                metadata = self.document_metadata[i]
+                freshness_boost = metadata.get('freshness_score', 0.5)
+                
+                # Boost recent content
+                days_old = (datetime.now() - metadata.get('date', datetime.now())).days
+                recency_boost = max(0.2, 1 - (days_old / 30))
+                
+                # Boost high-engagement content
+                engagement_boost = 1.0
+                if metadata.get('source') == 'twitter':
+                    engagement = metadata.get('engagement', 0)
+                    engagement_boost = min(2.0, 1 + (engagement / 100))
+                elif metadata.get('source') == 'reddit':
+                    score_val = metadata.get('score', 0)
+                    engagement_boost = min(2.0, 1 + (score_val / 50))
+                
+                final_score = score * freshness_boost * recency_boost * engagement_boost
+                boosted_scores.append(final_score)
+            
+            # Get top documents
+            top_indices = np.argsort(boosted_scores)[-top_k*2:][::-1]
+            
+            retrieved_contexts = []
+            sources_used = set()
+            
+            for idx in top_indices:
+                if boosted_scores[idx] > 0:
+                    doc = self.documents[idx]
+                    source = self.document_metadata[idx].get('source', 'unknown')
+                    
+                    # Ensure source diversity
+                    source_count = len([s for s in sources_used if s == source])
+                    if source_count < 2:
+                        snippets = self.extract_relevant_snippets(doc, keyword)
+                        if snippets:
+                            retrieved_contexts.extend(snippets[:2])
+                            sources_used.add(source)
+                    
+                    if len(retrieved_contexts) >= 10:
+                        break
+            
+            logger.info(f"✅ Retrieved {len(retrieved_contexts)} semantic snippets from {len(sources_used)} sources")
+            logger.info(f"   Top similarity score: {max(similarity_scores):.3f}")
+            return retrieved_contexts[:8] if retrieved_contexts else []
+            
+        except Exception as e:
+            logger.error(f"Error in embedding retrieval: {e}")
+            logger.info("Falling back to TF-IDF retrieval")
+            return self.retrieve_relevant_context(keyword, top_k)
     
     def retrieve_relevant_context(self, keyword: str, top_k: int = 8) -> List[str]:
         """Enhanced RAG retrieval optimized for keyword-based queries"""
@@ -1025,8 +1200,11 @@ Write a complete, engaging caption without emojis. Make it align with the brand 
             # STEP 1: Generate dynamic coffee knowledge (hidden from user)
             coffee_knowledge = self.generate_coffee_knowledge(selected_keyword)
             
-            # STEP 2: Retrieve relevant context using RAG
-            context_snippets = self.retrieve_relevant_context(selected_keyword)
+            # STEP 2: Retrieve relevant context using RAG (with embeddings if available)
+            if self.use_embeddings:
+                context_snippets = self.retrieve_relevant_context_with_embeddings(selected_keyword)
+            else:
+                context_snippets = self.retrieve_relevant_context(selected_keyword)
             
             # STEP 3: Generate caption using LLM with knowledge
             base_caption = self.generate_ollama_caption(selected_keyword, context_snippets, coffee_knowledge) if self.use_ollama else self.generate_local_caption(selected_keyword, context_snippets)
@@ -1292,7 +1470,7 @@ Write ONLY a direct image description (2-3 sentences) that strictly follows the 
                     "prompt": prompt,
                     "stream": False,
                     "options": {
-                        "temperature": 0.5,
+                        "temperature": 0.2,
                         "top_p": 0.9,
                         "num_predict": 300,
                         "stop": ["\n\n", "Brand:", "Caption:"],
