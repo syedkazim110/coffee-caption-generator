@@ -12,13 +12,14 @@ from datetime import datetime
 import os
 from pathlib import Path
 
-# Database connection parameters
+# Database connection parameters - use environment variables for Docker compatibility
+import os
 DB_CONFIG = {
-    'dbname': 'reddit_db',
-    'user': 'postgres',
-    'password': 'password',
-    'host': 'localhost',
-    'port': '5434'
+    'dbname': os.getenv('DB_NAME', 'reddit_db'),
+    'user': os.getenv('DB_USER', 'postgres'),
+    'password': os.getenv('DB_PASSWORD', 'postgres123'),
+    'host': os.getenv('DB_HOST', 'localhost'),
+    'port': os.getenv('DB_PORT', '5432')
 }
 
 class DataMigrator:
@@ -187,27 +188,56 @@ class DataMigrator:
                 batch_data = []
                 # Handle different JSON structures
                 if isinstance(data, dict):
-                    for key, value in data.items():
-                        if isinstance(value, dict):
-                            hashtag = value.get('hashtag', key)
-                            batch_data.append((
-                                hashtag,
-                                value.get('category', 'general'),
-                                value.get('engagement_score', 0),
-                                value.get('trending_score', 0),
-                                value.get('platform', 'general'),
-                                json.dumps(value)
-                            ))
-                        elif isinstance(value, list):
-                            for hashtag in value:
+                    # Check if data has 'hashtags' key (coffee_hashtag_knowledge_base.json structure)
+                    if 'hashtags' in data and isinstance(data['hashtags'], list):
+                        for item in data['hashtags']:
+                            if isinstance(item, dict):
+                                hashtag = item.get('hashtag', '')
+                                metadata = item.get('metadata', {})
                                 batch_data.append((
-                                    hashtag if hashtag.startswith('#') else f'#{hashtag}',
-                                    key,
-                                    0,
-                                    0,
-                                    'general',
-                                    json.dumps({})
+                                    hashtag,
+                                    metadata.get('keyword', 'general'),
+                                    metadata.get('popularity_score', 0),
+                                    metadata.get('relevance_score', 0),
+                                    metadata.get('source', 'general'),
+                                    json.dumps(item)
                                 ))
+                    else:
+                        # Handle other dict structures
+                        for key, value in data.items():
+                            if isinstance(value, dict):
+                                hashtag = value.get('hashtag', key)
+                                batch_data.append((
+                                    hashtag,
+                                    value.get('category', 'general'),
+                                    value.get('engagement_score', 0),
+                                    value.get('trending_score', 0),
+                                    value.get('platform', 'general'),
+                                    json.dumps(value)
+                                ))
+                            elif isinstance(value, list):
+                                for hashtag_item in value:
+                                    # Check if item is a string or dict
+                                    if isinstance(hashtag_item, str):
+                                        hashtag = hashtag_item if hashtag_item.startswith('#') else f'#{hashtag_item}'
+                                        batch_data.append((
+                                            hashtag,
+                                            key,
+                                            0,
+                                            0,
+                                            'general',
+                                            json.dumps({})
+                                        ))
+                                    elif isinstance(hashtag_item, dict):
+                                        hashtag = hashtag_item.get('hashtag', '')
+                                        batch_data.append((
+                                            hashtag,
+                                            key,
+                                            hashtag_item.get('engagement_score', 0),
+                                            hashtag_item.get('trending_score', 0),
+                                            hashtag_item.get('platform', 'general'),
+                                            json.dumps(hashtag_item)
+                                        ))
                 
                 execute_batch(self.cursor, insert_query, batch_data, page_size=100)
                 self.conn.commit()
@@ -245,8 +275,32 @@ class DataMigrator:
                 """
                 
                 batch_data = []
-                if isinstance(data, dict):
+                
+                # Handle trending_coffee_keywords.json structure
+                if json_file == 'trending_coffee_keywords.json' and isinstance(data, dict):
+                    # Extract the actual keyword list from the 'trending_keywords' key
+                    keywords_list = data.get('trending_keywords', [])
+                    
+                    if isinstance(keywords_list, list):
+                        for keyword in keywords_list:
+                            # Validate it's actually a coffee keyword, not a metadata field
+                            if isinstance(keyword, str) and len(keyword) > 0 and keyword not in ['timestamp', 'total_keywords']:
+                                batch_data.append((
+                                    keyword,
+                                    50,  # Default trend score
+                                    'trending_coffee_keywords.json',
+                                    json.dumps({'source_file': json_file})
+                                ))
+                    
+                    print(f"   Extracted {len(batch_data)} keywords from {json_file}")
+                
+                # Handle other JSON structures (coffee_hashtags_trending.json, etc.)
+                elif isinstance(data, dict) and 'trending_keywords' not in data:
                     for keyword, info in data.items():
+                        # Skip metadata fields
+                        if keyword in ['timestamp', 'total_keywords', 'total', 'metadata']:
+                            continue
+                        
                         if isinstance(info, dict):
                             batch_data.append((
                                 keyword,
@@ -261,22 +315,36 @@ class DataMigrator:
                                 'json_file',
                                 json.dumps({})
                             ))
+                
+                # Handle direct list format
                 elif isinstance(data, list):
                     for item in data:
                         if isinstance(item, dict):
+                            keyword = item.get('keyword', '')
+                            if keyword:
+                                batch_data.append((
+                                    keyword,
+                                    item.get('score', 0),
+                                    item.get('source', 'unknown'),
+                                    json.dumps(item)
+                                ))
+                        elif isinstance(item, str):
                             batch_data.append((
-                                item.get('keyword', ''),
-                                item.get('score', 0),
-                                item.get('source', 'unknown'),
-                                json.dumps(item)
+                                item,
+                                0,
+                                json_file,
+                                json.dumps({})
                             ))
                 
-                execute_batch(self.cursor, insert_query, batch_data, page_size=100)
-                self.conn.commit()
-                
-                count = len(batch_data)
-                self.stats['trending_keywords'] += count
-                print(f"✓ Migrated {count} trending keywords from {json_file}")
+                if batch_data:
+                    execute_batch(self.cursor, insert_query, batch_data, page_size=100)
+                    self.conn.commit()
+                    
+                    count = len(batch_data)
+                    self.stats['trending_keywords'] += count
+                    print(f"✓ Migrated {count} trending keywords from {json_file}")
+                else:
+                    print(f"⊘ No valid keywords found in {json_file}")
                 
             except Exception as e:
                 print(f"✗ Error migrating {json_file}: {e}")

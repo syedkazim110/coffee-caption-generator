@@ -66,7 +66,9 @@ class PlatformStrategy:
         platform: str, 
         brand_voice: Dict[str, Any],
         keyword: str,
-        context_snippets: list
+        context_snippets: list,
+        target_audience: str = "",
+        industry: str = ""
     ) -> str:
         """Build platform-specific prompt for LLM"""
         spec = self.get_platform_spec(platform)
@@ -75,6 +77,19 @@ class PlatformStrategy:
         adjectives = brand_voice.get('core_adjectives', [])
         lexicon_always = brand_voice.get('lexicon_always_use', [])
         lexicon_never = brand_voice.get('lexicon_never_use', [])
+        
+        # LOG ALL BRAND VOICE DATA BEING PASSED TO LLM
+        logger.info("=" * 60)
+        logger.info("📝 BRAND VOICE DATA PASSED TO LLM:")
+        logger.info("=" * 60)
+        logger.info(f"🎨 Brand Voice Adjectives: {adjectives if adjectives else 'None (using defaults)'}")
+        logger.info(f"✅ Lexicon Always Use: {lexicon_always if lexicon_always else 'None'}")
+        logger.info(f"❌ Lexicon Never Use: {lexicon_never if lexicon_never else 'None'}")
+        logger.info(f"🎯 Target Audience: {target_audience if target_audience else 'Not specified'}")
+        logger.info(f"🏭 Industry: {industry if industry else 'Not specified'}")
+        logger.info(f"📱 Platform: {platform.upper()}")
+        logger.info(f"🔤 Keyword: {keyword}")
+        logger.info("=" * 60)
         
         # Build adjectives string
         adjectives_str = ', '.join(adjectives[:5]) if adjectives else 'Engaging, Authentic'
@@ -96,6 +111,16 @@ class PlatformStrategy:
         
         instruction = platform_instructions.get(platform.lower(), platform_instructions['instagram'])
         
+        # Build audience context if available
+        audience_context = ""
+        if target_audience:
+            audience_context = f"\nTARGET AUDIENCE: {target_audience}"
+        
+        # Build industry context if available
+        industry_context = ""
+        if industry:
+            industry_context = f"\nINDUSTRY: {industry}"
+        
         # Build the prompt
         prompt = f"""You are a professional social media copywriter. Create a caption for {platform.upper()}.
 
@@ -106,7 +131,7 @@ FORMAT: {spec['format_style']}
 EMOJI USAGE: {spec['emoji_usage']}
 
 BRAND VOICE: {adjectives_str}
-TOPIC: {keyword}
+TOPIC: {keyword}{audience_context}{industry_context}
 
 ALWAYS INCLUDE (when relevant): {always_use_str if always_use_str else 'N/A'}
 NEVER USE: {never_use_str if never_use_str else 'N/A'}
@@ -119,9 +144,16 @@ INSTRUCTIONS:
 - Character count MUST be between {spec['min_chars']}-{spec['max_chars']} characters
 - Use {spec['emoji_usage'].lower()}
 - Be authentic to the brand voice
-- Make it platform-appropriate
+- Make it platform-appropriate{' and resonate with ' + target_audience if target_audience else ''}
 
 Your caption:"""
+
+        # LOG THE COMPLETE PROMPT BEING SENT TO LLM
+        logger.info("\n" + "🔵" * 30)
+        logger.info("📤 COMPLETE PROMPT BEING SENT TO LLM:")
+        logger.info("🔵" * 30)
+        logger.info(prompt)
+        logger.info("🔵" * 30 + "\n")
 
         return prompt
     

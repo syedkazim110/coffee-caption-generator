@@ -63,9 +63,11 @@ class LLMRAGCaptionGenerator:
         self.brand_name = "Coffee Brand"  # Default fallback
         self.brand_guardrails = {}
         self.brand_image_style = "Professional coffee photography with natural lighting"  # Default
+        self.target_audience = ""  # Target audience for messaging
+        self.industry = ""  # Industry context
         
-        self.load_trending_keywords()
         self.setup_database_connection()
+        self.load_trending_keywords()
         
         # CRITICAL FIX: Load brand profile before generating content
         self.load_brand_profile(brand_id)
@@ -358,10 +360,16 @@ Now describe {keyword}:"""
                 # Load image style from guardrails
                 self.brand_image_style = guardrails.get('image_style', 'Professional coffee photography with natural lighting')
                 
+                # Load target audience and industry
+                self.target_audience = brand.get('target_audience', '')
+                self.industry = brand.get('industry', '')
+                
                 logger.info(f"✅ Loaded brand profile: {self.brand_name}")
                 logger.info(f"   Voice adjectives: {', '.join(self.brand_voice_adjectives[:3])}")
                 logger.info(f"   Always use: {', '.join(self.brand_lexicon_always[:3])}")
                 logger.info(f"   Never use: {', '.join(self.brand_lexicon_never[:3])}")
+                logger.info(f"   Target audience: {self.target_audience}")
+                logger.info(f"   Industry: {self.industry}")
                 logger.info(f"   Image style: {self.brand_image_style[:50]}...")
             else:
                 logger.warning("No brand profile found. Using default settings.")
@@ -371,12 +379,33 @@ Now describe {keyword}:"""
             logger.warning("Using default brand settings.")
     
     def load_trending_keywords(self):
-        """Load trending keywords"""
+        """Load trending keywords from database"""
         try:
+            # First try to load from database
+            if self.connection:
+                cursor = self.connection.cursor()
+                cursor.execute("""
+                    SELECT keyword, MAX(trend_score) as max_score, MAX(recorded_date) as latest_date
+                    FROM trending_keywords 
+                    GROUP BY keyword
+                    ORDER BY max_score DESC, latest_date DESC 
+                    LIMIT 100
+                """)
+                rows = cursor.fetchall()
+                self.trending_keywords = [row[0] for row in rows]
+                cursor.close()
+                
+                if self.trending_keywords:
+                    logger.info(f"Loaded {len(self.trending_keywords)} trending keywords from database")
+                    return
+                else:
+                    logger.warning("No trending keywords found in database, trying JSON fallback")
+            
+            # Fallback to JSON file if database query fails or returns no results
             with open('trending_coffee_keywords.json', 'r') as f:
                 trending_data = json.load(f)
                 self.trending_keywords = trending_data['trending_keywords']
-            logger.info(f"Loaded {len(self.trending_keywords)} trending keywords")
+            logger.info(f"Loaded {len(self.trending_keywords)} trending keywords from JSON fallback")
         except Exception as e:
             logger.error(f"Error loading trending keywords: {e}")
             self.trending_keywords = []
@@ -908,22 +937,23 @@ Coffee Knowledge:
             if self.brand_lexicon_never:
                 lexicon_text += f"\nNever use these terms: {', '.join(self.brand_lexicon_never[:5])}"
             
-            # Create brand-aware prompt
-            prompt = f"""Create a catchy social media caption about "{keyword}" for {self.brand_name}.
+            # Create brand-aware prompt with MANDATORY keyword requirement
+            prompt = f"""⚠️ CRITICAL REQUIREMENT: Create a caption that EXPLICITLY MENTIONS "{keyword}". The product name "{keyword}" MUST appear in your caption.
 
 {knowledge_text}
 {brand_voice_text}
 {lexicon_text}
 
 Brand Guidelines:
+- MANDATORY: The product "{keyword}" MUST be mentioned in the caption
 - Write in a tone that embodies: {', '.join(self.brand_voice_adjectives[:3]) if self.brand_voice_adjectives else 'professional, engaging, authentic'}
-- Mention "{self.brand_name}" as the brand (NEVER mention other coffee brand names)
+- Brand name {self.brand_name} can be mentioned but is optional
 - Incorporate the coffee's actual characteristics (color, flavor, nature) into the caption
 - Make it authentic and shareable
 
 Context about coffee: {context_text}
 
-Write a complete, engaging caption without emojis. Make it align with the brand voice and reflect the coffee's true nature:"""
+Write a complete, engaging caption without emojis. CRITICAL: Ensure "{keyword}" appears in your caption:"""
 
             # Make request to Ollama with settings for complete captions
             response = requests.post(
@@ -1133,37 +1163,137 @@ Write a complete, engaging caption without emojis. Make it align with the brand 
         
         return f"{base_caption} {' '.join(emoji_combo)}"
     
+    def separate_caption_and_hashtags(self, text: str) -> tuple[str, list[str]]:
+        """Separate caption text from hashtags"""
+        import re
+        
+        # Find all hashtags in the text
+        hashtags = re.findall(r'#\w+', text)
+        
+        # Remove hashtags from caption to get clean text
+        caption_only = text
+        for hashtag in hashtags:
+            caption_only = caption_only.replace(hashtag, '')
+        
+        # Clean up extra whitespace and newlines
+        caption_only = re.sub(r'\s+', ' ', caption_only).strip()
+        caption_only = caption_only.rstrip('.!?,;: ')  # Remove trailing punctuation/whitespace
+        
+        return caption_only, hashtags
+    
+    def validate_clean_ending(self, text: str) -> tuple[bool, str]:
+        """Validate that text doesn't end with partial hashtags or incomplete elements"""
+        import re
+        
+        # Check for partial hashtag at the end (e.g., "#Ch" or "#C")
+        if re.search(r'#\w*$', text):
+            # Remove the partial hashtag
+            text = re.sub(r'\s*#\w*$', '', text)
+            return False, text.strip()
+        
+        # Check for incomplete sentence (ends with dash, comma, etc.)
+        if text and text[-1] in ['-', ',', ';', ':']:
+            # Remove trailing incomplete punctuation
+            text = text.rstrip('-,;: ')
+            if text and text[-1] not in '.!?':
+                text += '.'
+            return False, text
+        
+        # Check if ends properly
+        if text and text[-1] not in '.!?':
+            text += '.'
+        
+        return True, text
+    
     def intelligent_truncate(self, caption: str, max_chars: int) -> str:
-        """Intelligently truncate caption without adding '...' - clean ending"""
+        """Intelligently truncate caption with hashtag awareness and clean ending"""
         if len(caption) <= max_chars:
             return caption
         
-        # Try to find the last complete sentence within the limit
-        truncated = caption[:max_chars]
+        # Step 1: Separate caption text from hashtags
+        caption_text, hashtags = self.separate_caption_and_hashtags(caption)
         
-        # Look for sentence endings
-        last_period = truncated.rfind('.')
-        last_exclaim = truncated.rfind('!')
-        last_question = truncated.rfind('?')
+        # Step 2: Prioritize caption text - use most of the space for it
+        # Reserve minimum space for at least one hashtag if possible (about 15 chars)
+        min_hashtag_reserve = 15 if hashtags else 0
         
-        sentence_end = max(last_period, last_exclaim, last_question)
+        # Calculate space for caption (prioritize caption over hashtags)
+        caption_space = max_chars - min_hashtag_reserve
         
-        # If we have at least 60% of the content with a sentence ending, use it
-        if sentence_end > max_chars * 0.6:
-            return caption[:sentence_end + 1].strip()
+        # Step 3: Truncate caption text intelligently
+        if len(caption_text) > caption_space:
+            truncated_caption = caption_text[:caption_space]
+            
+            # Find last complete sentence (80% threshold)
+            last_period = truncated_caption.rfind('.')
+            last_exclaim = truncated_caption.rfind('!')
+            last_question = truncated_caption.rfind('?')
+            
+            sentence_end = max(last_period, last_exclaim, last_question)
+            
+            # Use sentence ending if it's within 80% of available space
+            if sentence_end > caption_space * 0.80:
+                truncated_caption = caption_text[:sentence_end + 1].strip()
+            else:
+                # Find last complete word (70% threshold)
+                last_space = truncated_caption.rfind(' ')
+                if last_space > caption_space * 0.70:
+                    truncated_caption = caption_text[:last_space].strip()
+                    # Add period if needed
+                    if truncated_caption and truncated_caption[-1] not in '.!?':
+                        truncated_caption += '.'
+                else:
+                    # Last resort: cut at limit and add period
+                    truncated_caption = truncated_caption.strip()
+                    if truncated_caption and truncated_caption[-1] not in '.!?':
+                        truncated_caption += '.'
+        else:
+            # Caption fits within space
+            truncated_caption = caption_text
         
-        # Otherwise, truncate at word boundary without "..."
-        last_space = truncated.rfind(' ')
-        if last_space > max_chars * 0.5:
-            # Check if the last word before space ends with punctuation
-            truncated_at_word = caption[:last_space].strip()
-            if truncated_at_word and truncated_at_word[-1] not in '.!?,;:':
-                # Add period for clean ending
-                return truncated_at_word + '.'
-            return truncated_at_word
+        # Step 4: Now try to add hashtags with remaining space
+        result = truncated_caption
+        remaining_space = max_chars - len(result)
         
-        # Last resort: just cut at the limit and add period
-        return truncated.strip() + '.'
+        if hashtags and remaining_space > 10:  # Need at least 10 chars for hashtags
+            # Try to fit hashtags with newlines
+            hashtag_separator = '\n\n'
+            test_str = hashtag_separator + ' '.join(hashtags)
+            
+            if len(result + test_str) <= max_chars:
+                # All hashtags fit
+                result += test_str
+            else:
+                # Fit as many complete hashtags as possible
+                result += hashtag_separator
+                remaining_space = max_chars - len(result)
+                
+                fitted_hashtags = []
+                for hashtag in hashtags:
+                    # Check if adding this hashtag (with space if not first) fits
+                    if fitted_hashtags:
+                        test_addition = ' ' + hashtag
+                        if len(result + ' '.join(fitted_hashtags) + test_addition) <= max_chars:
+                            fitted_hashtags.append(hashtag)
+                        else:
+                            break
+                    else:
+                        # First hashtag
+                        if len(result + hashtag) <= max_chars:
+                            fitted_hashtags.append(hashtag)
+                        else:
+                            break
+                
+                if fitted_hashtags:
+                    result += ' '.join(fitted_hashtags)
+                else:
+                    # Can't fit any hashtags, remove the separator
+                    result = truncated_caption
+        
+        # Step 5: Final validation - ensure no partial hashtags
+        is_clean, cleaned_result = self.validate_clean_ending(result)
+        
+        return cleaned_result
     
     def clean_keyword(self, keyword: str) -> str:
         """Clean keyword for better readability"""
@@ -1279,8 +1409,77 @@ Write a complete, engaging caption without emojis. Make it align with the brand 
 
     # NEW: Hashtag RAG System
     def load_hashtag_knowledge_base(self):
-        """Load hashtag knowledge base for RAG selection"""
+        """Load hashtag knowledge base from database for RAG selection"""
         try:
+            # First try to load from database
+            if self.connection:
+                try:
+                    # CRITICAL: Ensure clean transaction state
+                    self.connection.rollback()
+                    
+                    cursor = self.connection.cursor(cursor_factory=RealDictCursor)
+                    cursor.execute("""
+                        SELECT 
+                            hashtag,
+                            category,
+                            engagement_score,
+                            trending_score,
+                            platform,
+                            metadata
+                        FROM hashtag_knowledge
+                        ORDER BY trending_score DESC, engagement_score DESC
+                    """)
+                    
+                    rows = cursor.fetchall()
+                    cursor.close()
+                    
+                    logger.info(f"Database query returned {len(rows)} hashtag rows")
+                except Exception as db_error:
+                    logger.error(f"Database query failed: {db_error}")
+                    try:
+                        self.connection.rollback()  # Clean up transaction
+                    except:
+                        pass
+                    rows = []
+                
+                if rows:
+                    # Convert database rows to expected format
+                    self.hashtag_data = []
+                    self.hashtag_documents = []
+                    self.hashtag_metadata = []
+                    
+                    for row in rows:
+                        # Extract metadata from JSONB if available
+                        db_metadata = row.get('metadata', {})
+                        if isinstance(db_metadata, str):
+                            try:
+                                db_metadata = json.loads(db_metadata)
+                            except:
+                                db_metadata = {}
+                        
+                        # Build hashtag entry in expected format
+                        hashtag_entry = {
+                            'hashtag': row['hashtag'],
+                            'content': row['hashtag'],  # Use hashtag as content
+                            'metadata': {
+                                'hashtag': row['hashtag'],  # FIXED: Added hashtag to metadata
+                                'keyword': row.get('category', ''),
+                                'popularity_score': float(row.get('engagement_score', 0) or 0),
+                                'relevance_score': float(row.get('trending_score', 0) or 0),
+                                'source': row.get('platform', 'database')
+                            }
+                        }
+                        
+                        self.hashtag_data.append(hashtag_entry)
+                        self.hashtag_documents.append(hashtag_entry['content'])
+                        self.hashtag_metadata.append(hashtag_entry['metadata'])
+                    
+                    logger.info(f"Loaded {len(self.hashtag_data)} hashtags from database")
+                    return
+                else:
+                    logger.warning("No hashtags found in database, trying JSON fallback")
+            
+            # Fallback to JSON file if database query fails or returns no results
             with open('coffee_hashtag_knowledge_base.json', 'r') as f:
                 data = json.load(f)
                 self.hashtag_data = data['hashtags']
@@ -1300,10 +1499,10 @@ Write a complete, engaging caption without emojis. Make it align with the brand 
                     'source': entry['metadata']['source']
                 })
             
-            logger.info(f"Loaded hashtag knowledge base: {len(self.hashtag_data)} hashtags")
+            logger.info(f"Loaded {len(self.hashtag_data)} hashtags from JSON fallback")
             
         except Exception as e:
-            logger.warning(f"Could not load hashtag knowledge base: {e}")
+            logger.error(f"Error loading hashtag knowledge base: {e}")
             self.hashtag_data = []
             self.hashtag_documents = []
             self.hashtag_metadata = []
@@ -1736,7 +1935,7 @@ Write ONLY a direct image description (2-3 sentences) that strictly follows the 
                     temperature = 0.3
                     repeat_penalty = 1.3
                 else:
-                    # Use platform strategy to build the normal prompt with STRONG character limit emphasis
+                    # Use platform strategy to build the normal prompt with MANDATORY keyword requirement
                     brand_voice = {
                         'core_adjectives': self.brand_voice_adjectives,
                         'lexicon_always_use': self.brand_lexicon_always,
@@ -1747,8 +1946,16 @@ Write ONLY a direct image description (2-3 sentences) that strictly follows the 
                         platform,
                         brand_voice,
                         keyword,
-                        context_snippets
+                        context_snippets,
+                        self.target_audience,
+                        self.industry
                     )
+                    
+                    # ADD MANDATORY KEYWORD REQUIREMENT at the top of prompt
+                    keyword_requirement = f"""⚠️ CRITICAL: The product name "{keyword}" MUST appear in your caption. This is non-negotiable.
+
+"""
+                    prompt = keyword_requirement + prompt
                     
                     # Add coffee knowledge context
                     if knowledge:
@@ -1948,10 +2155,11 @@ SCENARIO TO FOLLOW: "{scenario}"
 Create a social media caption for {keyword} that DIRECTLY addresses this scenario.
 
 MANDATORY REQUIREMENTS:
-1. If the scenario mentions a discount (e.g., "10% off"), YOU MUST include it prominently
-2. If the scenario mentions a specific product name, use that EXACT name
-3. Match the scenario tone: Sale = promotional/urgent, Launch = exciting/new
-4. The scenario details must be in the caption, not just implied
+1. The product name "{keyword}" MUST appear in the caption
+2. If the scenario mentions a discount (e.g., "10% off"), YOU MUST include it prominently
+3. If the scenario mentions a specific product name, use that EXACT name
+4. Match the scenario tone: Sale = promotional/urgent, Launch = exciting/new
+5. The scenario details must be in the caption, not just implied
 
 Brand: {self.brand_name}
 Platform: {platform} ({platform_spec['min_chars']}-{platform_spec['max_chars']} characters)
@@ -1968,7 +2176,10 @@ Generate ONLY the caption (no explanations):"""
 
 SCENARIO: "{scenario}"
 
+MANDATORY: The product name "{keyword}" MUST appear in your caption!
+
 REQUIRED KEYWORDS THAT MUST APPEAR:
+✓ {keyword} (MANDATORY)
 {chr(10).join(f"✓ {kw}" for kw in keywords[:5])}
 
 CORRECT EXAMPLE:
@@ -1991,13 +2202,16 @@ Generate caption with ALL required keywords:"""
 
 SCENARIO (MUST BE IN CAPTION): "{scenario}"
 
+CRITICAL: "{keyword}" MUST BE IN THE CAPTION - NO EXCEPTIONS!
+
 YOU MUST INCLUDE THESE EXACT WORDS:
+{keyword}
 {keyword_list}
 
 Template to follow:
-[DISCOUNT/OFFER] for [PRODUCT NAME]! [Additional appeal]. Brand: {self.brand_name}
+[DISCOUNT/OFFER] for {keyword}! [Additional appeal]. Brand: {self.brand_name}
 
-Generate caption NOW with ALL required elements:"""
+Generate caption NOW with ALL required elements including {keyword}:"""
     
     def create_example_from_scenario(self, scenario: str, keyword: str) -> str:
         """Create a concrete example caption from scenario"""
