@@ -120,6 +120,12 @@ async def read_root():
     """Serve the main HTML page"""
     return FileResponse("index.html")
 
+@app.get("/index.html")
+async def redirect_index():
+    """Redirect index.html to root"""
+    from fastapi.responses import RedirectResponse
+    return RedirectResponse(url="/", status_code=301)
+
 @app.get("/styles.css")
 async def get_styles():
     """Serve the CSS file"""

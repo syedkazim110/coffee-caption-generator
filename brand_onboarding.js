@@ -183,7 +183,7 @@ function handleCancel() {
     if (isEditMode) {
         window.location.href = 'brand_list.html';
     } else {
-        window.location.href = 'index.html';
+        window.location.href = '/';
     }
 }
 
