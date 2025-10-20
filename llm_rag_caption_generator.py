@@ -1205,95 +1205,52 @@ Write a complete, engaging caption without emojis. CRITICAL: Ensure "{keyword}" 
         
         return True, text
     
-    def intelligent_truncate(self, caption: str, max_chars: int) -> str:
-        """Intelligently truncate caption with hashtag awareness and clean ending"""
-        if len(caption) <= max_chars:
+    def intelligent_truncate_caption_only(self, caption_text: str, max_chars: int) -> str:
+        """Intelligently truncate ONLY the caption text (not hashtags)"""
+        if len(caption_text) <= max_chars:
+            return caption_text
+        
+        truncated = caption_text[:max_chars]
+        
+        # Find last complete sentence (80% threshold)
+        last_period = truncated.rfind('.')
+        last_exclaim = truncated.rfind('!')
+        last_question = truncated.rfind('?')
+        
+        sentence_end = max(last_period, last_exclaim, last_question)
+        
+        # Use sentence ending if it's within 80% of available space
+        if sentence_end > max_chars * 0.80:
+            truncated = caption_text[:sentence_end + 1].strip()
+        else:
+            # Find last complete word (70% threshold)
+            last_space = truncated.rfind(' ')
+            if last_space > max_chars * 0.70:
+                truncated = caption_text[:last_space].strip()
+                # Add period if needed
+                if truncated and truncated[-1] not in '.!?':
+                    truncated += '.'
+            else:
+                # Last resort: cut at limit and add period
+                truncated = truncated.strip()
+                if truncated and truncated[-1] not in '.!?':
+                    truncated += '.'
+        
+        return truncated.strip()
+    
+    def combine_caption_and_hashtags(self, caption: str, hashtags: List[str], max_total_chars: int = None) -> str:
+        """Combine caption and hashtags properly - hashtags are NOT counted in character limit"""
+        if not hashtags:
             return caption
         
-        # Step 1: Separate caption text from hashtags
-        caption_text, hashtags = self.separate_caption_and_hashtags(caption)
+        # Hashtags are ALWAYS added below the caption, NOT counted in the limit
+        # Limit 4-5 hashtags as requested
+        hashtags_to_add = hashtags[:5]  # Maximum 5 hashtags
         
-        # Step 2: Prioritize caption text - use most of the space for it
-        # Reserve minimum space for at least one hashtag if possible (about 15 chars)
-        min_hashtag_reserve = 15 if hashtags else 0
+        # Simply combine caption with hashtags below
+        result = caption + '\n\n' + ' '.join(hashtags_to_add)
         
-        # Calculate space for caption (prioritize caption over hashtags)
-        caption_space = max_chars - min_hashtag_reserve
-        
-        # Step 3: Truncate caption text intelligently
-        if len(caption_text) > caption_space:
-            truncated_caption = caption_text[:caption_space]
-            
-            # Find last complete sentence (80% threshold)
-            last_period = truncated_caption.rfind('.')
-            last_exclaim = truncated_caption.rfind('!')
-            last_question = truncated_caption.rfind('?')
-            
-            sentence_end = max(last_period, last_exclaim, last_question)
-            
-            # Use sentence ending if it's within 80% of available space
-            if sentence_end > caption_space * 0.80:
-                truncated_caption = caption_text[:sentence_end + 1].strip()
-            else:
-                # Find last complete word (70% threshold)
-                last_space = truncated_caption.rfind(' ')
-                if last_space > caption_space * 0.70:
-                    truncated_caption = caption_text[:last_space].strip()
-                    # Add period if needed
-                    if truncated_caption and truncated_caption[-1] not in '.!?':
-                        truncated_caption += '.'
-                else:
-                    # Last resort: cut at limit and add period
-                    truncated_caption = truncated_caption.strip()
-                    if truncated_caption and truncated_caption[-1] not in '.!?':
-                        truncated_caption += '.'
-        else:
-            # Caption fits within space
-            truncated_caption = caption_text
-        
-        # Step 4: Now try to add hashtags with remaining space
-        result = truncated_caption
-        remaining_space = max_chars - len(result)
-        
-        if hashtags and remaining_space > 10:  # Need at least 10 chars for hashtags
-            # Try to fit hashtags with newlines
-            hashtag_separator = '\n\n'
-            test_str = hashtag_separator + ' '.join(hashtags)
-            
-            if len(result + test_str) <= max_chars:
-                # All hashtags fit
-                result += test_str
-            else:
-                # Fit as many complete hashtags as possible
-                result += hashtag_separator
-                remaining_space = max_chars - len(result)
-                
-                fitted_hashtags = []
-                for hashtag in hashtags:
-                    # Check if adding this hashtag (with space if not first) fits
-                    if fitted_hashtags:
-                        test_addition = ' ' + hashtag
-                        if len(result + ' '.join(fitted_hashtags) + test_addition) <= max_chars:
-                            fitted_hashtags.append(hashtag)
-                        else:
-                            break
-                    else:
-                        # First hashtag
-                        if len(result + hashtag) <= max_chars:
-                            fitted_hashtags.append(hashtag)
-                        else:
-                            break
-                
-                if fitted_hashtags:
-                    result += ' '.join(fitted_hashtags)
-                else:
-                    # Can't fit any hashtags, remove the separator
-                    result = truncated_caption
-        
-        # Step 5: Final validation - ensure no partial hashtags
-        is_clean, cleaned_result = self.validate_clean_ending(result)
-        
-        return cleaned_result
+        return result
     
     def clean_keyword(self, keyword: str) -> str:
         """Clean keyword for better readability"""
@@ -1829,11 +1786,20 @@ Write ONLY a direct image description (2-3 sentences) that strictly follows the 
         # Step 6: Generate image prompt
         image_prompt = self.generate_image_prompt(caption_data)
         
-        # Step 7: Combine everything
+        # Step 7: Combine caption and hashtags - hashtags are NOT counted in limit
+        hashtag_list = rag_hashtags  # Use the original hashtag list, not formatted string
+        full_caption = self.combine_caption_and_hashtags(
+            formatted_caption, 
+            hashtag_list
+        )
+        
+        # Step 8: Extract final hashtags from combined result
+        final_caption, final_hashtags = self.separate_caption_and_hashtags(full_caption)
+        
         complete_post = {
-            'caption': formatted_caption,
-            'hashtags': platform_hashtags.split(),
-            'full_caption': f"{formatted_caption}\n\n{platform_hashtags}",
+            'caption': final_caption,
+            'hashtags': final_hashtags,
+            'full_caption': full_caption,
             'image_prompt': image_prompt,
             'keyword': caption_data['keyword'],
             'context_snippets': caption_data['context_snippets'],
@@ -1968,15 +1934,23 @@ Coffee Details:
 """
                         prompt = prompt.replace('CONTEXT:', f'{knowledge_text}CONTEXT:')
                     
-                    # CRITICAL: Add explicit character limit enforcement
+                    # CRITICAL: Add explicit character limit enforcement with sentence completion
                     char_limit_reminder = f"""
 
-⚠️ CRITICAL CHARACTER LIMIT: {min_chars}-{max_chars} characters MAXIMUM
-- Current attempt: {attempt + 1}/{max_retries}
-- You have EXACTLY {max_chars} characters available
-- Write a COMPLETE sentence that ENDS within {max_chars} characters
-- DO NOT exceed {max_chars} characters or the caption will be cut off
-- Count your characters carefully as you write
+⚠️ CRITICAL REQUIREMENTS:
+- Character limit: {min_chars}-{max_chars} characters MAXIMUM (attempt {attempt + 1}/{max_retries})
+- Write ONLY COMPLETE sentences that end naturally
+- Each sentence must end with proper punctuation (. ! ?)
+- DO NOT write incomplete phrases like "in every" or "with bold flavor"
+- If you run out of space, END THE PREVIOUS SENTENCE rather than starting a new incomplete one
+- Your caption will be cut off at {max_chars} characters, so plan accordingly
+- Write shorter, punchier sentences to fit the limit
+
+Example of GOOD completion:
+"Wake up to WarPath's instant coffee powder - rich, bold flavor in every cup."
+
+Example of BAD completion (DO NOT DO THIS):
+"Wake up to WarPath's instant coffee powder - rich, bold flavor in every."
 """
                     prompt += char_limit_reminder
                     
@@ -2033,9 +2007,9 @@ Coffee Details:
                             logger.info(f"Regenerating with stricter character limit...")
                             continue
                         else:
-                            # Last resort: truncate intelligently without "..."
-                            logger.warning(f"Final attempt exceeded limit, truncating intelligently")
-                            caption = self.intelligent_truncate(caption, max_chars)
+                            # Last resort: truncate caption only (no hashtags)
+                            logger.warning(f"Final attempt exceeded limit, truncating caption only")
+                            caption = self.intelligent_truncate_caption_only(caption, max_chars)
                     
                     elif caption_length < min_chars:
                         logger.warning(f"Caption too short for {platform} ({caption_length} < {min_chars})")

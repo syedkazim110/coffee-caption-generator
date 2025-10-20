@@ -247,7 +247,7 @@ async def generate_image_with_hf(prompt: str) -> str:
         
         try:
             logger.info("Requesting image from Pollinations.ai...")
-            response = requests.get(pollinations_url, timeout=60)
+            response = requests.get(pollinations_url, timeout=1000)
             
             if response.status_code == 200:
                 # Convert image bytes to base64
