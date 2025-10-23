@@ -64,6 +64,7 @@ class PostRequest(BaseModel):
     brand_id: Optional[int] = None
     platform: Optional[str] = 'instagram'
     scenario: Optional[str] = None
+    model_id: Optional[str] = None
 
 class BrandCreateRequest(BaseModel):
     brand_name: str
@@ -166,6 +167,21 @@ async def get_brand_list_js():
     """Serve the brand list JavaScript"""
     return FileResponse("brand_list.js", media_type="application/javascript")
 
+@app.get("/ai_model_settings.html")
+async def get_ai_model_settings():
+    """Serve the AI model settings page"""
+    return FileResponse("ai_model_settings.html")
+
+@app.get("/ai_model_settings.css")
+async def get_ai_model_settings_css():
+    """Serve the AI model settings CSS"""
+    return FileResponse("ai_model_settings.css", media_type="text/css")
+
+@app.get("/ai_model_settings.js")
+async def get_ai_model_settings_js():
+    """Serve the AI model settings JavaScript"""
+    return FileResponse("ai_model_settings.js", media_type="application/javascript")
+
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
@@ -181,7 +197,37 @@ async def generate_post(request: PostRequest):
     """Generate complete social media post with caption, hashtags, and image"""
     try:
         platform = request.platform or 'instagram'
-        logger.info(f"Generating post for keyword: {request.keyword}, brand_id: {request.brand_id}, platform: {platform}")
+        model_id = request.model_id
+        
+        logger.info(f"Generating post for keyword: {request.keyword}, brand_id: {request.brand_id}, platform: {platform}, model: {model_id or 'default'}")
+        
+        # Determine which model to use
+        selected_model_id = None
+        if model_id:
+            # User specified a model - use it
+            selected_model_id = model_id
+            logger.info(f"Using user-selected model: {model_id}")
+        else:
+            # Check if brand has a preferred model
+            if request.brand_id:
+                brand = brand_manager.get_brand(request.brand_id)
+                if brand and brand.get('preferred_llm_model'):
+                    selected_model_id = brand['preferred_llm_model']
+                    logger.info(f"Using brand's preferred model: {selected_model_id}")
+            else:
+                # Check active brand's preferred model
+                try:
+                    brand = brand_manager.get_active_brand()
+                    if brand and brand.get('preferred_llm_model'):
+                        selected_model_id = brand['preferred_llm_model']
+                        logger.info(f"Using active brand's preferred model: {selected_model_id}")
+                except:
+                    pass
+            
+            # If still no model selected, use global default
+            if not selected_model_id:
+                selected_model_id = ai_service.default_model_id
+                logger.info(f"Using global default model: {selected_model_id}")
         
         # Load brand profile if specified
         if request.brand_id:
@@ -191,10 +237,12 @@ async def generate_post(request: PostRequest):
             caption_generator.load_brand_profile()
         
         # Step 1: Generate complete post data with platform-specific requirements and scenario
+        # Pass the selected model_id to the caption generator
         post_data = caption_generator.generate_complete_post(
             keyword=request.keyword, 
             platform=platform,
-            scenario=request.scenario
+            scenario=request.scenario,
+            model_id=selected_model_id
         )
         
         logger.info(f"Generated caption: {post_data['caption'][:50]}...")
@@ -524,6 +572,229 @@ async def get_platform_spec(platform: str):
         }
     except Exception as e:
         logger.error(f"Error getting platform spec: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ========================================
+# AI MODEL MANAGEMENT ENDPOINTS
+# ========================================
+
+# Initialize AI Service
+from ai_service import AIService
+ai_service = AIService()
+logger.info("AI Service initialized")
+
+@app.get("/api/ai-models/list")
+async def list_ai_models():
+    """Get all available AI models with their capabilities"""
+    try:
+        models_info = ai_service.list_models()
+        return {
+            "success": True,
+            **models_info
+        }
+    except Exception as e:
+        logger.error(f"Error listing AI models: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/ai-models/{model_id}")
+async def get_ai_model_info(model_id: str):
+    """Get detailed information about a specific AI model"""
+    try:
+        model_info = ai_service.get_model_info(model_id)
+        return {
+            "success": True,
+            "model": model_info
+        }
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        logger.error(f"Error getting AI model info: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/ai-models/{model_id}/test")
+async def test_ai_model(model_id: str):
+    """Test if an AI model is accessible and working"""
+    try:
+        test_result = ai_service.test_model(model_id)
+        return {
+            "success": True,
+            **test_result
+        }
+    except Exception as e:
+        logger.error(f"Error testing AI model: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/ai-models/providers/summary")
+async def get_providers_summary():
+    """Get summary of all AI providers"""
+    try:
+        summary = ai_service.get_provider_summary()
+        return {
+            "success": True,
+            "providers": summary
+        }
+    except Exception as e:
+        logger.error(f"Error getting providers summary: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/ai-models/default")
+async def set_default_ai_model(request: dict):
+    """Set the default AI model globally"""
+    try:
+        model_id = request.get("model_id")
+        if not model_id:
+            raise HTTPException(status_code=400, detail="model_id is required")
+        
+        ai_service.set_default_model(model_id)
+        
+        # Also update in database settings
+        import psycopg2
+        from psycopg2.extras import RealDictCursor
+        
+        try:
+            conn = psycopg2.connect(**{
+                'host': os.getenv('DB_HOST', 'localhost'),
+                'port': int(os.getenv('DB_PORT', 5432)),
+                'database': os.getenv('DB_NAME', 'reddit_db'),
+                'user': os.getenv('DB_USER', 'postgres'),
+                'password': os.getenv('DB_PASSWORD', 'postgres123')
+            })
+            cursor = conn.cursor()
+            cursor.execute("""
+                INSERT INTO ai_model_settings (setting_key, setting_value, description)
+                VALUES ('global_default_model', %s, 'Global default AI model')
+                ON CONFLICT (setting_key) 
+                DO UPDATE SET setting_value = %s, updated_at = CURRENT_TIMESTAMP
+            """, (model_id, model_id))
+            conn.commit()
+            cursor.close()
+            conn.close()
+        except Exception as db_error:
+            logger.warning(f"Could not update database setting: {db_error}")
+        
+        return {
+            "success": True,
+            "message": f"Default model set to {model_id}",
+            "default_model": model_id
+        }
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        logger.error(f"Error setting default model: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/brands/{brand_id}/ai-model")
+async def set_brand_ai_model(brand_id: int, request: dict):
+    """Set preferred AI model for a specific brand"""
+    try:
+        model_id = request.get("model_id")
+        if not model_id:
+            raise HTTPException(status_code=400, detail="model_id is required")
+        
+        # Verify model exists
+        try:
+            ai_service.get_model_info(model_id)
+        except ValueError:
+            raise HTTPException(status_code=404, detail=f"Model {model_id} not found")
+        
+        # Update brand profile
+        brand_data = {"preferred_llm_model": model_id}
+        result = brand_manager.update_brand(brand_id, brand_data)
+        
+        return {
+            "success": True,
+            "message": f"Brand AI model set to {model_id}",
+            "brand": result
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error setting brand AI model: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/ai-models/estimate-cost")
+async def estimate_generation_cost(request: dict):
+    """Estimate cost of generation for a specific model"""
+    try:
+        prompt = request.get("prompt", "")
+        model_id = request.get("model_id")
+        output_length = request.get("output_length", 250)
+        
+        cost_estimate = ai_service.estimate_cost(prompt, output_length, model_id)
+        
+        return {
+            "success": True,
+            **cost_estimate
+        }
+    except Exception as e:
+        logger.error(f"Error estimating cost: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/ai-models/{model_id}/configure")
+async def configure_model_api_key(model_id: str, request: dict):
+    """Configure API key for a specific AI model"""
+    try:
+        api_key = request.get("api_key")
+        if not api_key:
+            raise HTTPException(status_code=400, detail="api_key is required")
+        
+        # Save and validate API key
+        result = ai_service.save_api_key(model_id, api_key)
+        
+        if result.get('success'):
+            return {
+                "success": True,
+                "message": f"API key configured for {model_id}",
+                "validation": result.get('validation')
+            }
+        else:
+            raise HTTPException(status_code=400, detail=result.get('error', 'Failed to configure API key'))
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error configuring API key: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/ai-models/{model_id}/configured")
+async def check_model_configuration(model_id: str):
+    """Check if a model is configured with valid API key"""
+    try:
+        is_configured = ai_service.is_model_configured(model_id)
+        
+        return {
+            "success": True,
+            "model_id": model_id,
+            "is_configured": is_configured,
+            "requires_configuration": not is_configured
+        }
+    except Exception as e:
+        logger.error(f"Error checking configuration: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.delete("/api/ai-models/{model_id}/configure")
+async def remove_model_api_key(model_id: str):
+    """Remove API key configuration for a model"""
+    try:
+        import psycopg2
+        from ai_service import DB_CONFIG
+        
+        conn = psycopg2.connect(**DB_CONFIG)
+        cursor = conn.cursor()
+        
+        cursor.execute("""
+            DELETE FROM api_credentials WHERE model_id = %s
+        """, (model_id,))
+        
+        conn.commit()
+        cursor.close()
+        conn.close()
+        
+        return {
+            "success": True,
+            "message": f"API key removed for {model_id}"
+        }
+    except Exception as e:
+        logger.error(f"Error removing API key: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":

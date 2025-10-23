@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Model Settings - Coffee Caption Generator</title>
+    <link rel="stylesheet" href="ai_model_settings.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 AI Model Settings</h1>
+            <p>Choose which AI model to use for caption generation</p>
+            <nav class="top-nav">
+                <a href="index.html">← Back to Generator</a>
+                <a href="brand_list.html">Brand Management</a>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Current Default Model -->
+            <section class="current-default">
+                <h2>Current Default Model</h2>
+                <div id="current-model-card" class="model-highlight">
+                    <div class="spinner"></div>
+                    <p>Loading...</p>
+                </div>
+            </section>
+
+            <!-- Provider Filter -->
+            <section class="filters">
+                <div class="filter-group">
+                    <label>Filter by Provider:</label>
+                    <button class="filter-btn active" data-provider="all">All</button>
+                    <button class="filter-btn" data-provider="ollama">Ollama (Free)</button>
+                    <button class="filter-btn" data-provider="openai">OpenAI</button>
+                    <button class="filter-btn" data-provider="anthropic">Anthropic</button>
+                    <button class="filter-btn" data-provider="google">Google</button>
+                </div>
+                <div class="filter-group">
+                    <label>Show:</label>
+                    <button class="filter-btn active" data-availability="all">All Models</button>
+                    <button class="filter-btn" data-availability="available">Available Only</button>
+                </div>
+            </section>
+
+            <!-- Models Grid -->
+            <section class="models-section">
+                <h2>Available AI Models</h2>
+                <div id="models-grid" class="models-grid">
+                    <div class="loading-state">
+                        <div class="spinner"></div>
+                        <p>Loading AI models...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Provider Summary -->
+            <section class="provider-summary">
+                <h2>Provider Summary</h2>
+                <div id="provider-summary-grid" class="provider-grid">
+                    <div class="loading-state">
+                        <div class="spinner"></div>
+                        <p>Loading providers...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Model Details Modal -->
+    <div id="model-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modal-body">
+                <!-- Model details will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- API Key Configuration Modal -->
+    <div id="api-key-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-api-key">&times;</span>
+            <div id="api-key-modal-body">
+                <h2>Configure API Key</h2>
+                <p id="api-key-model-name" style="color: #666; margin-bottom: 20px;"></p>
+                
+                <div class="form-group">
+                    <label for="api-key-input">API Key:</label>
+                    <input type="password" id="api-key-input" class="api-key-input" placeholder="Enter your API key">
+                    <button type="button" id="toggle-api-key-visibility" class="toggle-visibility">👁️ Show</button>
+                </div>
+                
+                <div id="api-key-instructions" class="api-key-instructions">
+                    <p><strong>How to get your API key:</strong></p>
+                    <p id="api-key-help-text"></p>
+                </div>
+                
+                <div class="modal-actions">
+                    <button id="save-api-key-btn" class="btn btn-primary">Save & Validate</button>
+                    <button id="cancel-api-key-btn" class="btn btn-secondary">Cancel</button>
+                </div>
+                
+                <div id="api-key-validation-result" style="margin-top: 15px; display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="ai_model_settings.js"></script>
+</body>
+</html>

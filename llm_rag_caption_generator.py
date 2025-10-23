@@ -16,6 +16,7 @@ from pathlib import Path
 from typing import List, Dict, Any
 from dotenv import load_dotenv
 from platform_strategies import PlatformStrategy
+from ai_service import AIService
 
 # Try to import sentence-transformers for embeddings
 try:
@@ -43,11 +44,21 @@ DB_CONFIG = {
 
 class LLMRAGCaptionGenerator:
     def __init__(self, ollama_model="phi3:mini", ollama_url="http://localhost:11434", brand_id=None, use_embeddings=True):
-        """Initialize LLM + RAG Caption Generator with Ollama and optional embeddings"""
+        """Initialize LLM + RAG Caption Generator with AI Service support"""
         self.ollama_url = ollama_url
         self.ollama_model = ollama_model
-        self.use_ollama = self.check_ollama_connection()
         self.use_embeddings = use_embeddings and EMBEDDINGS_AVAILABLE
+        
+        # Initialize AI Service for multi-provider support
+        try:
+            self.ai_service = AIService()
+            logger.info("✅ AI Service initialized for multi-provider support")
+        except Exception as e:
+            logger.warning(f"AI Service initialization failed: {e}, falling back to direct Ollama")
+            self.ai_service = None
+        
+        # Check Ollama connection for fallback
+        self.use_ollama = self.check_ollama_connection()
         
         if not self.use_ollama:
             logger.warning("Ollama not available. Using local fallback generation.")
@@ -904,9 +915,85 @@ Now describe {keyword}:"""
         else:
             return self.generate_local_caption(keyword, context_snippets)
     
-    def generate_ollama_caption(self, keyword: str, context_snippets: List[str], knowledge: Dict[str, Any] = None) -> str:
-        """Generate caption using Ollama with brand voice and coffee knowledge"""
+    def generate_with_ai_service(self, keyword: str, context_snippets: List[str], knowledge: Dict[str, Any], model_id: str) -> str:
+        """Generate caption using AI Service with database-stored API keys"""
         try:
+            # Prepare context
+            context_text = " ".join(context_snippets[:2])[:200] if context_snippets else ""
+            
+            # Prepare knowledge context
+            knowledge_text = ""
+            if knowledge:
+                color = knowledge.get('color', '')
+                nature = knowledge.get('nature', '')
+                flavors = ', '.join(knowledge.get('flavor_profile', [])[:3])
+                mood = ', '.join(knowledge.get('mood', [])[:2])
+                
+                knowledge_text = f"""
+Coffee Knowledge:
+- Color: {color}
+- Nature: {nature}
+- Flavor Profile: {flavors}
+- Mood: {mood}
+"""
+            
+            # Build brand voice context
+            brand_voice_text = ""
+            if self.brand_voice_adjectives:
+                brand_voice_text = f"\nBrand Voice Adjectives: {', '.join(self.brand_voice_adjectives[:5])}"
+            
+            lexicon_text = ""
+            if self.brand_lexicon_always:
+                lexicon_text += f"\nAlways use these terms when relevant: {', '.join(self.brand_lexicon_always[:5])}"
+            if self.brand_lexicon_never:
+                lexicon_text += f"\nNever use these terms: {', '.join(self.brand_lexicon_never[:5])}"
+            
+            # Create brand-aware prompt with MANDATORY keyword requirement
+            prompt = f"""⚠️ CRITICAL REQUIREMENT: Create a caption that EXPLICITLY MENTIONS "{keyword}". The product name "{keyword}" MUST appear in your caption.
+
+{knowledge_text}
+{brand_voice_text}
+{lexicon_text}
+
+Brand Guidelines:
+- MANDATORY: The product "{keyword}" MUST be mentioned in the caption
+- Write in a tone that embodies: {', '.join(self.brand_voice_adjectives[:3]) if self.brand_voice_adjectives else 'professional, engaging, authentic'}
+- Brand name {self.brand_name} can be mentioned but is optional
+- Incorporate the coffee's actual characteristics (color, flavor, nature) into the caption
+- Make it authentic and shareable
+
+Context about coffee: {context_text}
+
+Write a complete, engaging caption without emojis. CRITICAL: Ensure "{keyword}" appears in your caption:"""
+            
+            # Use AI Service with database-loaded API key
+            logger.info(f"Generating caption with AI Service, model: {model_id}")
+            result = self.ai_service.generate(
+                prompt=prompt,
+                model_id=model_id,
+                temperature=0.7,
+                max_tokens=250
+            )
+            
+            caption = result.get('text', '').strip()
+            caption = self.clean_generated_caption(caption)
+            
+            logger.info(f"Successfully generated caption with {model_id}")
+            return caption
+            
+        except Exception as e:
+            logger.error(f"AI Service generation failed: {e}")
+            raise
+    
+    def generate_ollama_caption(self, keyword: str, context_snippets: List[str], knowledge: Dict[str, Any] = None, model_id: str = None) -> str:
+        """Generate caption using AI Service (multi-provider) with brand voice and coffee knowledge"""
+        try:
+            # If model_id is provided and AI Service is available, use it
+            if model_id and self.ai_service:
+                logger.info(f"Using AI Service with model: {model_id}")
+                return self.generate_with_ai_service(keyword, context_snippets, knowledge, model_id)
+            
+            # Otherwise fall back to direct Ollama call
             # Prepare context - use more context for better generation
             context_text = " ".join(context_snippets[:2])[:200] if context_snippets else ""
             
@@ -1748,10 +1835,13 @@ Write ONLY a direct image description (2-3 sentences) that strictly follows the 
         
         return prompt
 
-    def generate_complete_post(self, keyword: str = None, platform: str = 'instagram', scenario: str = None) -> Dict[str, Any]:
+    def generate_complete_post(self, keyword: str = None, platform: str = 'instagram', scenario: str = None, model_id: str = None) -> Dict[str, Any]:
         """Generate complete social media post with platform-specific caption, hashtags, and image prompt"""
         
-        logger.info(f"Generating post for platform: {platform}, scenario: {scenario}")
+        logger.info(f"Generating post for platform: {platform}, scenario: {scenario}, model: {model_id or 'default'}")
+        
+        # Store model_id for use in caption generation
+        self.selected_model_id = model_id
         
         # Get platform specifications
         platform_spec = self.platform_strategy.get_platform_spec(platform)
@@ -1840,14 +1930,18 @@ Write ONLY a direct image description (2-3 sentences) that strictly follows the 
         context_snippets = self.retrieve_relevant_context(selected_keyword)
         
         # Generate caption using platform-specific prompt with scenario
-        if self.use_ollama:
+        # Pass model_id from self.selected_model_id if it was set
+        model_id_to_use = getattr(self, 'selected_model_id', None)
+        
+        if self.use_ollama or self.ai_service:
             base_caption = self.generate_platform_aware_caption_ollama(
                 selected_keyword, 
                 context_snippets, 
                 coffee_knowledge,
                 platform,
                 platform_spec,
-                scenario
+                scenario,
+                model_id=model_id_to_use
             )
         else:
             base_caption = self.generate_local_caption(selected_keyword, context_snippets)
@@ -1869,9 +1963,10 @@ Write ONLY a direct image description (2-3 sentences) that strictly follows the 
         knowledge: Dict[str, Any],
         platform: str,
         platform_spec: Dict[str, Any],
-        scenario: str = None
+        scenario: str = None,
+        model_id: str = None
     ) -> str:
-        """Generate platform-aware caption using Ollama with platform specifications and optional scenario"""
+        """Generate platform-aware caption using AI Service (multi-provider) with platform specifications and optional scenario"""
         max_retries = 3
         
         # Dynamic num_predict based on platform character limits
@@ -1959,30 +2054,62 @@ Example of BAD completion (DO NOT DO THIS):
                     repeat_penalty = 1.1
                     scenario_keywords = []
                 
-                # Make request to Ollama with dynamic num_predict
-                response = requests.post(
-                    f"{self.ollama_url}/api/generate",
-                    json={
-                        "model": self.ollama_model,
-                        "prompt": prompt,
-                        "stream": False,
-                        "options": {
-                            "temperature": temperature,
-                            "top_p": 0.9,
-                            "num_predict": num_predict,  # Dynamic based on platform
-                            "stop": ["\n\n", "Context:", "Hashtags:", "Example:", "⚠️"],
-                            "num_ctx": 2048,
-                            "repeat_penalty": repeat_penalty
-                        }
-                    },
-                    timeout=90
-                )
+                # Use AI Service if model_id provided and available
+                caption_generated = False
+                if model_id and self.ai_service:
+                    try:
+                        logger.info(f"Generating caption with AI Service, model: {model_id}")
+                        # For AI Service, use config's max_output_tokens instead of calculated num_predict
+                        # This allows Gemini 2.5 to use its full token allocation
+                        result = self.ai_service.generate(
+                            prompt=prompt,
+                            model_id=model_id,
+                            temperature=temperature,
+                            max_tokens=800  # Use higher limit for AI Service models
+                        )
+                        caption = result.get('text', '').strip()
+                        caption = self.clean_generated_caption(caption)
+                        caption_generated = True
+                        logger.info(f"AI Service generated caption: {len(caption)} chars")
+                    except Exception as ai_error:
+                        logger.error(f"AI Service generation failed: {ai_error}, falling back to Ollama")
+                        # Fall through to Ollama fallback below
+                        model_id = None
                 
-                if response.status_code == 200:
-                    result = response.json()
-                    caption = result.get('response', '').strip()
-                    caption = self.clean_generated_caption(caption)
+                # Fallback to direct Ollama call if AI Service not used or failed
+                if not caption_generated:
+                    response = requests.post(
+                        f"{self.ollama_url}/api/generate",
+                        json={
+                            "model": self.ollama_model,
+                            "prompt": prompt,
+                            "stream": False,
+                            "options": {
+                                "temperature": temperature,
+                                "top_p": 0.9,
+                                "num_predict": num_predict,
+                                "stop": ["\n\n", "Context:", "Hashtags:", "Example:", "⚠️"],
+                                "num_ctx": 2048,
+                                "repeat_penalty": repeat_penalty
+                            }
+                        },
+                        timeout=90
+                    )
                     
+                    if response.status_code == 200:
+                        result = response.json()
+                        caption = result.get('response', '').strip()
+                        caption = self.clean_generated_caption(caption)
+                        caption_generated = True
+                        logger.info(f"Ollama generated caption: {len(caption)} chars")
+                    else:
+                        logger.error(f"Ollama API error: {response.status_code}")
+                        if attempt == max_retries - 1:
+                            return self.generate_local_caption(keyword, context_snippets)
+                        continue
+                
+                # COMMON VALIDATION for both AI Service and Ollama
+                if caption_generated:
                     # Validate scenario compliance if scenario was provided
                     if scenario and scenario_keywords:
                         validation_passed, missing_keywords = self.validate_scenario_compliance(caption, scenario_keywords)
@@ -2027,10 +2154,6 @@ Example of BAD completion (DO NOT DO THIS):
                         return caption
                     
                     return caption
-                else:
-                    logger.error(f"Ollama API error: {response.status_code}")
-                    if attempt == max_retries - 1:
-                        return self.generate_local_caption(keyword, context_snippets)
                 
             except Exception as e:
                 logger.error(f"Ollama platform-aware generation error (attempt {attempt + 1}): {e}")

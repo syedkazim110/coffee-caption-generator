@@ -1,14 +1,61 @@
 // Global variable to store current post data
 let currentPostData = null;
 let selectedPlatform = 'instagram'; // Default platform
+let availableModels = {};
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', () => {
     loadStatistics();
     loadBrands();
+    loadAIModels();
     setupEventListeners();
     setupPlatformButtons();
 });
+
+// Load available AI models
+async function loadAIModels() {
+    try {
+        const response = await fetch('/api/ai-models/list');
+        const data = await response.json();
+        
+        if (data.success) {
+            availableModels = data.models;
+            const modelSelect = document.getElementById('modelSelect');
+            
+            // Clear existing options except default
+            modelSelect.innerHTML = '<option value="">Use Default Model</option>';
+            
+            // Add available models
+            Object.entries(data.models).forEach(([modelId, model]) => {
+                const option = document.createElement('option');
+                option.value = modelId;
+                
+                // Show model name and provider
+                let displayText = `${model.display_name} (${model.provider})`;
+                
+                // Add cost indicator
+                if (model.capabilities.cost_per_1m_tokens === 0) {
+                    displayText += ' - Free';
+                } else {
+                    displayText += ` - $${model.capabilities.cost_per_1m_tokens}/1M`;
+                }
+                
+                option.textContent = displayText;
+                
+                // Mark as default if it's the default model
+                if (modelId === data.default_model) {
+                    option.textContent += ' ⭐';
+                }
+                
+                modelSelect.appendChild(option);
+            });
+            
+            console.log(`Loaded ${Object.keys(data.models).length} AI models`);
+        }
+    } catch (error) {
+        console.error('Error loading AI models:', error);
+    }
+}
 
 // Load brands from API
 async function loadBrands() {
@@ -129,6 +176,10 @@ async function generatePost() {
         const keywordInput = document.getElementById('keywordInput');
         const keyword = keywordInput.value.trim() || null;
         
+        // Get selected model (if any)
+        const modelSelect = document.getElementById('modelSelect');
+        const selectedModel = modelSelect.value || null;
+        
         const response = await fetch('/generate-post', {
             method: 'POST',
             headers: {
@@ -138,7 +189,8 @@ async function generatePost() {
                 keyword: keyword, // Use provided keyword or null for random
                 brand_id: brandId,
                 platform: selectedPlatform,
-                scenario: scenario
+                scenario: scenario,
+                model_id: selectedModel
             })
         });
         
