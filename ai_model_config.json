@@ -6,7 +6,7 @@
       "provider": "ollama",
       "model_name": "phi3:mini",
       "display_name": "Ollama Phi3 Mini (Local)",
-      "description": "Fast, lightweight local model. No API costs, runs on your machine.",
+      "description": "Fast, lightweight local model. No API costs, runs in Docker.",
       "api_endpoint": "http://ollama:11434",
       "api_key": null,
       "parameters": {

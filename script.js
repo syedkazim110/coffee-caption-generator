@@ -10,6 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
     loadAIModels();
     setupEventListeners();
     setupPlatformButtons();
+    
+    // Setup OAuth message listener for popup callback
+    window.addEventListener('message', handleOAuthMessage);
+    
+    // Check connection status on load
+    checkAllConnectionStatus();
 });
 
 // Load available AI models
@@ -423,6 +429,346 @@ async function regenerateImage() {
         btnText.style.display = 'inline';
         btnLoader.style.display = 'none';
     }
+}
+
+// ========================================
+// SOCIAL MEDIA OAUTH & PUBLISHING
+// ========================================
+
+// Store OAuth popup reference
+let oauthPopup = null;
+
+// Check all platform connection status
+async function checkAllConnectionStatus() {
+    await checkConnectionStatus('instagram');
+    await checkConnectionStatus('facebook');
+}
+
+// Check connection status for a platform
+async function checkConnectionStatus(platform) {
+    try {
+        // Get brand ID
+        const brandSelect = document.getElementById('brandSelect');
+        const brandId = brandSelect.value ? parseInt(brandSelect.value) : 1; // Default to 1 if no brand selected
+        
+        const response = await fetch(`/api/social/status?platform=${platform}&brand_id=${brandId}`);
+        const data = await response.json();
+        
+        updatePlatformUI(platform, data);
+    } catch (error) {
+        console.error(`Error checking ${platform} status:`, error);
+    }
+}
+
+// Update platform UI based on connection status
+function updatePlatformUI(platform, statusData) {
+    const statusElement = document.getElementById(`${platform}Status`);
+    const accountElement = document.getElementById(`${platform}Account`);
+    const accountNameElement = document.getElementById(`${platform}AccountName`);
+    const checkboxElement = document.getElementById(`${platform}Check`);
+    const connectBtn = document.getElementById(`${platform}ConnectBtn`);
+    
+    if (statusData.connected) {
+        // Connected state
+        statusElement.classList.remove('disconnected');
+        statusElement.classList.add('connected');
+        statusElement.querySelector('.status-text').textContent = 'Connected';
+        
+        // Show account info
+        if (statusData.account) {
+            accountNameElement.textContent = statusData.account;
+            accountElement.style.display = 'block';
+        }
+        
+        // Enable checkbox
+        checkboxElement.disabled = false;
+        
+        // Update button
+        connectBtn.textContent = '✓ Connected';
+        connectBtn.classList.add('connected');
+        connectBtn.onclick = () => disconnectPlatform(platform);
+        
+    } else {
+        // Disconnected state
+        statusElement.classList.remove('connected');
+        statusElement.classList.add('disconnected');
+        statusElement.querySelector('.status-text').textContent = 'Not Connected';
+        
+        // Hide account info
+        accountElement.style.display = 'none';
+        
+        // Disable checkbox and uncheck
+        checkboxElement.disabled = true;
+        checkboxElement.checked = false;
+        
+        // Update button
+        connectBtn.textContent = `Connect ${platform.charAt(0).toUpperCase() + platform.slice(1)}`;
+        connectBtn.classList.remove('connected');
+        connectBtn.onclick = () => connectPlatform(platform);
+    }
+    
+    // Update publish button state
+    updatePublishButtonState();
+}
+
+// Update publish button state based on checkboxes
+function updatePublishButtonState() {
+    const instagramCheck = document.getElementById('instagramCheck');
+    const facebookCheck = document.getElementById('facebookCheck');
+    const publishBtn = document.getElementById('publishBtn');
+    
+    const anyChecked = instagramCheck.checked || facebookCheck.checked;
+    publishBtn.disabled = !anyChecked;
+}
+
+// Setup checkbox listeners
+document.addEventListener('DOMContentLoaded', () => {
+    const instagramCheck = document.getElementById('instagramCheck');
+    const facebookCheck = document.getElementById('facebookCheck');
+    
+    if (instagramCheck) {
+        instagramCheck.addEventListener('change', updatePublishButtonState);
+    }
+    if (facebookCheck) {
+        facebookCheck.addEventListener('change', updatePublishButtonState);
+    }
+});
+
+// Connect to a platform (opens OAuth popup)
+async function connectPlatform(platform) {
+    try {
+        // Get brand ID
+        const brandSelect = document.getElementById('brandSelect');
+        const brandId = brandSelect.value ? parseInt(brandSelect.value) : 1;
+        
+        // Get OAuth URL from backend
+        const response = await fetch(`/api/social/connect/${platform}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ brand_id: brandId })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success && data.authorization_url) {
+            // Open OAuth popup
+            const width = 600;
+            const height = 700;
+            const left = (screen.width / 2) - (width / 2);
+            const top = (screen.height / 2) - (height / 2);
+            
+            oauthPopup = window.open(
+                data.authorization_url,
+                `${platform}OAuth`,
+                `width=${width},height=${height},top=${top},left=${left}`
+            );
+            
+            // Check if popup was blocked
+            if (!oauthPopup || oauthPopup.closed || typeof oauthPopup.closed === 'undefined') {
+                showNotification('❌ Popup blocked! Please allow popups for this site.');
+            } else {
+                showNotification(`Opening ${platform} authorization...`);
+            }
+        } else {
+            showNotification(`❌ Failed to initiate ${platform} connection`);
+        }
+    } catch (error) {
+        console.error(`Error connecting to ${platform}:`, error);
+        showNotification(`❌ Error connecting to ${platform}`);
+    }
+}
+
+// Handle OAuth callback message from popup
+function handleOAuthMessage(event) {
+    // Verify message origin for security
+    const allowedOrigins = [window.location.origin, 'http://localhost:8000', 'http://localhost:8001'];
+    
+    if (!allowedOrigins.includes(event.origin)) {
+        return;
+    }
+    
+    const data = event.data;
+    
+    if (data.type === 'oauth_success') {
+        showNotification(`✅ Successfully connected to ${data.platform}!`);
+        
+        // Refresh connection status
+        checkConnectionStatus(data.platform);
+        
+        // Close popup if still open
+        if (oauthPopup && !oauthPopup.closed) {
+            oauthPopup.close();
+        }
+    } else if (data.type === 'oauth_error') {
+        showNotification(`❌ Failed to connect to ${data.platform}: ${data.error}`);
+        
+        // Close popup if still open
+        if (oauthPopup && !oauthPopup.closed) {
+            oauthPopup.close();
+        }
+    }
+}
+
+// Disconnect from a platform
+async function disconnectPlatform(platform) {
+    if (!confirm(`Are you sure you want to disconnect from ${platform}?`)) {
+        return;
+    }
+    
+    try {
+        // Get brand ID
+        const brandSelect = document.getElementById('brandSelect');
+        const brandId = brandSelect.value ? parseInt(brandSelect.value) : 1;
+        
+        const response = await fetch(`/api/social/disconnect/${platform}?brand_id=${brandId}`, {
+            method: 'DELETE'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showNotification(`✅ Disconnected from ${platform}`);
+            checkConnectionStatus(platform);
+        } else {
+            showNotification(`❌ Failed to disconnect from ${platform}`);
+        }
+    } catch (error) {
+        console.error(`Error disconnecting from ${platform}:`, error);
+        showNotification(`❌ Error disconnecting from ${platform}`);
+    }
+}
+
+// Publish to social media
+async function publishToSocialMedia() {
+    if (!currentPostData) {
+        showNotification('❌ No post to publish. Generate a post first!');
+        return;
+    }
+    
+    const instagramCheck = document.getElementById('instagramCheck');
+    const facebookCheck = document.getElementById('facebookCheck');
+    const publishBtn = document.getElementById('publishBtn');
+    const btnText = publishBtn.querySelector('.btn-text');
+    const btnLoader = publishBtn.querySelector('.btn-loader');
+    const publishResult = document.getElementById('publishResult');
+    
+    // Get selected platforms
+    const platforms = [];
+    if (instagramCheck.checked) platforms.push('instagram');
+    if (facebookCheck.checked) platforms.push('facebook');
+    
+    if (platforms.length === 0) {
+        showNotification('❌ Please select at least one platform');
+        return;
+    }
+    
+    // Show loading state
+    publishBtn.disabled = true;
+    btnText.style.display = 'none';
+    btnLoader.style.display = 'inline-flex';
+    publishResult.style.display = 'none';
+    
+    try {
+        // Get brand ID
+        const brandSelect = document.getElementById('brandSelect');
+        const brandId = brandSelect.value ? parseInt(brandSelect.value) : 1;
+        
+        const response = await fetch('/api/social/publish', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                brand_id: brandId,
+                caption: currentPostData.caption,
+                hashtags: currentPostData.hashtags,
+                image_url: currentPostData.image_base64 ? `data:image/png;base64,${currentPostData.image_base64}` : null,
+                platforms: platforms
+            })
+        });
+        
+        const data = await response.json();
+        
+        // Display results
+        displayPublishResults(data);
+        
+    } catch (error) {
+        console.error('Error publishing:', error);
+        publishResult.innerHTML = `
+            <h4>❌ Publishing Failed</h4>
+            <p>${error.message}</p>
+        `;
+        publishResult.className = 'publish-result error';
+        publishResult.style.display = 'block';
+    } finally {
+        // Reset button state
+        publishBtn.disabled = false;
+        btnText.style.display = 'inline-flex';
+        btnLoader.style.display = 'none';
+        
+        // Update publish button state
+        updatePublishButtonState();
+    }
+}
+
+// Display publishing results
+function displayPublishResults(data) {
+    const publishResult = document.getElementById('publishResult');
+    const results = data.results || {};
+    
+    let successCount = 0;
+    let failCount = 0;
+    let resultHTML = '<ul>';
+    
+    for (const [platform, result] of Object.entries(results)) {
+        if (result.success) {
+            successCount++;
+            const postUrl = result.url || '#';
+            resultHTML += `
+                <li>
+                    <span class="platform-result-icon success-icon">✅</span>
+                    <span><strong>${platform.charAt(0).toUpperCase() + platform.slice(1)}:</strong> 
+                    Published successfully! 
+                    ${result.url ? `<a href="${postUrl}" target="_blank">View Post</a>` : ''}
+                    </span>
+                </li>
+            `;
+        } else {
+            failCount++;
+            resultHTML += `
+                <li>
+                    <span class="platform-result-icon error-icon">❌</span>
+                    <span><strong>${platform.charAt(0).toUpperCase() + platform.slice(1)}:</strong> 
+                    ${result.error || 'Failed to publish'}
+                    </span>
+                </li>
+            `;
+        }
+    }
+    
+    resultHTML += '</ul>';
+    
+    // Determine overall result
+    let resultClass = 'error';
+    let title = '❌ Publishing Failed';
+    
+    if (successCount > 0 && failCount === 0) {
+        resultClass = 'success';
+        title = '✅ Published Successfully!';
+        showNotification('✅ Post published successfully!');
+    } else if (successCount > 0 && failCount > 0) {
+        resultClass = 'partial';
+        title = '⚠️ Partially Published';
+        showNotification('⚠️ Post published to some platforms');
+    } else {
+        showNotification('❌ Failed to publish post');
+    }
+    
+    publishResult.innerHTML = `<h4>${title}</h4>${resultHTML}`;
+    publishResult.className = `publish-result ${resultClass}`;
+    publishResult.style.display = 'block';
 }
 
 // Show notification

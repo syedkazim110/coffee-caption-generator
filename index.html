@@ -230,6 +230,75 @@
                         💾 Download Data
                     </button>
                 </div>
+
+                <!-- Social Media Publishing Section -->
+                <div class="social-publish-section">
+                    <div class="social-header">
+                        <h3>📤 Publish to Social Media</h3>
+                        <p class="social-subtitle">Connect your accounts and post instantly</p>
+                    </div>
+
+                    <div class="social-platforms">
+                        <!-- Instagram -->
+                        <div class="social-platform-card">
+                            <div class="platform-header">
+                                <div class="platform-icon-large">📸</div>
+                                <div class="platform-info">
+                                    <h4>Instagram</h4>
+                                    <div id="instagramStatus" class="connection-status disconnected">
+                                        <span class="status-dot"></span>
+                                        <span class="status-text">Not Connected</span>
+                                    </div>
+                                </div>
+                                <label class="platform-checkbox">
+                                    <input type="checkbox" id="instagramCheck" disabled>
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div id="instagramAccount" class="platform-account" style="display: none;">
+                                <span class="account-label">Account:</span>
+                                <span id="instagramAccountName" class="account-name"></span>
+                            </div>
+                            <button id="instagramConnectBtn" onclick="connectPlatform('instagram')" class="connect-btn">
+                                Connect Instagram
+                            </button>
+                        </div>
+
+                        <!-- Facebook -->
+                        <div class="social-platform-card">
+                            <div class="platform-header">
+                                <div class="platform-icon-large">👥</div>
+                                <div class="platform-info">
+                                    <h4>Facebook</h4>
+                                    <div id="facebookStatus" class="connection-status disconnected">
+                                        <span class="status-dot"></span>
+                                        <span class="status-text">Not Connected</span>
+                                    </div>
+                                </div>
+                                <label class="platform-checkbox">
+                                    <input type="checkbox" id="facebookCheck" disabled>
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div id="facebookAccount" class="platform-account" style="display: none;">
+                                <span class="account-label">Account:</span>
+                                <span id="facebookAccountName" class="account-name"></span>
+                            </div>
+                            <button id="facebookConnectBtn" onclick="connectPlatform('facebook')" class="connect-btn">
+                                Connect Facebook
+                            </button>
+                        </div>
+                    </div>
+
+                    <button id="publishBtn" onclick="publishToSocialMedia()" class="publish-btn" disabled>
+                        <span class="btn-text">🚀 Post to Selected Platforms</span>
+                        <span class="btn-loader" style="display: none;">
+                            <span class="spinner"></span> Publishing...
+                        </span>
+                    </button>
+
+                    <div id="publishResult" class="publish-result" style="display: none;"></div>
+                </div>
             </div>
         </div>
 

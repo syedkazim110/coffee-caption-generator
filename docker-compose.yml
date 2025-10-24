@@ -1,99 +1,143 @@
-services:
-  postgres:
-    image: postgres:15
-    container_name: coffee_postgres
-    environment:
-      POSTGRES_DB: reddit_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres123
-    ports:
-      - "5433:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/01-init.sql
-      - ./init_brand_schema.sql:/docker-entrypoint-initdb.d/02-init-brand-schema.sql
-      - ./migration_schema.sql:/docker-entrypoint-initdb.d/03-migration-schema.sql
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - coffee_network
+version: '3.8'
 
+services:
+  # Ollama Service for Local LLM
   ollama:
-    build:
-      context: .
-      dockerfile: Dockerfile.ollama
-      args:
-        OLLAMA_MODEL: ${OLLAMA_MODEL:-phi3:mini}
-    container_name: coffee_ollama
+    image: ollama/ollama:latest
     ports:
       - "11434:11434"
     volumes:
-      - ollama_data:/root/.ollama
+      - ollama-data:/root/.ollama
     networks:
-      - coffee_network
+      - coffee-network
     healthcheck:
-      test: ["CMD", "ollama", "list"]
+      test: ["CMD-SHELL", "ollama list || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 5
-      start_period: 60s
-    restart: unless-stopped
-    # Uncomment below for GPU support (requires nvidia-docker)
-    # deploy:
-    #   resources:
-    #     reservations:
-    #       devices:
-    #         - driver: nvidia
-    #           count: 1
-    #           capabilities: [gpu]
+      start_period: 30s
 
-  web:
+  # Main Coffee Caption Generator App
+  coffee-app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: coffee_web
     ports:
       - "8000:8000"
     environment:
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_NAME=reddit_db
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres123
-      - GEMINI_API_KEY=${GEMINI_API_KEY}
-      - HUGGINGFACE_API_KEY=${HUGGINGFACE_API_KEY}
       - OLLAMA_URL=http://ollama:11434
       - OLLAMA_MODEL=${OLLAMA_MODEL:-phi3:mini}
-      - PORT=8000
-      - HOST=0.0.0.0
+      - DB_HOST=coffee-db
+      - DB_PORT=5432
+      - DB_NAME=${DB_NAME:-reddit_db}
+      - DB_USER=${DB_USER:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres123}
+      - OAUTH_SERVICE_URL=http://oauth-service:8001
+      - OAUTH_SERVICE_API_KEY=${OAUTH_SERVICE_API_KEY:-dev-service-key-change-in-production}
     volumes:
       - .:/app
-      - /app/__pycache__
     depends_on:
-      postgres:
+      coffee-db:
         condition: service_healthy
+      oauth-service:
+        condition: service_started
       ollama:
         condition: service_healthy
     networks:
-      - coffee_network
-    restart: unless-stopped
-    command: >
-      sh -c "
-        echo 'Waiting for database to be ready...' &&
-        sleep 5 &&
-        echo 'Running hashtag migration...' &&
-        python migrate_data_to_postgres.py &&
-        echo 'Starting application...' &&
-        python api.py
-      "
+      - coffee-network
+
+  # OAuth Service
+  oauth-service:
+    build:
+      context: ./social-oauth-service
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    environment:
+      # Application
+      - APP_NAME=Social OAuth Service
+      - DEBUG=true
+      - HOST=0.0.0.0
+      - PORT=8001
+      
+      # Database
+      - DB_HOST=oauth-db
+      - DB_PORT=5432
+      - DB_NAME=${OAUTH_DB_NAME:-oauth_db}
+      - DB_USER=${OAUTH_DB_USER:-postgres}
+      - DB_PASSWORD=${OAUTH_DB_PASSWORD:-oauth_pass}
+      
+      # Security
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - SERVICE_API_KEY=${OAUTH_SERVICE_API_KEY:-dev-service-key-change-in-production}
+      - SECRET_KEY=${SECRET_KEY:-your-secret-key-change-in-production}
+      
+      # OAuth Credentials
+      - INSTAGRAM_CLIENT_ID=${INSTAGRAM_CLIENT_ID}
+      - INSTAGRAM_CLIENT_SECRET=${INSTAGRAM_CLIENT_SECRET}
+      - INSTAGRAM_REDIRECT_URI=${INSTAGRAM_REDIRECT_URI:-http://localhost:8001/api/v1/oauth/instagram/callback}
+      
+      - FACEBOOK_CLIENT_ID=${FACEBOOK_CLIENT_ID}
+      - FACEBOOK_CLIENT_SECRET=${FACEBOOK_CLIENT_SECRET}
+      - FACEBOOK_REDIRECT_URI=${FACEBOOK_REDIRECT_URI:-http://localhost:8001/api/v1/oauth/facebook/callback}
+      
+      # Base callback URL
+      - BASE_CALLBACK_URL=http://localhost:8001
+    volumes:
+      - ./social-oauth-service:/app
+    depends_on:
+      oauth-db:
+        condition: service_healthy
+    networks:
+      - coffee-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  # PostgreSQL for Main App
+  coffee-db:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres123
+      - POSTGRES_DB=reddit_db
+    volumes:
+      - coffee-db-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - coffee-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # PostgreSQL for OAuth Service
+  oauth-db:
+    image: postgres:15-alpine
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=oauth_pass
+      - POSTGRES_DB=oauth_db
+    volumes:
+      - oauth-db-data:/var/lib/postgresql/data
+      - ./social-oauth-service/migrations/init_oauth_schema.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - coffee-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 networks:
-  coffee_network:
+  coffee-network:
     driver: bridge
 
 volumes:
-  postgres_data:
-  ollama_data:
+  coffee-db-data:
+  oauth-db-data:
+  ollama-data:

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, FileResponse, Response
 from pydantic import BaseModel
@@ -795,6 +795,414 @@ async def remove_model_api_key(model_id: str):
         }
     except Exception as e:
         logger.error(f"Error removing API key: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ========================================
+# SOCIAL MEDIA OAUTH & PUBLISHING ENDPOINTS
+# ========================================
+
+# OAuth Service Configuration
+OAUTH_SERVICE_URL = os.getenv("OAUTH_SERVICE_URL", "http://localhost:8001")
+OAUTH_SERVICE_API_KEY = os.getenv("OAUTH_SERVICE_API_KEY", "dev-service-key-change-in-production")
+
+class SocialConnectRequest(BaseModel):
+    brand_id: int
+
+class SocialPublishRequest(BaseModel):
+    brand_id: int
+    caption: str
+    hashtags: List[str]
+    image_url: Optional[str] = None
+    platforms: List[str]
+
+@app.post("/api/social/connect/{platform}")
+async def initiate_social_connect(platform: str, request: SocialConnectRequest):
+    """
+    Initiate OAuth connection for a platform
+    Returns authorization URL to open in popup
+    """
+    try:
+        # Call OAuth service to initiate connection
+        response = requests.post(
+            f"{OAUTH_SERVICE_URL}/api/v1/oauth/{platform}/authorize",
+            json={"brand_id": request.brand_id},
+            timeout=10
+        )
+        
+        if response.status_code == 200:
+            data = response.json()
+            return {
+                "success": True,
+                "authorization_url": data.get("authorization_url"),
+                "platform": platform
+            }
+        else:
+            error_detail = response.json().get("detail", "Failed to initiate OAuth")
+            raise HTTPException(status_code=response.status_code, detail=error_detail)
+            
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Error connecting to OAuth service: {e}")
+        raise HTTPException(status_code=503, detail="OAuth service unavailable")
+    except Exception as e:
+        logger.error(f"Error initiating social connect: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/social/callback/{platform}")
+async def social_oauth_callback(
+    platform: str,
+    code: Optional[str] = Query(None),
+    state: Optional[str] = Query(None),
+    brand_id: Optional[int] = Query(None),
+    error: Optional[bool] = Query(None),
+    message: Optional[str] = Query(None)
+):
+    """
+    Handle OAuth callback and send message to parent window
+    This endpoint is called by the OAuth provider after user authorization
+    OR it receives the redirect from the OAuth service
+    """
+    try:
+        # Check if this is an error callback from OAuth service
+        if error:
+            error_detail = message or "Authorization failed"
+            html_content = f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Authorization Failed</title>
+                <style>
+                    body {{
+                        font-family: Arial, sans-serif;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100vh;
+                        margin: 0;
+                        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+                        color: white;
+                    }}
+                    .container {{
+                        text-align: center;
+                    }}
+                    .error-icon {{
+                        font-size: 64px;
+                        margin-bottom: 20px;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="error-icon">✗</div>
+                    <h1>Authorization Failed</h1>
+                    <p>{error_detail}</p>
+                </div>
+                <script>
+                    if (window.opener) {{
+                        window.opener.postMessage({{
+                            type: 'oauth_error',
+                            platform: '{platform}',
+                            error: '{error_detail}'
+                        }}, window.location.origin);
+                    }}
+                    setTimeout(() => window.close(), 3000);
+                </script>
+            </body>
+            </html>
+            """
+            return HTMLResponse(content=html_content, status_code=400)
+        
+        # Check if we have code and state (direct callback from OAuth provider)
+        if not code or not state:
+            # Missing required parameters - show error
+            html_content = """
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Invalid Request</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100vh;
+                        margin: 0;
+                        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+                        color: white;
+                    }
+                    .container {
+                        text-align: center;
+                    }
+                    .error-icon {
+                        font-size: 64px;
+                        margin-bottom: 20px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="error-icon">✗</div>
+                    <h1>Invalid Request</h1>
+                    <p>Missing required parameters</p>
+                </div>
+                <script>
+                    if (window.opener) {
+                        window.opener.postMessage({
+                            type: 'oauth_error',
+                            platform: '""" + platform + """',
+                            error: 'Invalid callback request'
+                        }, window.location.origin);
+                    }
+                    setTimeout(() => window.close(), 3000);
+                </script>
+            </body>
+            </html>
+            """
+            return HTMLResponse(content=html_content, status_code=400)
+        
+        # Forward to OAuth service callback for processing
+        # OAuth service will retrieve brand_id from state token
+        callback_url = f"{OAUTH_SERVICE_URL}/api/v1/oauth/{platform}/callback"
+        params = {"code": code, "state": state}
+        if brand_id:
+            params["brand_id"] = brand_id
+        
+        response = requests.get(
+            callback_url,
+            params=params,
+            timeout=30
+        )
+        
+        if response.status_code == 200:
+            # Success - return HTML that sends message to parent and closes
+            html_content = f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Authorization Successful</title>
+                <style>
+                    body {{
+                        font-family: Arial, sans-serif;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100vh;
+                        margin: 0;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: white;
+                    }}
+                    .container {{
+                        text-align: center;
+                    }}
+                    .success-icon {{
+                        font-size: 64px;
+                        margin-bottom: 20px;
+                    }}
+                    h1 {{
+                        margin-bottom: 10px;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="success-icon">✓</div>
+                    <h1>Authorization Successful!</h1>
+                    <p>You can close this window now.</p>
+                </div>
+                <script>
+                    // Send success message to parent window
+                    if (window.opener) {{
+                        window.opener.postMessage({{
+                            type: 'oauth_success',
+                            platform: '{platform}'
+                        }}, window.location.origin);
+                    }}
+                    // Auto-close after 2 seconds
+                    setTimeout(() => window.close(), 2000);
+                </script>
+            </body>
+            </html>
+            """
+            return HTMLResponse(content=html_content)
+        else:
+            # Error - return HTML that sends error message to parent and closes
+            error_detail = "Authorization failed"
+            try:
+                error_data = response.json()
+                error_detail = error_data.get("detail", error_detail)
+            except:
+                pass
+            
+            html_content = f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Authorization Failed</title>
+                <style>
+                    body {{
+                        font-family: Arial, sans-serif;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100vh;
+                        margin: 0;
+                        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+                        color: white;
+                    }}
+                    .container {{
+                        text-align: center;
+                    }}
+                    .error-icon {{
+                        font-size: 64px;
+                        margin-bottom: 20px;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="error-icon">✗</div>
+                    <h1>Authorization Failed</h1>
+                    <p>{error_detail}</p>
+                </div>
+                <script>
+                    // Send error message to parent window
+                    if (window.opener) {{
+                        window.opener.postMessage({{
+                            type: 'oauth_error',
+                            platform: '{platform}',
+                            error: '{error_detail}'
+                        }}, window.location.origin);
+                    }}
+                    // Auto-close after 3 seconds
+                    setTimeout(() => window.close(), 3000);
+                </script>
+            </body>
+            </html>
+            """
+            return HTMLResponse(content=html_content, status_code=400)
+            
+    except Exception as e:
+        logger.error(f"Error in OAuth callback: {e}")
+        html_content = f"""
+        <!DOCTYPE html>
+        <html>
+        <head><title>Error</title></head>
+        <body>
+            <h1>Error processing authorization</h1>
+            <script>
+                if (window.opener) {{
+                    window.opener.postMessage({{
+                        type: 'oauth_error',
+                        platform: '{platform}',
+                        error: 'Internal error'
+                    }}, window.location.origin);
+                }}
+                setTimeout(() => window.close(), 3000);
+            </script>
+        </body>
+        </html>
+        """
+        return HTMLResponse(content=html_content, status_code=500)
+
+@app.get("/api/social/status")
+async def get_social_status(
+    platform: str = Query(...),
+    brand_id: int = Query(...)
+):
+    """
+    Check connection status for a platform
+    """
+    try:
+        response = requests.get(
+            f"{OAUTH_SERVICE_URL}/api/v1/oauth/{platform}/status",
+            params={"brand_id": brand_id},
+            timeout=10
+        )
+        
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return {
+                "success": True,
+                "platform": platform,
+                "connected": False
+            }
+            
+    except Exception as e:
+        logger.error(f"Error checking social status: {e}")
+        return {
+            "success": True,
+            "platform": platform,
+            "connected": False
+        }
+
+@app.delete("/api/social/disconnect/{platform}")
+async def disconnect_social_platform(
+    platform: str,
+    brand_id: int = Query(...)
+):
+    """
+    Disconnect from a social media platform
+    """
+    try:
+        response = requests.delete(
+            f"{OAUTH_SERVICE_URL}/api/v1/oauth/{platform}/disconnect",
+            params={"brand_id": brand_id},
+            timeout=10
+        )
+        
+        if response.status_code == 200:
+            return response.json()
+        else:
+            error_detail = response.json().get("detail", "Failed to disconnect")
+            raise HTTPException(status_code=response.status_code, detail=error_detail)
+            
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Error disconnecting from OAuth service: {e}")
+        raise HTTPException(status_code=503, detail="OAuth service unavailable")
+    except Exception as e:
+        logger.error(f"Error disconnecting platform: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/social/publish")
+async def publish_to_social_media(request: SocialPublishRequest):
+    """
+    Publish post to selected social media platforms
+    """
+    try:
+        # Prepare publish request
+        publish_data = {
+            "brand_id": request.brand_id,
+            "caption": request.caption,
+            "hashtags": request.hashtags,
+            "image_url": request.image_url,
+            "platforms": request.platforms
+        }
+        
+        # Call OAuth service publish endpoint
+        response = requests.post(
+            f"{OAUTH_SERVICE_URL}/api/v1/posts/publish",
+            json=publish_data,
+            headers={"X-API-Key": OAUTH_SERVICE_API_KEY},
+            timeout=60
+        )
+        
+        if response.status_code == 200:
+            return response.json()
+        else:
+            error_detail = "Failed to publish post"
+            try:
+                error_data = response.json()
+                error_detail = error_data.get("detail", error_detail)
+            except:
+                pass
+            raise HTTPException(status_code=response.status_code, detail=error_detail)
+            
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Error connecting to OAuth service for publishing: {e}")
+        raise HTTPException(status_code=503, detail="OAuth service unavailable")
+    except Exception as e:
+        logger.error(f"Error publishing to social media: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":

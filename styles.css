@@ -768,3 +768,322 @@ body {
 .loading {
     animation: pulse 1.5s ease-in-out infinite;
 }
+
+/* Social Media Publishing Section */
+.social-publish-section {
+    margin-top: 30px;
+    padding: 30px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-top: 3px solid var(--coffee-accent);
+    border-radius: 0 0 12px 12px;
+}
+
+.social-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.social-header h3 {
+    font-size: 22px;
+    color: var(--coffee-dark);
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.social-subtitle {
+    font-size: 14px;
+    color: #666;
+    font-weight: 400;
+}
+
+.social-platforms {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.social-platform-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.social-platform-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    transform: translateY(-2px);
+}
+
+.platform-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.platform-icon-large {
+    font-size: 32px;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient-cream);
+    border-radius: 12px;
+}
+
+.platform-info {
+    flex: 1;
+}
+
+.platform-info h4 {
+    font-size: 16px;
+    color: var(--coffee-dark);
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.connection-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.connection-status.connected .status-dot {
+    background: #28a745;
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.4);
+}
+
+.connection-status.disconnected .status-dot {
+    background: #dc3545;
+}
+
+.connection-status.connected {
+    color: #28a745;
+}
+
+.connection-status.disconnected {
+    color: #dc3545;
+}
+
+.platform-checkbox {
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+}
+
+.platform-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.platform-checkbox .checkmark {
+    display: block;
+    width: 24px;
+    height: 24px;
+    background: #f0f0f0;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.platform-checkbox input:checked ~ .checkmark {
+    background: var(--coffee-primary);
+    border-color: var(--coffee-primary);
+}
+
+.platform-checkbox input:disabled ~ .checkmark {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.platform-checkbox .checkmark::after {
+    content: '';
+    position: absolute;
+    display: none;
+    left: 7px;
+    top: 3px;
+    width: 6px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.platform-checkbox input:checked ~ .checkmark::after {
+    display: block;
+}
+
+.platform-account {
+    margin-top: 10px;
+    padding: 10px;
+    background: var(--coffee-cream);
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.account-label {
+    font-weight: 600;
+    color: var(--coffee-secondary);
+    margin-right: 6px;
+}
+
+.account-name {
+    color: var(--coffee-dark);
+    font-weight: 500;
+}
+
+.connect-btn {
+    width: 100%;
+    margin-top: 12px;
+    padding: 10px 20px;
+    background: var(--gradient-coffee);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.connect-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(111, 78, 55, 0.3);
+}
+
+.connect-btn:active {
+    transform: translateY(0);
+}
+
+.connect-btn.connected {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+.publish-btn {
+    width: 100%;
+    padding: 16px 32px;
+    background: var(--gradient-coffee);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(111, 78, 55, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.publish-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(111, 78, 55, 0.4);
+}
+
+.publish-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.publish-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.publish-btn .btn-text,
+.publish-btn .btn-loader {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.publish-result {
+    margin-top: 20px;
+    padding: 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.publish-result.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.publish-result.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.publish-result.partial {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+.publish-result h4 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.publish-result ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.publish-result li {
+    padding: 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.publish-result .platform-result-icon {
+    font-size: 16px;
+}
+
+.publish-result .success-icon {
+    color: #28a745;
+}
+
+.publish-result .error-icon {
+    color: #dc3545;
+}
+
+.publish-result a {
+    color: inherit;
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.publish-result a:hover {
+    text-decoration: none;
+}
+
+/* Responsive for social media section */
+@media (max-width: 600px) {
+    .social-platforms {
+        grid-template-columns: 1fr;
+    }
+    
+    .social-publish-section {
+        padding: 20px 15px;
+    }
+}
