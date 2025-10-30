@@ -1,0 +1,213 @@
+{
+  "timestamp": "2025-09-25T15:13:01.456005",
+  "total_captions": 10,
+  "method": "LLM + RAG (Dynamic Generation)",
+  "sources_used": [
+    "coffee_articles",
+    "reddit",
+    "twitter",
+    "blogs"
+  ],
+  "total_documents": 315,
+  "llm_used": "Ollama (phi3:mini)",
+  "captions": [
+    {
+      "caption": "\"Embarking on the Matcha Journey? Remember to BYOB (Bring Your Own Brew)! Last year\u2019s latte left me wanting more than matcha at UCLA cafes, but I've discovered a whole new world of vibrant green goodness. Don't settle for less\u2014seek out the perfect blend and experience an earth...\n\n#latte #latteart #coffeeart #milkcoffee #matcha",
+      "base_caption": "\"Embarking on the Matcha Journey? Remember to BYOB (Bring Your Own Brew)! Last year\u2019s latte left me wanting more than matcha at UCLA cafes, but I've discovered a whole new world of vibrant green goodness. Don't settle for less\u2014seek out the perfect blend and experience an earth...",
+      "hashtags": [
+        "#latte",
+        "#latteart",
+        "#coffeeart",
+        "#milkcoffee",
+        "#matcha"
+      ],
+      "keyword": "matcha latte",
+      "context_snippets": [
+        "Incoming Matcha Lovers DO NOT BUY MATCHA AT UCLA CAFES \ud83d\ude2d  This is a matcha I bought last year and it was like not mixed at all and tasted horrible",
+        "some thoughts on matchas ive tried recently! im a casual matcha latte drinker, i drink it for a majority of the week",
+        "i have yet to find my perfect matcha but well get there eventually",
+        "its pretty astringent, not much umami but you still have a slight grassy taste",
+        "definitely would not consider it bold"
+      ],
+      "method": "LLM + RAG + Hashtags",
+      "timestamp": "2025-09-25T15:11:59.965741"
+    },
+    {
+      "caption": "Unlock the secret elixir that fuels caffeine fiends \u2013 chocolate-infused coffee drinks just unveiled! Embrace your inner energy beast with this indulgent blend in Nagoya'semper paratus. #ChocoCoffeeFusion #EnergizeYourSoul \ud83c\udf6b\u2615\ufe0f\n\n#coffee #coffeelover #coffeetime #morningcoffee",
+      "base_caption": "Unlock the secret elixir that fuels caffeine fiends \u2013 chocolate-infused coffee drinks just unveiled! Embrace your inner energy beast with this indulgent blend in Nagoya'semper paratus. #ChocoCoffeeFusion #EnergizeYourSoul \ud83c\udf6b\u2615\ufe0f",
+      "hashtags": [
+        "#coffee",
+        "#coffeelover",
+        "#coffeetime",
+        "#morningcoffee"
+      ],
+      "keyword": "chocolate flavored coffee drink",
+      "context_snippets": [
+        "Just found an energy drink vending machine! Spotted in Nagoya: a vending machine packed with energy drinks only \ud83d\ude80",
+        "Like I\u2019m being reduced to a flavor instead of seen as a whole person",
+        "Ghirardelli Dark Chocolate w/ coffee and Ghirardelli Semi-Sweet chocolate sans coffee Inspired by u/ashbakesstuff, I decided to make two chocolate sourdough loaves",
+        "One with dark chocolate chunks and a double-shot of espresso and another without coffee and semi-sweet chocolate chunks",
+        "Additionally, I avoided a cold ferment with this batch as I wanted to avoid too much sour flavor and let the chocolate shine through a little more"
+      ],
+      "method": "LLM + RAG + Hashtags",
+      "timestamp": "2025-09-25T15:12:07.393141"
+    },
+    {
+      "caption": "Ditch the dull brews for today! Unleash your inner barista by exploring some zesty flavored coffee wonders that'll kickstart your brainpower all day long\u2728 #CoffeeRevolution #FocusFlavors.\n\n#coffee #coffeelover #coffeetime #barista",
+      "base_caption": "Ditch the dull brews for today! Unleash your inner barista by exploring some zesty flavored coffee wonders that'll kickstart your brainpower all day long\u2728 #CoffeeRevolution #FocusFlavors.",
+      "hashtags": [
+        "#coffee",
+        "#coffeelover",
+        "#coffeetime",
+        "#barista"
+      ],
+      "keyword": "flavored coffee",
+      "context_snippets": [
+        "Can anyone here suggest me coffee alternatives which will help with the productivity or build focus",
+        "Can anyone here suggest me coffee alternatives which will help with the productivity or build focus",
+        "Filter Coffee!! Mau share ritual pagi juga ahahah",
+        "Biasa ganti2an antara filter coffee, espresso, atau matcha, tapi lebih jauh sering filter",
+        "Am i overreacting the barista from the coffee shop I frequent somehow get my insta"
+      ],
+      "method": "LLM + RAG + Hashtags",
+      "timestamp": "2025-09-25T15:12:12.706825"
+    },
+    {
+      "caption": "Discover the smooth awakening of cold brew \u2013 your cup has never tasted this chill before! Say goodbye to jitters for those just weaning off coffee while embracing preworkout energy with a sip that's as refreshing and revitalizing as it is gentle on the nerves. #CaffeineInColdB...\n\n#coldbrew #coldbrewcoffee #icedcoffee #coffee #coffeelover",
+      "base_caption": "Discover the smooth awakening of cold brew \u2013 your cup has never tasted this chill before! Say goodbye to jitters for those just weaning off coffee while embracing preworkout energy with a sip that's as refreshing and revitalizing as it is gentle on the nerves. #CaffeineInColdB...",
+      "hashtags": [
+        "#coldbrew",
+        "#coldbrewcoffee",
+        "#icedcoffee",
+        "#coffee",
+        "#coffeelover"
+      ],
+      "keyword": "caffeine in cold brew",
+      "context_snippets": [
+        "Randomly decided to quit coffee/caffeine Welcome!  \nI recently started drinking a lot of preworkout and coffee in my daily routine, I saw a few posts in here about caffeine causing anxiety etc",
+        "Randomly decided to quit coffee/caffeine Welcome!  \nI recently started drinking a lot of preworkout and coffee in my daily routine, I saw a few posts in here about caffeine causing anxiety etc",
+        "Randomly decided to quit coffee/caffeine Welcome!  \nI recently started drinking a lot of preworkout and coffee in my daily routine, I saw a few posts in here about caffeine causing anxiety etc",
+        "Guys I don't know the whole caffeine stuff and quantity per coffee but I have about 0",
+        "9g of instant coffee per day"
+      ],
+      "method": "LLM + RAG + Hashtags",
+      "timestamp": "2025-09-25T15:12:20.730306"
+    },
+    {
+      "caption": "\"\ud83c\udf44\u2615\ufe0f Are you ready for the ultimate caffeine kick? Say hello to 'Mushroom Coffee Amazon' - your new mornings game-changer! With prices dropping like a hot lead shot in coffee lover heaven, it\u2019s time to upgrade our cup and desk.\n\n#coffee #coffeelover #coffeetime",
+      "base_caption": "\"\ud83c\udf44\u2615\ufe0f Are you ready for the ultimate caffeine kick? Say hello to 'Mushroom Coffee Amazon' - your new mornings game-changer! With prices dropping like a hot lead shot in coffee lover heaven, it\u2019s time to upgrade our cup and desk.",
+      "hashtags": [
+        "#coffee",
+        "#coffeelover",
+        "#coffeetime"
+      ],
+      "keyword": "mushroom coffee amazon",
+      "context_snippets": [
+        "**Home and office essentials**\u00a0like ergonomic chairs and desks also see big price drops, making it the perfect time to upgrade your setup",
+        "And, of course,\u00a0**kitchen appliances**\u00a0air fryers, coffee machines, and blenders are always heavily discounted crowd favorites",
+        "some thoughts on matchas ive tried recently! im a casual matcha latte drinker, i drink it for a majority of the week",
+        "i have yet to find my perfect matcha but well get there eventually",
+        "its pretty astringent, not much umami but you still have a slight grassy taste"
+      ],
+      "method": "LLM + RAG + Hashtags",
+      "timestamp": "2025-09-25T15:12:27.764137"
+    },
+    {
+      "caption": "Catch the Scene with SCA! Exclusive brews sourced from sunrulture plantations to tantalize your taste buds today\u2014only at [Your Cafe Name]. Join us for an enchanting journey through every cup of coffee we serve. #SustainableBrewing\n\n#coffee #coffeelover #coffeetime",
+      "base_caption": "Catch the Scene with SCA! Exclusive brews sourced from sunrulture plantations to tantalize your taste buds today\u2014only at [Your Cafe Name]. Join us for an enchanting journey through every cup of coffee we serve. #SustainableBrewing",
+      "hashtags": [
+        "#coffee",
+        "#coffeelover",
+        "#coffeetime"
+      ],
+      "keyword": "sca",
+      "context_snippets": [
+        "Amazing coffee experience"
+      ],
+      "method": "LLM + RAG + Hashtags",
+      "timestamp": "2025-09-25T15:12:32.925704"
+    },
+    {
+      "caption": "Wake up to more than just caffeine! Swap out Folgers for some magical alternative that'll supercharge your day with peak productivity vibes (and maybe an extra latte or two, if you ask nicely). Let\u2019de discover the perfect coffee match together in our new thread. Because when i...\n\n#coffee #coffeelover #coffeetime",
+      "base_caption": "Wake up to more than just caffeine! Swap out Folgers for some magical alternative that'll supercharge your day with peak productivity vibes (and maybe an extra latte or two, if you ask nicely). Let\u2019de discover the perfect coffee match together in our new thread. Because when i...",
+      "hashtags": [
+        "#coffee",
+        "#coffeelover",
+        "#coffeetime"
+      ],
+      "keyword": "folgers instant coffee",
+      "context_snippets": [
+        "Can anyone here suggest me coffee alternatives which will help with the productivity or build focus",
+        "Can anyone here suggest me coffee alternatives which will help with the productivity or build focus",
+        "Guys I don't know the whole caffeine stuff and quantity per coffee but I have about 0",
+        "9g of instant coffee per day",
+        "Guys I don't know the whole caffeine stuff and quantity per coffee but I have about 0"
+      ],
+      "method": "LLM + RAG + Hashtags",
+      "timestamp": "2025-09-25T15:12:40.282262"
+    },
+    {
+      "caption": "\"Unlock the essence of simplicity in your morning with this quick yet potent cold brew recipe! Crafted for those moments when you need to conquer both day & night \u2013 because who said a hearty coffee can't be made without spending hours? It\u2019s our little secret nod to that lazy, ...\n\n#coldbrew #coldbrewcoffee #icedcoffee #coffee #coffeelover",
+      "base_caption": "\"Unlock the essence of simplicity in your morning with this quick yet potent cold brew recipe! Crafted for those moments when you need to conquer both day & night \u2013 because who said a hearty coffee can't be made without spending hours? It\u2019s our little secret nod to that lazy, ...",
+      "hashtags": [
+        "#coldbrew",
+        "#coldbrewcoffee",
+        "#icedcoffee",
+        "#coffee",
+        "#coffeelover"
+      ],
+      "keyword": "cold brew recipe",
+      "context_snippets": [
+        "Most days I love having a nice replica of pour-over coffee with complex flavors and artisan beans",
+        "But there are days when I have to get up at 5am and I just want a strong basic cup of cheap coffee",
+        "With cheap beans you don't really want a separation of flavors",
+        "There is no \"complexity\" you want to bring out in the cup",
+        "Perfect for fall! \n\nAgain this is inspired by arisfitjournal on tiktok but I adjusted the recipe to be lower calorie"
+      ],
+      "method": "LLM + RAG + Hashtags",
+      "timestamp": "2025-09-25T15:12:47.141178"
+    },
+    {
+      "caption": "Tired of the usual? Swap your steamed milk for frosty oat delight in an iced latte that's too cool to be just coffee! Dive into this creamy adventure at Molly Moon\u2019s Ice Cream. #IcedLatteRevolution #OatMilkMagic\n\n#latte #latteart #coffeeart #milkcoffee #coffee",
+      "base_caption": "Tired of the usual? Swap your steamed milk for frosty oat delight in an iced latte that's too cool to be just coffee! Dive into this creamy adventure at Molly Moon\u2019s Ice Cream. #IcedLatteRevolution #OatMilkMagic",
+      "hashtags": [
+        "#latte",
+        "#latteart",
+        "#coffeeart",
+        "#milkcoffee",
+        "#coffee"
+      ],
+      "keyword": "iced latte with oat milk",
+      "context_snippets": [
+        "Yeti on cone/cup @ Molly Moon\u2019s Ice Cream, Seattle (sorry bad pic)\n3",
+        "Milk soft serve @ BERG coffee, Seoul, Korea\n12",
+        "Roasted soybean/black sesame & Chocolate pistachio @ Baskin-Robbins, Seoul, Korea\n14",
+        "Yeti on cone/cup @ Molly Moon\u2019s Ice Cream, Seattle (sorry bad pic)\n3",
+        "Milk soft serve @ BERG coffee, Seoul, Korea\n12"
+      ],
+      "method": "LLM + RAG + Hashtags",
+      "timestamp": "2025-09-25T15:12:53.631500"
+    },
+    {
+      "caption": "Embrace the simplicity in complexity with Stok Cold Brew - because some days, all you need is that robust kickstart to conquer your day! No artisan beans needed when this chilled concoction brings pure coffee joy straight from a budget-friendly cup. Join my morning ritual and ...\n\n#coldbrew #coldbrewcoffee #icedcoffee #coffee #coffeelover",
+      "base_caption": "Embrace the simplicity in complexity with Stok Cold Brew - because some days, all you need is that robust kickstart to conquer your day! No artisan beans needed when this chilled concoction brings pure coffee joy straight from a budget-friendly cup. Join my morning ritual and ...",
+      "hashtags": [
+        "#coldbrew",
+        "#coldbrewcoffee",
+        "#icedcoffee",
+        "#coffee",
+        "#coffeelover"
+      ],
+      "keyword": "stok cold brew",
+      "context_snippets": [
+        "Most days I love having a nice replica of pour-over coffee with complex flavors and artisan beans",
+        "But there are days when I have to get up at 5am and I just want a strong basic cup of cheap coffee",
+        "With cheap beans you don't really want a separation of flavors",
+        "There is no \"complexity\" you want to bring out in the cup",
+        "Think rich amber, smoky woods, vanilla, leather, perfumes that make you feel cozy but still confident stepping out into frosty streets"
+      ],
+      "method": "LLM + RAG + Hashtags",
+      "timestamp": "2025-09-25T15:13:01.455897"
+    }
+  ]
+}

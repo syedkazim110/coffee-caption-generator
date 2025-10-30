@@ -1,0 +1,69 @@
+{
+  "timestamp": "2025-09-25T14:48:54.149102",
+  "total_hashtags": 2,
+  "top_hashtags": [
+    {
+      "hashtag": "#slimfast",
+      "frequency": 2,
+      "avg_engagement": 1.0,
+      "max_engagement": 1,
+      "trend_score": 1.4000000000000001,
+      "sources": [
+        "reddit"
+      ],
+      "sample_contexts": [
+        "Blended breakfast So since I've started my walking and weight loss journey every morning I make myself a #chocolate #slimfast shake with banana, peanut butter, collagen peptides, 7 mushroom blend powd",
+        "Blended breakfast So since I've started my walking and weight loss journey every morning I make myself a #chocolate #slimfast shake with banana, peanut butter, collagen peptides, 7 mushroom blend powd"
+      ]
+    },
+    {
+      "hashtag": "#chocolate",
+      "frequency": 2,
+      "avg_engagement": 1.0,
+      "max_engagement": 1,
+      "trend_score": 1.4000000000000001,
+      "sources": [
+        "reddit"
+      ],
+      "sample_contexts": [
+        "Blended breakfast So since I've started my walking and weight loss journey every morning I make myself a #chocolate #slimfast shake with banana, peanut butter, collagen peptides, 7 mushroom blend powd",
+        "Blended breakfast So since I've started my walking and weight loss journey every morning I make myself a #chocolate #slimfast shake with banana, peanut butter, collagen peptides, 7 mushroom blend powd"
+      ]
+    }
+  ],
+  "all_hashtags": [
+    {
+      "hashtag": "#slimfast",
+      "frequency": 2,
+      "avg_engagement": 1.0,
+      "max_engagement": 1,
+      "trend_score": 1.4000000000000001,
+      "sources": [
+        "reddit"
+      ],
+      "sample_contexts": [
+        "Blended breakfast So since I've started my walking and weight loss journey every morning I make myself a #chocolate #slimfast shake with banana, peanut butter, collagen peptides, 7 mushroom blend powd",
+        "Blended breakfast So since I've started my walking and weight loss journey every morning I make myself a #chocolate #slimfast shake with banana, peanut butter, collagen peptides, 7 mushroom blend powd"
+      ]
+    },
+    {
+      "hashtag": "#chocolate",
+      "frequency": 2,
+      "avg_engagement": 1.0,
+      "max_engagement": 1,
+      "trend_score": 1.4000000000000001,
+      "sources": [
+        "reddit"
+      ],
+      "sample_contexts": [
+        "Blended breakfast So since I've started my walking and weight loss journey every morning I make myself a #chocolate #slimfast shake with banana, peanut butter, collagen peptides, 7 mushroom blend powd",
+        "Blended breakfast So since I've started my walking and weight loss journey every morning I make myself a #chocolate #slimfast shake with banana, peanut butter, collagen peptides, 7 mushroom blend powd"
+      ]
+    }
+  ],
+  "sources": [
+    "reddit",
+    "twitter"
+  ],
+  "analysis_period": "30 days"
+}

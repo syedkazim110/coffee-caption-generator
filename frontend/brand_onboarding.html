@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Onboarding - Multi-Brand Social Media Platform</title>
+    <link rel="stylesheet" href="brand_onboarding.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">🏢</div>
+            <h1 id="pageTitle">Brand Onboarding</h1>
+            <p class="subtitle" id="pageSubtitle">Complete your brand profile to start generating content</p>
+        </header>
+
+        <!-- Hidden field for edit mode -->
+        <input type="hidden" id="brandId" value="">
+        <input type="hidden" id="editMode" value="false">
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-steps">
+                <div class="step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Initial Setup</div>
+                </div>
+                <div class="step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Brand Voice</div>
+                </div>
+                <div class="step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Guardrails</div>
+                </div>
+                <div class="step" data-step="4">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Strategy</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Container -->
+        <div class="form-container">
+            <!-- Step 1: Initial Setup -->
+            <div class="form-step active" id="step1">
+                <h2>Step 1: Initial Setup</h2>
+                <p class="step-description">Basic information about your brand</p>
+
+                <div class="form-group">
+                    <label for="brandName">Brand Name *</label>
+                    <input type="text" id="brandName" required placeholder="e.g., Warpath Coffee">
+                </div>
+
+                <div class="form-group">
+                    <label for="brandType">Brand Type *</label>
+                    <select id="brandType" required>
+                        <option value="">Select brand type</option>
+                        <option value="Consumer Goods (CPG)">Consumer Goods (CPG)</option>
+                        <option value="B2B Service">B2B Service</option>
+                        <option value="Media/News">Media/News</option>
+                        <option value="Non-Profit">Non-Profit</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="productNature">Product/Service Focus *</label>
+                    <textarea id="productNature" required rows="3" placeholder="e.g., Specialty whole coffee beans, veteran-owned"></textarea>
+                    <small>Describe your core product or service offering</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="industry">Industry/Vertical *</label>
+                    <input type="text" id="industry" required placeholder="e.g., Specialty Beverage">
+                </div>
+
+                <div class="form-group">
+                    <label for="targetAudience">Target Audience *</label>
+                    <textarea id="targetAudience" required rows="3" placeholder="e.g., Urban professionals, 25-40, value sustainability"></textarea>
+                    <small>Demographics, psychographics, interests</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="contentLanguage">Content Language</label>
+                    <select id="contentLanguage">
+                        <option value="English (US)">English (US)</option>
+                        <option value="English (UK)">English (UK)</option>
+                        <option value="Spanish">Spanish</option>
+                        <option value="French">French</option>
+                        <option value="German">German</option>
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn" onclick="handleCancel()">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep()">Next: Brand Voice →</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Brand Voice Profile -->
+            <div class="form-step" id="step2">
+                <h2>Step 2: Brand Voice Profile</h2>
+                <p class="step-description">Define your brand's personality and communication style</p>
+
+                <!-- Voice Adjectives with AI Suggestions -->
+                <div class="form-group">
+                    <div class="label-with-action">
+                        <label>Core Voice Adjectives (3-5) *</label>
+                        <button type="button" class="btn btn-ai" onclick="generateVoiceAdjectives()">
+                            ✨ AI Suggest
+                        </button>
+                    </div>
+                    <div id="adjectivesContainer">
+                        <div class="adjective-input">
+                            <input type="text" class="adjective" placeholder="e.g., Bold">
+                            <button type="button" class="btn-remove" onclick="removeAdjective(this)">×</button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-text" onclick="addAdjective()">+ Add Adjective</button>
+                    <div id="aiSuggestions" class="ai-suggestions" style="display: none;"></div>
+                </div>
+
+                <!-- Lexicon Always Use -->
+                <div class="form-group">
+                    <div class="label-with-action">
+                        <label>Lexicon: Always Use</label>
+                        <button type="button" class="btn btn-ai" onclick="generateLexicon()">
+                            ✨ AI Suggest
+                        </button>
+                    </div>
+                    <div id="alwaysUseContainer">
+                        <div class="lexicon-input">
+                            <input type="text" class="always-use-term" placeholder="e.g., ethically sourced">
+                            <button type="button" class="btn-remove" onclick="removeLexicon(this)">×</button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-text" onclick="addAlwaysUse()">+ Add Term</button>
+                    <small>Key terms to include when relevant</small>
+                </div>
+
+                <!-- Lexicon Never Use -->
+                <div class="form-group">
+                    <label>Lexicon: Never Use</label>
+                    <div id="neverUseContainer">
+                        <div class="lexicon-input">
+                            <input type="text" class="never-use-term" placeholder="e.g., cheap, generic">
+                            <button type="button" class="btn-remove" onclick="removeLexicon(this)">×</button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-text" onclick="addNeverUse()">+ Add Term</button>
+                    <small>Terms to avoid in content</small>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep()">← Back</button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep()">Next: Guardrails →</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Content Guardrails -->
+            <div class="form-step" id="step3">
+                <h2>Step 3: Content Guardrails</h2>
+                <p class="step-description">Set safety and compliance rules for content</p>
+
+                <div class="form-group">
+                    <label>Inappropriate Topics</label>
+                    <div id="topicsContainer">
+                        <div class="topic-checkbox">
+                            <input type="checkbox" id="topic-politics" value="Politics">
+                            <label for="topic-politics">Politics</label>
+                        </div>
+                        <div class="topic-checkbox">
+                            <input type="checkbox" id="topic-religion" value="Religion">
+                            <label for="topic-religion">Religion</label>
+                        </div>
+                        <div class="topic-checkbox">
+                            <input type="checkbox" id="topic-competitive" value="Competitive Benchmarks">
+                            <label for="topic-competitive">Competitive Benchmarks</label>
+                        </div>
+                        <div class="topic-checkbox">
+                            <input type="checkbox" id="topic-sexual" value="Sexual Content">
+                            <label for="topic-sexual">Sexual Content</label>
+                        </div>
+                        <div class="topic-checkbox">
+                            <input type="checkbox" id="topic-controversial" value="Controversial Social Issues">
+                            <label for="topic-controversial">Controversial Social Issues</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="factCheckLevel">Fact-Checking Sensitivity</label>
+                    <select id="factCheckLevel">
+                        <option value="High">High - Minimize hallucinations</option>
+                        <option value="Medium">Medium - Balanced approach</option>
+                        <option value="Low">Low - Creative freedom</option>
+                    </select>
+                    <small>Controls how aggressively AI validates information</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="imageStyle">Image Style Preference</label>
+                    <textarea id="imageStyle" rows="2" placeholder="e.g., Minimalist, high-contrast, warm color palette"></textarea>
+                    <small>Guide text-to-image generation</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="disclaimers">Mandatory Disclaimers</label>
+                    <textarea id="disclaimers" rows="3" placeholder="e.g., Always include #ad for sponsored posts"></textarea>
+                    <small>Required text for specific content types</small>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep()">← Back</button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep()">Next: Strategy →</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Strategy & Workflow -->
+            <div class="form-step" id="step4">
+                <h2>Step 4: Strategy & Workflow</h2>
+                <p class="step-description">Define your content strategy and workflow preferences</p>
+
+                <div class="form-group">
+                    <label>Content Mix Strategy</label>
+                    <div class="content-mix">
+                        <div class="mix-item">
+                            <label for="mixEducation">Education %</label>
+                            <input type="number" id="mixEducation" min="0" max="100" value="40">
+                        </div>
+                        <div class="mix-item">
+                            <label for="mixEngagement">Engagement %</label>
+                            <input type="number" id="mixEngagement" min="0" max="100" value="40">
+                        </div>
+                        <div class="mix-item">
+                            <label for="mixPromotion">Promotion %</label>
+                            <input type="number" id="mixPromotion" min="0" max="100" value="20">
+                        </div>
+                    </div>
+                    <small>Total should equal 100%</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="workflowMode">Workflow Mode</label>
+                    <select id="workflowMode">
+                        <option value="Draft & Require Approval">Draft & Require Approval (Recommended)</option>
+                        <option value="Auto-Publish">Auto-Publish</option>
+                        <option value="Scheduled Review">Scheduled Review</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Content Sources (Optional)</label>
+                    <div id="sourcesContainer">
+                        <input type="url" class="rag-source" placeholder="https://example.com/blog">
+                    </div>
+                    <button type="button" class="btn btn-text" onclick="addSource()">+ Add Source URL</button>
+                    <small>Custom URLs for brand-specific knowledge (leave blank to use defaults)</small>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep()">← Back</button>
+                    <button type="button" class="btn btn-primary" onclick="submitBrand()" id="submitBtn">
+                        <span class="btn-text" id="submitBtnText">Complete Onboarding</span>
+                        <span class="btn-loader" style="display: none;">
+                            <span class="spinner"></span> <span id="submitBtnLoaderText">Creating...</span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="successModal" class="modal" style="display: none;">
+            <div class="modal-content success">
+                <div class="modal-icon">✅</div>
+                <h2>Brand Profile Created!</h2>
+                <p id="successMessage"></p>
+                <button class="btn btn-primary" onclick="window.location.href='/'">Start Generating Content</button>
+            </div>
+        </div>
+
+        <!-- Error Modal -->
+        <div id="errorModal" class="modal" style="display: none;">
+            <div class="modal-content error">
+                <div class="modal-icon">⚠️</div>
+                <h2>Error</h2>
+                <p id="errorMessage"></p>
+                <button class="btn btn-secondary" onclick="closeModal('errorModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="brand_onboarding.js?v=2"></script>
+</body>
+</html>

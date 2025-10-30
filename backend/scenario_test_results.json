@@ -1,0 +1,10 @@
+{
+  "scenario": "Sale 10% off for Italian Frogman Espresso",
+  "caption": "\ud83d\udea8 Sale Alert! Grab your favorite Italian Frogman Espressos at just **10% off** while supplies last - exclusive offer from .",
+  "validation": {
+    "Contains '10%'": true,
+    "Contains 'sale' or 'off'": true,
+    "Contains 'Italian Frogman Espresso'": true
+  },
+  "all_passed": true
+}

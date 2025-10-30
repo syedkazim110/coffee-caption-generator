@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Management - Multi-Brand Social Media Platform</title>
+    <link rel="stylesheet" href="brand_list.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">🏢</div>
+            <h1>Brand Management</h1>
+            <p class="subtitle">Manage your brand profiles</p>
+        </header>
+
+        <!-- Actions Bar -->
+        <div class="actions-bar">
+            <button class="btn btn-primary" onclick="window.location.href='brand_onboarding.html'">
+                ➕ Create New Brand
+            </button>
+            <button class="btn btn-secondary" onclick="window.location.href='http://127.0.0.1:8000/'">
+                ← Back to Dashboard
+            </button>
+        </div>
+
+        <!-- Brands Container -->
+        <div class="brands-container" id="brandsContainer">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Loading brands...</p>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-icon">📋</div>
+            <h2>No Brands Yet</h2>
+            <p>Create your first brand profile to start generating content</p>
+            <button class="btn btn-primary" onclick="window.location.href='brand_onboarding.html'">
+                Create Your First Brand
+            </button>
+        </div>
+
+        <!-- Delete Confirmation Modal -->
+        <div id="deleteModal" class="modal" style="display: none;">
+            <div class="modal-content warning">
+                <div class="modal-icon">⚠️</div>
+                <h2>Delete Brand?</h2>
+                <p id="deleteMessage"></p>
+                <p class="warning-text">This action cannot be undone.</p>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+                    <button class="btn btn-danger" onclick="confirmDelete()" id="confirmDeleteBtn">
+                        <span class="btn-text">Delete Brand</span>
+                        <span class="btn-loader" style="display: none;">
+                            <span class="spinner"></span> Deleting...
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="successModal" class="modal" style="display: none;">
+            <div class="modal-content success">
+                <div class="modal-icon">✅</div>
+                <h2>Success!</h2>
+                <p id="successMessage"></p>
+                <button class="btn btn-primary" onclick="closeSuccessModal()">OK</button>
+            </div>
+        </div>
+
+        <!-- Error Modal -->
+        <div id="errorModal" class="modal" style="display: none;">
+            <div class="modal-content error">
+                <div class="modal-icon">⚠️</div>
+                <h2>Error</h2>
+                <p id="errorMessage"></p>
+                <button class="btn btn-secondary" onclick="closeErrorModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="brand_list.js"></script>
+</body>
+</html>
