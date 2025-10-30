@@ -288,6 +288,31 @@
                                 Connect Facebook
                             </button>
                         </div>
+
+                        <!-- Twitter/X -->
+                        <div class="social-platform-card">
+                            <div class="platform-header">
+                                <div class="platform-icon-large">𝕏</div>
+                                <div class="platform-info">
+                                    <h4>Twitter/X</h4>
+                                    <div id="twitterStatus" class="connection-status disconnected">
+                                        <span class="status-dot"></span>
+                                        <span class="status-text">Not Connected</span>
+                                    </div>
+                                </div>
+                                <label class="platform-checkbox">
+                                    <input type="checkbox" id="twitterCheck" disabled>
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div id="twitterAccount" class="platform-account" style="display: none;">
+                                <span class="account-label">Account:</span>
+                                <span id="twitterAccountName" class="account-name"></span>
+                            </div>
+                            <button id="twitterConnectBtn" onclick="connectPlatform('twitter')" class="connect-btn">
+                                Connect Twitter/X
+                            </button>
+                        </div>
                     </div>
 
                     <button id="publishBtn" onclick="publishToSocialMedia()" class="publish-btn" disabled>

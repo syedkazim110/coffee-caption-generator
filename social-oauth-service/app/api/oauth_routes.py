@@ -9,6 +9,7 @@ import logging
 
 from app.oauth.instagram_oauth import instagram_oauth
 from app.oauth.facebook_oauth import facebook_oauth
+from app.oauth.twitter_oauth import twitter_oauth
 from app.oauth.token_manager import token_manager
 
 logger = logging.getLogger(__name__)
@@ -18,7 +19,8 @@ router = APIRouter()
 # Platform provider mapping
 PROVIDERS = {
     'instagram': instagram_oauth,
-    'facebook': facebook_oauth
+    'facebook': facebook_oauth,
+    'twitter': twitter_oauth
 }
 
 
@@ -36,7 +38,7 @@ async def initiate_oauth(platform: str, request: AuthorizeRequest):
     Initiate OAuth authorization flow
     
     Args:
-        platform: Platform name (instagram/facebook)
+        platform: Platform name (instagram/facebook/twitter)
         request: Authorization request with brand_id
     
     Returns:
@@ -51,10 +53,24 @@ async def initiate_oauth(platform: str, request: AuthorizeRequest):
         # Generate state token with PKCE if needed
         state_token, code_verifier = provider.generate_state_token(request.brand_id)
         
+        # For platforms requiring PKCE, retrieve code_challenge from database
+        kwargs = {}
+        if provider.requires_pkce() and code_verifier:
+            # Get code_challenge from database (stored by generate_state_token)
+            from app.database import db
+            result = db.execute_query(
+                "SELECT code_challenge FROM oauth_states WHERE state_token = %s",
+                (state_token,)
+            )
+            if result and len(result) > 0:
+                kwargs['code_challenge'] = result[0]['code_challenge']
+                logger.info(f"Retrieved code_challenge for {platform} PKCE flow")
+        
         # Get authorization URL
-        auth_url = provider.get_authorization_url(state_token)
+        auth_url = provider.get_authorization_url(state_token, **kwargs)
         
         logger.info(f"OAuth initiated for {platform}, brand {request.brand_id}")
+        logger.info(f"Authorization URL: {auth_url[:100]}...")  # Log first 100 chars
         
         return {
             "success": True,
@@ -64,6 +80,8 @@ async def initiate_oauth(platform: str, request: AuthorizeRequest):
         }
     except Exception as e:
         logger.error(f"Failed to initiate OAuth for {platform}: {e}")
+        import traceback
+        logger.error(traceback.format_exc())
         raise HTTPException(status_code=500, detail=str(e))
 
 

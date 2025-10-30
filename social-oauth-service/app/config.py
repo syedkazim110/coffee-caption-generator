@@ -38,8 +38,13 @@ class Settings(BaseSettings):
     # Server Base URL (for serving temporary images to Instagram)
     SERVER_BASE_URL: Optional[str] = None  # If None, will use http://localhost:PORT
     
-    # ImgBB Image Hosting (for Instagram image uploads)
+    # ImgBB Image Hosting (for Instagram image uploads - deprecated)
     IMGBB_API_KEY: Optional[str] = None
+    
+    # Cloudinary Image Hosting (for Instagram image uploads)
+    CLOUDINARY_CLOUD_NAME: Optional[str] = None
+    CLOUDINARY_API_KEY: Optional[str] = None
+    CLOUDINARY_API_SECRET: Optional[str] = None
     
     # Instagram/Facebook OAuth (Meta)
     INSTAGRAM_CLIENT_ID: Optional[str] = None
@@ -55,6 +60,10 @@ class Settings(BaseSettings):
     TWITTER_CLIENT_SECRET: Optional[str] = None
     TWITTER_REDIRECT_URI: Optional[str] = None
     TWITTER_BEARER_TOKEN: Optional[str] = None
+    
+    # Twitter App-level credentials (OAuth 1.0a for media uploads)
+    TWITTER_API_KEY: Optional[str] = None  # Consumer Key
+    TWITTER_API_SECRET: Optional[str] = None  # Consumer Secret
     
     # LinkedIn OAuth
     LINKEDIN_CLIENT_ID: Optional[str] = None

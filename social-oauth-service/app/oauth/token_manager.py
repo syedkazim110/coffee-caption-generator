@@ -27,7 +27,9 @@ class TokenManager:
         client_secret: str,
         platform_user_id: Optional[str] = None,
         platform_username: Optional[str] = None,
-        account_metadata: Optional[Dict[str, Any]] = None
+        account_metadata: Optional[Dict[str, Any]] = None,
+        oauth1_access_token: Optional[str] = None,
+        oauth1_access_token_secret: Optional[str] = None
     ) -> Dict[str, Any]:
         """
         Save or update OAuth connection
@@ -55,6 +57,11 @@ class TokenManager:
             encrypted_access_token = token_encryption.encrypt_token(access_token)
             encrypted_refresh_token = token_encryption.encrypt_token(refresh_token) if refresh_token else None
             encrypted_client_secret = token_encryption.encrypt_token(client_secret)
+            
+            # Encrypt OAuth 1.0a credentials if provided
+            encrypted_oauth1_token = token_encryption.encrypt_token(oauth1_access_token) if oauth1_access_token else None
+            encrypted_oauth1_secret = token_encryption.encrypt_token(oauth1_access_token_secret) if oauth1_access_token_secret else None
+            oauth1_enabled = bool(oauth1_access_token and oauth1_access_token_secret)
             
             # Convert account_metadata dict to JSON string for PostgreSQL
             metadata_json = json.dumps(account_metadata) if account_metadata else None
@@ -96,6 +103,9 @@ class TokenManager:
                         platform_user_id = %s,
                         platform_username = %s,
                         account_metadata = %s,
+                        oauth1_access_token = %s,
+                        oauth1_access_token_secret = %s,
+                        oauth1_enabled = %s,
                         is_active = true,
                         connection_error = NULL,
                         updated_at = CURRENT_TIMESTAMP
@@ -111,6 +121,9 @@ class TokenManager:
                         platform_user_id,
                         platform_username,
                         metadata_json,
+                        encrypted_oauth1_token,
+                        encrypted_oauth1_secret,
+                        oauth1_enabled,
                         brand_id,
                         platform
                     ),
@@ -123,8 +136,9 @@ class TokenManager:
                     INSERT INTO social_connections (
                         brand_id, platform, access_token, refresh_token,
                         expires_at, client_id, client_secret,
-                        platform_user_id, platform_username, account_metadata
-                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                        platform_user_id, platform_username, account_metadata,
+                        oauth1_access_token, oauth1_access_token_secret, oauth1_enabled
+                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     RETURNING *
                     """,
                     (
@@ -137,7 +151,10 @@ class TokenManager:
                         encrypted_client_secret,
                         platform_user_id,
                         platform_username,
-                        metadata_json
+                        metadata_json,
+                        encrypted_oauth1_token,
+                        encrypted_oauth1_secret,
+                        oauth1_enabled
                     )
                 )
             

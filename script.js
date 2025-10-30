@@ -442,6 +442,7 @@ let oauthPopup = null;
 async function checkAllConnectionStatus() {
     await checkConnectionStatus('instagram');
     await checkConnectionStatus('facebook');
+    await checkConnectionStatus('twitter');
 }
 
 // Check connection status for a platform
@@ -515,9 +516,10 @@ function updatePlatformUI(platform, statusData) {
 function updatePublishButtonState() {
     const instagramCheck = document.getElementById('instagramCheck');
     const facebookCheck = document.getElementById('facebookCheck');
+    const twitterCheck = document.getElementById('twitterCheck');
     const publishBtn = document.getElementById('publishBtn');
     
-    const anyChecked = instagramCheck.checked || facebookCheck.checked;
+    const anyChecked = instagramCheck.checked || facebookCheck.checked || twitterCheck.checked;
     publishBtn.disabled = !anyChecked;
 }
 
@@ -525,12 +527,16 @@ function updatePublishButtonState() {
 document.addEventListener('DOMContentLoaded', () => {
     const instagramCheck = document.getElementById('instagramCheck');
     const facebookCheck = document.getElementById('facebookCheck');
+    const twitterCheck = document.getElementById('twitterCheck');
     
     if (instagramCheck) {
         instagramCheck.addEventListener('change', updatePublishButtonState);
     }
     if (facebookCheck) {
         facebookCheck.addEventListener('change', updatePublishButtonState);
+    }
+    if (twitterCheck) {
+        twitterCheck.addEventListener('change', updatePublishButtonState);
     }
 });
 
@@ -649,6 +655,7 @@ async function publishToSocialMedia() {
     
     const instagramCheck = document.getElementById('instagramCheck');
     const facebookCheck = document.getElementById('facebookCheck');
+    const twitterCheck = document.getElementById('twitterCheck');
     const publishBtn = document.getElementById('publishBtn');
     const btnText = publishBtn.querySelector('.btn-text');
     const btnLoader = publishBtn.querySelector('.btn-loader');
@@ -658,6 +665,7 @@ async function publishToSocialMedia() {
     const platforms = [];
     if (instagramCheck.checked) platforms.push('instagram');
     if (facebookCheck.checked) platforms.push('facebook');
+    if (twitterCheck.checked) platforms.push('twitter');
     
     if (platforms.length === 0) {
         showNotification('❌ Please select at least one platform');

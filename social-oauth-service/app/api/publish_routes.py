@@ -11,8 +11,10 @@ import re
 
 from app.oauth.instagram_oauth import instagram_oauth
 from app.oauth.facebook_oauth import facebook_oauth
+from app.oauth.twitter_oauth import twitter_oauth
 from app.publishers.instagram_publisher import instagram_publisher
 from app.publishers.facebook_publisher import facebook_publisher
+from app.publishers.twitter_publisher import twitter_publisher
 from app.database import db
 
 logger = logging.getLogger(__name__)
@@ -22,12 +24,14 @@ router = APIRouter()
 # Platform mapping
 PROVIDERS = {
     'instagram': instagram_oauth,
-    'facebook': facebook_oauth
+    'facebook': facebook_oauth,
+    'twitter': twitter_oauth
 }
 
 PUBLISHERS = {
     'instagram': instagram_publisher,
-    'facebook': facebook_publisher
+    'facebook': facebook_publisher,
+    'twitter': twitter_publisher
 }
 
 
@@ -298,6 +302,18 @@ async def publish_post(request: PublishRequest):
                 # Add image_data to kwargs if we have it
                 if image_data_to_send:
                     kwargs['image_data'] = image_data_to_send
+                
+                # For Twitter, add OAuth 1.0a credentials if available (required for media uploads)
+                if platform == 'twitter':
+                    oauth1_token = connection.get('oauth1_access_token')
+                    oauth1_secret = connection.get('oauth1_access_token_secret')
+                    
+                    if oauth1_token and oauth1_secret:
+                        kwargs['oauth1_token'] = oauth1_token
+                        kwargs['oauth1_token_secret'] = oauth1_secret
+                        logger.info(f"✅ Using OAuth 1.0a credentials for Twitter media upload")
+                    else:
+                        logger.warning(f"⚠️ No OAuth 1.0a credentials found for Twitter. Media uploads may fail with 403 error.")
                 
                 # Publish post
                 result = publisher.publish_with_retry(

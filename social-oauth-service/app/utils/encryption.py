@@ -95,7 +95,13 @@ class TokenEncryption:
         Returns:
             Dictionary with decrypted tokens
         """
-        sensitive_fields = ['access_token', 'refresh_token', 'client_secret']
+        sensitive_fields = [
+            'access_token', 
+            'refresh_token', 
+            'client_secret',
+            'oauth1_access_token',
+            'oauth1_access_token_secret'
+        ]
         decrypted_data = data.copy()
         
         for field in sensitive_fields:

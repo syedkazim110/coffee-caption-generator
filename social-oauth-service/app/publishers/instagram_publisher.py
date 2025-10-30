@@ -8,7 +8,7 @@ import time
 
 from app.publishers.base_publisher import BasePublisher
 from app.utils.temp_image_storage import temp_image_storage
-from app.utils.imgbb_uploader import create_imgbb_uploader
+from app.utils.cloudinary_uploader import create_cloudinary_uploader
 from app.config import settings
 
 logger = logging.getLogger(__name__)
@@ -21,47 +21,101 @@ class InstagramPublisher(BasePublisher):
         super().__init__('instagram')
         self.graph_api_url = "https://graph.facebook.com/v18.0"
     
-    def _verify_image_accessibility(self, image_url: str) -> bool:
+    def _verify_image_accessibility(self, image_url: str) -> Dict[str, Any]:
         """
-        Verify that an image URL is accessible (for debugging purposes)
+        Verify that an image URL is accessible and get detailed information
         
         Args:
             image_url: URL to verify
         
         Returns:
-            True if accessible, False otherwise
+            Dict with accessibility info: {
+                'accessible': bool,
+                'status_code': int,
+                'content_type': str,
+                'content_length': int,
+                'response_time_ms': float,
+                'final_url': str (after redirects)
+            }
         """
         try:
             logger.info(f"Verifying image accessibility: {image_url}")
             
-            # Make a HEAD request to check if image is accessible
-            response = requests.head(
-                image_url,
-                timeout=10,
-                headers={
-                    'User-Agent': 'Mozilla/5.0 (compatible; InstagramBot/1.0)',
-                    'ngrok-skip-browser-warning': 'true'
-                },
-                allow_redirects=True
-            )
+            import time
+            start_time = time.time()
             
-            if response.status_code == 200:
-                content_type = response.headers.get('Content-Type', '')
-                logger.info(f"Image is accessible. Status: {response.status_code}, Content-Type: {content_type}")
-                
-                # Verify it's an image content type
-                if not content_type.startswith('image/'):
-                    logger.warning(f"URL does not return image content type: {content_type}")
-                    return False
-                
-                return True
-            else:
-                logger.warning(f"Image not accessible. Status: {response.status_code}")
-                return False
+            # Make a HEAD request to check if image is accessible
+            # Try with different User-Agents to simulate Instagram's crawler
+            user_agents = [
+                'facebookexternalhit/1.1',  # Instagram/Facebook crawler
+                'Mozilla/5.0 (compatible; InstagramBot/1.0)',
+                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            ]
+            
+            last_response = None
+            for user_agent in user_agents:
+                try:
+                    response = requests.head(
+                        image_url,
+                        timeout=10,
+                        headers={
+                            'User-Agent': user_agent,
+                            'Accept': 'image/*',
+                            'ngrok-skip-browser-warning': 'true'
+                        },
+                        allow_redirects=True
+                    )
+                    last_response = response
+                    
+                    if response.status_code == 200:
+                        break
+                except:
+                    continue
+            
+            if not last_response:
+                return {
+                    'accessible': False,
+                    'error': 'No response from server'
+                }
+            
+            response = last_response
+            response_time = (time.time() - start_time) * 1000
+            
+            content_type = response.headers.get('Content-Type', '')
+            content_length = response.headers.get('Content-Length', 0)
+            
+            result = {
+                'accessible': response.status_code == 200,
+                'status_code': response.status_code,
+                'content_type': content_type,
+                'content_length': int(content_length) if content_length else 0,
+                'response_time_ms': response_time,
+                'final_url': response.url,
+                'redirects': len(response.history)
+            }
+            
+            logger.info(f"Image accessibility check:")
+            logger.info(f"  - Status: {result['status_code']}")
+            logger.info(f"  - Content-Type: {result['content_type']}")
+            logger.info(f"  - Size: {result['content_length']} bytes")
+            logger.info(f"  - Response time: {result['response_time_ms']:.2f}ms")
+            logger.info(f"  - Redirects: {result['redirects']}")
+            logger.info(f"  - Final URL: {result['final_url']}")
+            
+            # Verify it's an image content type
+            if not content_type.startswith('image/'):
+                logger.warning(f"URL does not return image content type: {content_type}")
+                result['accessible'] = False
+                result['error'] = f"Invalid content type: {content_type}"
+            
+            return result
                 
         except Exception as e:
             logger.error(f"Failed to verify image accessibility: {e}")
-            return False
+            return {
+                'accessible': False,
+                'error': str(e)
+            }
     
     def publish_post(
         self,
@@ -88,32 +142,41 @@ class InstagramPublisher(BasePublisher):
         Returns:
             dict with post_id and url
         """
-        # Handle binary image data by uploading to imgbb
-        imgbb_upload_result = None
+        # Handle binary image data by uploading to Cloudinary
+        cloudinary_upload_result = None
         if image_data and not image_url:
-            logger.info("Binary image data provided, uploading to imgbb")
+            logger.info("Binary image data provided, uploading to Cloudinary")
             try:
-                # Check if imgbb API key is configured
-                if not settings.IMGBB_API_KEY:
+                # Check if Cloudinary credentials are configured
+                if not settings.CLOUDINARY_CLOUD_NAME or not settings.CLOUDINARY_API_KEY or not settings.CLOUDINARY_API_SECRET:
                     raise ValueError(
-                        "IMGBB_API_KEY not configured. Please add it to your .env file. "
+                        "Cloudinary credentials not configured. Please add CLOUDINARY_CLOUD_NAME, "
+                        "CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET to your .env file. "
                         "Instagram requires publicly accessible image URLs."
                     )
                 
-                # Create imgbb uploader
-                imgbb_uploader = create_imgbb_uploader(settings.IMGBB_API_KEY)
+                # Create Cloudinary uploader
+                cloudinary_uploader = create_cloudinary_uploader(
+                    settings.CLOUDINARY_CLOUD_NAME,
+                    settings.CLOUDINARY_API_KEY,
+                    settings.CLOUDINARY_API_SECRET
+                )
                 
-                # Upload image to imgbb
-                imgbb_upload_result = imgbb_uploader.upload_image(image_data)
+                # Upload image to Cloudinary
+                cloudinary_upload_result = cloudinary_uploader.upload_image(
+                    image_data,
+                    folder="instagram"
+                )
                 
-                # Use the public imgbb URL
-                image_url = imgbb_upload_result['url']
-                
-                logger.info(f"Image uploaded to imgbb successfully: {image_url}")
+                # Use the secure HTTPS URL from Cloudinary
+                # Cloudinary is designed for social media and works reliably with Instagram
+                image_url = cloudinary_upload_result['url']
+                logger.info(f"Using Cloudinary HTTPS URL: {image_url}")
+                logger.info(f"Image uploaded to Cloudinary successfully: {image_url}")
                 
             except Exception as e:
-                logger.error(f"Failed to upload image to imgbb: {e}")
-                raise ValueError(f"Failed to upload image to imgbb: {str(e)}")
+                logger.error(f"Failed to upload image to Cloudinary: {e}")
+                raise ValueError(f"Failed to upload image to Cloudinary: {str(e)}")
         
         if not image_url:
             raise ValueError("Instagram requires an image_url or image_data")
@@ -122,14 +185,28 @@ class InstagramPublisher(BasePublisher):
             raise ValueError(f"Invalid image URL: {image_url}")
         
         # Verify image accessibility (helps debug issues)
-        if not self._verify_image_accessibility(image_url):
+        accessibility_result = self._verify_image_accessibility(image_url)
+        if not accessibility_result.get('accessible', False):
+            error_info = accessibility_result.get('error', 'Unknown error')
             logger.warning(
                 f"Image accessibility verification failed for {image_url}. "
-                "This may cause Instagram API to fail. Check that:\n"
-                "1. The URL is publicly accessible\n"
-                "2. ngrok tunnel is active and configured correctly\n"
-                "3. The image file exists and has correct MIME type"
+                f"Error: {error_info}. "
+                "This may cause Instagram API to fail. "
+                "Detailed info: " + str(accessibility_result)
             )
+        else:
+            # Image is accessible to us, but may not be to Instagram's crawler
+            logger.info("✅ Image is accessible from our server, but Instagram's crawler may have different access")
+            
+            # Log a warning about potential ImgBB-Instagram compatibility issues
+            if 'ibb.co' in image_url or 'imgbb.com' in image_url:
+                logger.warning(
+                    "⚠️ Using ImgBB as image host. If Instagram rejects the image:\n"
+                    "  - ImgBB may be blocking Instagram's crawler (facebookexternalhit)\n"
+                    "  - Rate limiting may be in effect\n"
+                    "  - Consider using an alternative image host known to work with Instagram\n"
+                    "  - Instagram-compatible hosts: Cloudinary, AWS S3, Azure Blob Storage"
+                )
         
         # Get Instagram Business Account ID
         instagram_user_id = kwargs.get('instagram_user_id')
