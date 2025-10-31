@@ -475,8 +475,8 @@ docker cp coffee_frontend:/usr/share/nginx/html ./dist
 | Frontend | 3000 | http://localhost:3000 |
 | Backend API | 8000 | http://localhost:8000 |
 | OAuth Service | 8001 | http://localhost:8001 |
-| PostgreSQL (main) | 5432 | localhost:5432 |
-| PostgreSQL (OAuth) | 5434 | localhost:5434 |
+| PostgreSQL (main) | 5433 | localhost:5433 |
+| PostgreSQL (OAuth) | 5435 | localhost:5435 |
 | Ollama | 11434 | http://localhost:11434 |
 
 **Note:** Ports can be customized via environment variables.

@@ -10,7 +10,7 @@ services:
     image: postgres:15-alpine
     container_name: coffee_postgres
     ports:
-      - "${DB_PORT:-5432}:5432"
+      - "${DB_PORT:-5433}:5432"
     environment:
       - POSTGRES_USER=${DB_USER:-postgres}
       - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres123}
@@ -111,7 +111,7 @@ services:
     image: postgres:15-alpine
     container_name: coffee_oauth_db
     ports:
-      - "${OAUTH_DB_PORT:-5434}:5432"
+      - "${OAUTH_DB_PORT:-5435}:5432"
     environment:
       - POSTGRES_USER=${OAUTH_DB_USER:-postgres}
       - POSTGRES_PASSWORD=${OAUTH_DB_PASSWORD:-oauth_pass}

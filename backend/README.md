@@ -200,7 +200,7 @@ python api.py
 
 Create `.env` file:
 ```env
-# Database
+# Database (internal container port is 5432, host port is 5433)
 DB_HOST=postgres
 DB_PORT=5432
 DB_NAME=reddit_db

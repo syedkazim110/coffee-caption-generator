@@ -54,8 +54,8 @@ All paths properly adjusted for backend/ location!
 
 ✓ Frontend (nginx) - Port 3000
 ✓ Backend API - Port 8000
-✓ PostgreSQL (main) - Port 5432
-✓ PostgreSQL (OAuth) - Port 5434
+✓ PostgreSQL (main) - Port 5433
+✓ PostgreSQL (OAuth) - Port 5435
 ✓ Ollama (LLM) - Port 11434
 ✓ OAuth Service - Port 8001
 

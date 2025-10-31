@@ -26,7 +26,8 @@ A RAG-based system that generates viral-style coffee captions using trending Goo
    ```
 
 3. **Access the application:**
-   - Web Interface: http://localhost:8000
+   - Web Interface: http://localhost:3000
+   - Backend API: http://localhost:8002
    - API Docs: http://localhost:8000/docs
 
 ### Option 2: Manual Setup
@@ -166,7 +167,8 @@ docker-compose -f docker-compose.full-stack.yml exec ollama ollama pull llama2
 - **Frontend**: http://localhost:3000
 - **Backend API**: http://localhost:8000
 - **OAuth Service**: http://localhost:8001
-- **PostgreSQL**: localhost:5432 (full-stack only)
+- **PostgreSQL (Main)**: localhost:5433 (full-stack only)
+- **PostgreSQL (OAuth)**: localhost:5435 (full-stack only)
 - **Ollama API**: http://localhost:11434
 
 ### Documentation
