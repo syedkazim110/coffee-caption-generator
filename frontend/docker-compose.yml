@@ -1,0 +1,25 @@
+# Frontend-only Docker Compose for Coffee Caption Generator
+# This runs only the frontend nginx server
+
+version: '3.8'
+
+services:
+  # Frontend Nginx Server
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: coffee_frontend
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    environment:
+      # Backend API URL (can be changed for production)
+      - BACKEND_URL=${BACKEND_URL:-http://localhost:8000}
+    networks:
+      - frontend_network
+    restart: unless-stopped
+
+networks:
+  frontend_network:
+    driver: bridge
+

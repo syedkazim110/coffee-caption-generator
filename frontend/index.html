@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>☕ Coffee Caption Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="logo">☕</div>
+                <h1 class="hero-title">Coffee Caption Generator</h1>
+                <p class="hero-subtitle">AI-Powered Social Media Content with RAG Technology</p>
+                
+                <div class="features-grid">
+                    <div class="feature-badge">
+                        <span class="badge-icon">🤖</span>
+                        <span>LLM Generated</span>
+                    </div>
+                    <div class="feature-badge">
+                        <span class="badge-icon">🔍</span>
+                        <span>RAG Enhanced</span>
+                    </div>
+                    <div class="feature-badge">
+                        <span class="badge-icon">🎨</span>
+                        <span>Image Prompts</span>
+                    </div>
+                    <div class="feature-badge">
+                        <span class="badge-icon">🏷️</span>
+                        <span>Smart Hashtags</span>
+                    </div>
+                </div>
+
+                <div class="brand-selector-container">
+                    <label for="brandSelect" class="brand-label">🏢 Select Brand Voice:</label>
+                    <select id="brandSelect" class="brand-select">
+                        <option value="">Loading brands...</option>
+                    </select>
+                </div>
+
+                <!-- AI Model Selector -->
+                <div class="model-selector-container">
+                    <label for="modelSelect" class="model-label">🤖 AI Model (Optional):</label>
+                    <select id="modelSelect" class="model-select">
+                        <option value="">Use Default Model</option>
+                    </select>
+                    <small class="model-hint">Leave as default to use your preferred model setting</small>
+                </div>
+
+                <!-- Scenario and Keyword Inputs -->
+                <div class="scenario-input-container">
+                    <label for="scenarioInput" class="scenario-label">🎯 Scenario (Optional):</label>
+                    <input 
+                        type="text" 
+                        id="scenarioInput" 
+                        class="scenario-input" 
+                        placeholder="e.g., First time launch, Holiday sale, New product introduction..."
+                    />
+                    <small class="scenario-hint">Leave empty to use normal trending keywords workflow</small>
+                </div>
+
+                <!-- Keyword Input (for scenarios) -->
+                <div class="keyword-input-container">
+                    <label for="keywordInput" class="keyword-label">☕ Product/Keyword (Optional):</label>
+                    <input 
+                        type="text" 
+                        id="keywordInput" 
+                        class="keyword-input" 
+                        placeholder="e.g., Italian Frogman Espresso, Cold Brew, Matcha Latte..."
+                    />
+                    <small class="keyword-hint">Specify the product when using a scenario</small>
+                </div>
+
+                <!-- Platform Selection -->
+                <div class="platform-selector-container">
+                    <label class="platform-label">📱 Select Platform:</label>
+                    <div class="platform-buttons">
+                        <button class="platform-btn active" data-platform="instagram">
+                            <span class="platform-icon">📸</span>
+                            <span class="platform-name">Instagram</span>
+                            <span class="platform-char-limit">40-150</span>
+                        </button>
+                        <button class="platform-btn" data-platform="facebook">
+                            <span class="platform-icon">👥</span>
+                            <span class="platform-name">Facebook</span>
+                            <span class="platform-char-limit">40-80</span>
+                        </button>
+                        <button class="platform-btn" data-platform="twitter">
+                            <span class="platform-icon">𝕏</span>
+                            <span class="platform-name">X/Twitter</span>
+                            <span class="platform-char-limit">70-100</span>
+                        </button>
+                        <button class="platform-btn" data-platform="linkedin">
+                            <span class="platform-icon">💼</span>
+                            <span class="platform-name">LinkedIn</span>
+                            <span class="platform-char-limit">150-300</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="generateBtn" class="generate-btn">
+                        <span class="btn-text">✨ Generate Post</span>
+                        <span class="btn-loader" style="display: none;">
+                            <span class="spinner"></span> Generating...
+                        </span>
+                    </button>
+                    
+                    <a href="/brand_list.html" class="brand-btn">
+                        🏢 Manage Brand Voice
+                    </a>
+                    
+                    <a href="/brand_onboarding.html" class="brand-btn">
+                        ➕ Create Brand Voice
+                    </a>
+                    
+                    <a href="/ai_model_settings.html" class="brand-btn">
+                        🤖 AI Model Settings
+                    </a>
+                </div>
+
+                <div id="statistics" class="statistics"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Display Section -->
+    <div class="container">
+        <div id="postContainer" class="post-container" style="display: none;">
+            <div class="post-card">
+                <!-- Post Header -->
+                <div class="post-header">
+                    <div class="post-avatar">☕</div>
+                    <div class="post-info">
+                        <div class="post-username">Coffee Lover</div>
+                        <div class="post-time" id="postTime">Just now</div>
+                    </div>
+                    <div class="post-menu">⋮</div>
+                </div>
+
+                <!-- Post Image -->
+                <div class="post-image-container" id="imageContainer">
+                    <div class="placeholder-image">
+                        <span class="placeholder-icon">🖼️</span>
+                        <p>Image generation via Gemini</p>
+                        <p class="placeholder-subtitle">Add your GEMINI_API_KEY to generate images</p>
+                    </div>
+                </div>
+
+                <!-- Post Actions -->
+                <div class="post-actions">
+                    <button class="action-btn" onclick="alert('Like feature - UI demo')">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                    </button>
+                    <button class="action-btn" onclick="alert('Comment feature - UI demo')">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                    </button>
+                    <button class="action-btn" onclick="alert('Share feature - UI demo')">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                    <button class="action-btn save-btn" onclick="alert('Save feature - UI demo')">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="19 21 12 17 5 21 5 3 19 3 19 21"></polygon>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Post Content -->
+                <div class="post-content">
+                    <div class="post-likes">0 likes</div>
+                    <div class="post-caption">
+                        <span class="caption-username">coffee_lover</span>
+                        <span id="captionText" class="caption-text"></span>
+                    </div>
+                    <div id="hashtagsText" class="post-hashtags"></div>
+                </div>
+
+                <!-- Post Metadata -->
+                <div class="post-metadata">
+                    <div class="metadata-item">
+                        <span class="metadata-label">📱 Platform:</span>
+                        <span id="platformText" class="metadata-value platform-badge"></span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">🎯 Keyword:</span>
+                        <span id="keywordText" class="metadata-value"></span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">🎨 Visual Style:</span>
+                        <span id="visualStyleText" class="metadata-value"></span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">🖼️ Image Prompt:</span>
+                        <span id="imagePromptText" class="metadata-value"></span>
+                    </div>
+                    <div class="metadata-item">
+                        <span class="metadata-label">⚙️ Method:</span>
+                        <span id="methodText" class="metadata-value"></span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="post-actions-bottom">
+                    <button onclick="copyToClipboard()" class="secondary-btn">
+                        📋 Copy Caption
+                    </button>
+                    <button onclick="copyImagePrompt()" class="secondary-btn">
+                        🖼️ Copy Image Prompt
+                    </button>
+                    <button id="regenerateImageBtn" onclick="regenerateImage()" class="secondary-btn">
+                        <span class="btn-text">🔄 Regenerate Image</span>
+                        <span class="btn-loader" style="display: none;">
+                            <span class="spinner"></span> Regenerating...
+                        </span>
+                    </button>
+                    <button onclick="downloadPost()" class="secondary-btn">
+                        💾 Download Data
+                    </button>
+                </div>
+
+                <!-- Social Media Publishing Section -->
+                <div class="social-publish-section">
+                    <div class="social-header">
+                        <h3>📤 Publish to Social Media</h3>
+                        <p class="social-subtitle">Connect your accounts and post instantly</p>
+                    </div>
+
+                    <div class="social-platforms">
+                        <!-- Instagram -->
+                        <div class="social-platform-card">
+                            <div class="platform-header">
+                                <div class="platform-icon-large">📸</div>
+                                <div class="platform-info">
+                                    <h4>Instagram</h4>
+                                    <div id="instagramStatus" class="connection-status disconnected">
+                                        <span class="status-dot"></span>
+                                        <span class="status-text">Not Connected</span>
+                                    </div>
+                                </div>
+                                <label class="platform-checkbox">
+                                    <input type="checkbox" id="instagramCheck" disabled>
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div id="instagramAccount" class="platform-account" style="display: none;">
+                                <span class="account-label">Account:</span>
+                                <span id="instagramAccountName" class="account-name"></span>
+                            </div>
+                            <button id="instagramConnectBtn" onclick="connectPlatform('instagram')" class="connect-btn">
+                                Connect Instagram
+                            </button>
+                        </div>
+
+                        <!-- Facebook -->
+                        <div class="social-platform-card">
+                            <div class="platform-header">
+                                <div class="platform-icon-large">👥</div>
+                                <div class="platform-info">
+                                    <h4>Facebook</h4>
+                                    <div id="facebookStatus" class="connection-status disconnected">
+                                        <span class="status-dot"></span>
+                                        <span class="status-text">Not Connected</span>
+                                    </div>
+                                </div>
+                                <label class="platform-checkbox">
+                                    <input type="checkbox" id="facebookCheck" disabled>
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div id="facebookAccount" class="platform-account" style="display: none;">
+                                <span class="account-label">Account:</span>
+                                <span id="facebookAccountName" class="account-name"></span>
+                            </div>
+                            <button id="facebookConnectBtn" onclick="connectPlatform('facebook')" class="connect-btn">
+                                Connect Facebook
+                            </button>
+                        </div>
+
+                        <!-- Twitter/X -->
+                        <div class="social-platform-card">
+                            <div class="platform-header">
+                                <div class="platform-icon-large">𝕏</div>
+                                <div class="platform-info">
+                                    <h4>Twitter/X</h4>
+                                    <div id="twitterStatus" class="connection-status disconnected">
+                                        <span class="status-dot"></span>
+                                        <span class="status-text">Not Connected</span>
+                                    </div>
+                                </div>
+                                <label class="platform-checkbox">
+                                    <input type="checkbox" id="twitterCheck" disabled>
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div id="twitterAccount" class="platform-account" style="display: none;">
+                                <span class="account-label">Account:</span>
+                                <span id="twitterAccountName" class="account-name"></span>
+                            </div>
+                            <button id="twitterConnectBtn" onclick="connectPlatform('twitter')" class="connect-btn">
+                                Connect Twitter/X
+                            </button>
+                        </div>
+                    </div>
+
+                    <button id="publishBtn" onclick="publishToSocialMedia()" class="publish-btn" disabled>
+                        <span class="btn-text">🚀 Post to Selected Platforms</span>
+                        <span class="btn-loader" style="display: none;">
+                            <span class="spinner"></span> Publishing...
+                        </span>
+                    </button>
+
+                    <div id="publishResult" class="publish-result" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Display -->
+        <div id="errorContainer" class="error-container" style="display: none;">
+            <div class="error-card">
+                <div class="error-icon">⚠️</div>
+                <div class="error-title">Oops! Something went wrong</div>
+                <div id="errorMessage" class="error-message"></div>
+                <button onclick="location.reload()" class="secondary-btn">Try Again</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>🤖 Powered by RAG Technology + LLM + Gemini</p>
+            <p class="footer-subtitle">Built with ☕ and AI</p>
+        </div>
+    </footer>
+
+    <script src="script.js?v=5"></script>
+</body>
+</html>

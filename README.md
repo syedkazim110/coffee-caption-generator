@@ -26,7 +26,8 @@ A RAG-based system that generates viral-style coffee captions using trending Goo
    ```
 
 3. **Access the application:**
-   - Web Interface: http://localhost:8000
+   - Web Interface: http://localhost:3000
+   - Backend API: http://localhost:8002
    - API Docs: http://localhost:8000/docs
 
 ### Option 2: Manual Setup
@@ -48,19 +49,25 @@ A RAG-based system that generates viral-style coffee captions using trending Goo
 
 ## 🐳 Docker Setup
 
-The application is fully dockerized for easy deployment. The Docker setup includes:
+The application is fully dockerized for easy deployment. Multiple deployment options are available:
 
-- **PostgreSQL Database**: Persistent data storage with automatic initialization
-- **Ollama LLM Service**: Local AI model for caption generation (phi3:mini)
-- **FastAPI Web Application**: Python backend with hot-reload for development
-- **Networking**: Internal Docker network for secure service communication
-- **Health Checks**: Automatic service health monitoring
+### Deployment Options
+
+**1. Full-Stack (Development)** - All services including local database
+**2. External Database (Production)** - Connect to AWS RDS, Azure Database, etc.
+**3. Backend-Only** - For backend development
+**4. Frontend-Only** - For frontend development
+
+See **[DOCKER_DEPLOYMENT.md](DOCKER_DEPLOYMENT.md)** for complete documentation.
 
 ### Quick Start with Docker
 
+#### Option 1: Full-Stack (Recommended for Development)
+
 **1. Start all services:**
 ```bash
-docker compose up --build -d
+cd backend/
+docker-compose -f docker-compose.full-stack.yml up --build -d
 ```
 
 **2. Setup Ollama model (first time only):**
@@ -71,55 +78,105 @@ docker compose up --build -d
 This downloads the phi3:mini model (~2GB). The model is cached and only needs to be downloaded once.
 
 **3. Access the application:**
-- Web Interface: http://localhost:8000
+- Web Interface: http://localhost:3000
+- Backend API: http://localhost:8000
 - API Docs: http://localhost:8000/docs
+
+#### Option 2: Production with External Database (AWS RDS/Azure/GCP)
+
+**1. Create environment file:**
+```bash
+cd backend/
+cat ENV_EXTERNAL_TEMPLATE.txt > .env.external
+# Edit .env.external with your database credentials
+```
+
+**2. Start services:**
+```bash
+docker-compose --env-file .env.external -f docker-compose.external-db.yml up --build -d
+```
+
+**3. Access the application:**
+- Web Interface: http://localhost:3000
+- Backend API: http://localhost:8000
+
+**See:** [backend/EXTERNAL_DATABASE.md](backend/EXTERNAL_DATABASE.md) for detailed setup guide.
+
+### What's Included
+
+- **Frontend (Nginx)**: Modern web interface
+- **Backend (FastAPI)**: RESTful API with 40+ endpoints
+- **PostgreSQL Database**: Persistent data storage (or external in production)
+- **Ollama LLM Service**: Local AI model for caption generation (phi3:mini)
+- **OAuth Service**: Social media authentication and publishing
+- **Networking**: Internal Docker network for secure service communication
+- **Health Checks**: Automatic service health monitoring
 
 ### Docker Commands
 
-**Start services:**
+**Start services (full-stack):**
 ```bash
-docker compose up -d
+cd backend/
+docker-compose -f docker-compose.full-stack.yml up -d
+```
+
+**Start services (external database):**
+```bash
+cd backend/
+docker-compose --env-file .env.external -f docker-compose.external-db.yml up -d
 ```
 
 **View logs:**
 ```bash
-docker compose logs -f
+docker-compose -f docker-compose.full-stack.yml logs -f
 
 # View specific service logs
-docker compose logs -f web
-docker compose logs -f ollama
-docker compose logs -f postgres
+docker-compose -f docker-compose.full-stack.yml logs -f backend
+docker-compose -f docker-compose.full-stack.yml logs -f frontend
+docker-compose -f docker-compose.full-stack.yml logs -f ollama
 ```
 
 **Stop services:**
 ```bash
-docker compose down
+docker-compose -f docker-compose.full-stack.yml down
 ```
 
 **Rebuild after changes:**
 ```bash
-docker compose up --build
+docker-compose -f docker-compose.full-stack.yml up --build
 ```
 
-**Access database:**
+**Access database (full-stack):**
 ```bash
-docker compose exec postgres psql -U postgres -d reddit_db
+docker-compose -f docker-compose.full-stack.yml exec postgres psql -U postgres -d reddit_db
 ```
 
 **Check Ollama models:**
 ```bash
-docker compose exec ollama ollama list
+docker-compose -f docker-compose.full-stack.yml exec ollama ollama list
 ```
 
 **Pull different Ollama model:**
 ```bash
-docker compose exec ollama ollama pull llama2
+docker-compose -f docker-compose.full-stack.yml exec ollama ollama pull llama2
 ```
 
+**See:** [DOCKER_COMMANDS_CHEATSHEET.md](DOCKER_COMMANDS_CHEATSHEET.md) for complete command reference.
+
 ### Ports
-- **Web Application**: http://localhost:8000
-- **PostgreSQL**: localhost:5434
-- **Ollama API**: localhost:11434
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:8000
+- **OAuth Service**: http://localhost:8001
+- **PostgreSQL (Main)**: localhost:5433 (full-stack only)
+- **PostgreSQL (OAuth)**: localhost:5435 (full-stack only)
+- **Ollama API**: http://localhost:11434
+
+### Documentation
+- **Complete Deployment Guide**: [DOCKER_DEPLOYMENT.md](DOCKER_DEPLOYMENT.md)
+- **External Database Setup**: [backend/EXTERNAL_DATABASE.md](backend/EXTERNAL_DATABASE.md)
+- **Quick Setup Summary**: [EXTERNAL_DB_SETUP_SUMMARY.md](EXTERNAL_DB_SETUP_SUMMARY.md)
+- **Command Cheat Sheet**: [DOCKER_COMMANDS_CHEATSHEET.md](DOCKER_COMMANDS_CHEATSHEET.md)
+- **Deployment Summary**: [DOCKER_SEPARATION_SUMMARY.txt](DOCKER_SEPARATION_SUMMARY.txt)
 
 ### GPU Support (Optional)
 

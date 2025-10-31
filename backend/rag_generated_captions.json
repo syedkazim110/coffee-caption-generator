@@ -1,0 +1,112 @@
+{
+  "timestamp": "2025-09-25T12:25:40.171826",
+  "total_captions": 15,
+  "method": "RAG (Retrieval-Augmented Generation)",
+  "captions": [
+    {
+      "caption": "POV: Someone describes strawberry matcha as coffee and you're already ordering \ud83d\udc40\u2615",
+      "keyword": "strawberry matcha",
+      "retrieved_context": "coffee",
+      "template_category": "pov_style",
+      "timestamp": "2025-09-25T12:25:40.123358"
+    },
+    {
+      "caption": "ryze coffee reviews with rich aroma of freshly brewed coffee hits different \ud83d\ude0d",
+      "keyword": "ryze coffee reviews",
+      "retrieved_context": "rich aroma of freshly brewed coffee",
+      "template_category": "trending_format",
+      "timestamp": "2025-09-25T12:25:40.127397"
+    },
+    {
+      "caption": "POV: You try swiss water decaf coffee and it's taste of your coffee for the better \u2615\u2728",
+      "keyword": "swiss water decaf coffee",
+      "retrieved_context": "taste of your coffee for the better",
+      "template_category": "pov_style",
+      "timestamp": "2025-09-25T12:25:40.131029"
+    },
+    {
+      "caption": "Me: I don't need specialty coffee london. Also me: *reads it's your coffee for the better* \ud83e\udd37\u200d\u2640\ufe0f",
+      "keyword": "specialty coffee london",
+      "retrieved_context": "your coffee for the better",
+      "template_category": "relatable",
+      "timestamp": "2025-09-25T12:25:40.134943"
+    },
+    {
+      "caption": "When your specialty coffee meaning is rich aroma of freshly brewed coffee... that's the good stuff \ud83d\udd25",
+      "keyword": "specialty coffee meaning",
+      "retrieved_context": "rich aroma of freshly brewed coffee",
+      "template_category": "descriptive_catchy",
+      "timestamp": "2025-09-25T12:25:40.138023"
+    },
+    {
+      "caption": "When your how much caffeine is in decaf coffee is rich aroma of freshly brewed coffee... that's the good stuff \ud83d\udd25",
+      "keyword": "how much caffeine is in decaf coffee",
+      "retrieved_context": "rich aroma of freshly brewed coffee",
+      "template_category": "descriptive_catchy",
+      "timestamp": "2025-09-25T12:25:40.141756"
+    },
+    {
+      "caption": "This how to cold brew coffee is balanced extraction and I'm obsessed \ud83d\ude0d",
+      "keyword": "how to cold brew coffee",
+      "retrieved_context": "balanced extraction",
+      "template_category": "descriptive_catchy",
+      "timestamp": "2025-09-25T12:25:40.144296"
+    },
+    {
+      "caption": "When your specialty coffee roasters is rich aroma of freshly brewed coffee... that's the good stuff \ud83d\udd25",
+      "keyword": "specialty coffee roasters",
+      "retrieved_context": "rich aroma of freshly brewed coffee",
+      "template_category": "descriptive_catchy",
+      "timestamp": "2025-09-25T12:25:40.147320"
+    },
+    {
+      "caption": "POV: Someone describes latte calories as berry and you're already ordering \ud83d\udc40\u2615",
+      "keyword": "latte calories",
+      "retrieved_context": "berry",
+      "template_category": "pov_style",
+      "timestamp": "2025-09-25T12:25:40.148837"
+    },
+    {
+      "caption": "Who else thinks coconut flavored coffee being rich aroma of freshly brewed coffee is life-changing? \ud83d\ude4b\u200d\u2640\ufe0f",
+      "keyword": "coconut flavored coffee",
+      "retrieved_context": "rich aroma of freshly brewed coffee",
+      "template_category": "question_hooks",
+      "timestamp": "2025-09-25T12:25:40.151979"
+    },
+    {
+      "caption": "That moment when hazelnut flavored coffee is rich aroma of freshly brewed coffee during your morning ritual \u2728",
+      "keyword": "hazelnut flavored coffee",
+      "retrieved_context": "rich aroma of freshly brewed coffee",
+      "template_category": "experience_based",
+      "timestamp": "2025-09-25T12:25:40.159282"
+    },
+    {
+      "caption": "Nothing beats tiong hoe specialty coffee that's rich aroma of freshly brewed coffee for the perfect coffee break \u2615",
+      "keyword": "tiong hoe specialty coffee",
+      "retrieved_context": "rich aroma of freshly brewed coffee",
+      "template_category": "experience_based",
+      "timestamp": "2025-09-25T12:25:40.164894"
+    },
+    {
+      "caption": "mushroom coffee benefits that's rich aroma of freshly brewed coffee? Yes please! \u2615\u2728",
+      "keyword": "mushroom coffee benefits",
+      "retrieved_context": "rich aroma of freshly brewed coffee",
+      "template_category": "descriptive_catchy",
+      "timestamp": "2025-09-25T12:25:40.169003"
+    },
+    {
+      "caption": "vanilla oat milk latte that's chocolate and nut notes at 3pm? Excellent life choices \ud83d\ude05",
+      "keyword": "vanilla oat milk latte",
+      "retrieved_context": "chocolate and nut notes",
+      "template_category": "relatable",
+      "timestamp": "2025-09-25T12:25:40.170500"
+    },
+    {
+      "caption": "matcha latte near me with mild making my day infinitely better \ud83d\udcaf",
+      "keyword": "matcha latte near me",
+      "retrieved_context": "mild",
+      "template_category": "experience_based",
+      "timestamp": "2025-09-25T12:25:40.171671"
+    }
+  ]
+}

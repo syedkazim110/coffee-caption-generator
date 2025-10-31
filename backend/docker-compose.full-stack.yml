@@ -1,0 +1,208 @@
+# Full-Stack Docker Compose for Coffee Caption Generator
+# This runs both frontend and backend services together
+# Run from backend/ folder: docker-compose -f docker-compose.full-stack.yml up --build
+
+version: '3.8'
+
+services:
+  # PostgreSQL for Main App
+  postgres:
+    image: postgres:15-alpine
+    container_name: coffee_postgres
+    ports:
+      - "${DB_PORT:-5433}:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres123}
+      - POSTGRES_DB=${DB_NAME:-reddit_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # SQL files are in current directory (backend/)
+      - ./init.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - ./init_brand_schema.sql:/docker-entrypoint-initdb.d/02-brand-schema.sql
+      - ./migration_schema.sql:/docker-entrypoint-initdb.d/03-migration.sql
+      - ./add_api_key_management.sql:/docker-entrypoint-initdb.d/04-api-keys.sql
+      - ./add_preferred_llm_model.sql:/docker-entrypoint-initdb.d/05-llm-model.sql
+    networks:
+      - fullstack_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Ollama Service for Local LLM
+  ollama:
+    image: ollama/ollama:latest
+    container_name: coffee_ollama
+    ports:
+      - "${OLLAMA_PORT:-11434}:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - fullstack_network
+    healthcheck:
+      test: ["CMD-SHELL", "ollama list || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+    # Uncomment for GPU support (requires nvidia-docker)
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+  # OAuth Service
+  oauth-service:
+    build:
+      # OAuth service is in parent directory
+      context: ../social-oauth-service
+      dockerfile: Dockerfile
+    container_name: coffee_oauth_service
+    ports:
+      - "${OAUTH_PORT:-8001}:8001"
+    environment:
+      # Application
+      - APP_NAME=Social OAuth Service
+      - DEBUG=${DEBUG:-true}
+      - HOST=0.0.0.0
+      - PORT=8001
+      
+      # Database
+      - DB_HOST=oauth-db
+      - DB_PORT=5432
+      - DB_NAME=${OAUTH_DB_NAME:-oauth_db}
+      - DB_USER=${OAUTH_DB_USER:-postgres}
+      - DB_PASSWORD=${OAUTH_DB_PASSWORD:-oauth_pass}
+      
+      # Security
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - SERVICE_API_KEY=${OAUTH_SERVICE_API_KEY:-dev-service-key}
+      - SECRET_KEY=${SECRET_KEY:-change-in-production}
+      
+      # OAuth Credentials
+      - INSTAGRAM_CLIENT_ID=${INSTAGRAM_CLIENT_ID}
+      - INSTAGRAM_CLIENT_SECRET=${INSTAGRAM_CLIENT_SECRET}
+      - INSTAGRAM_REDIRECT_URI=${INSTAGRAM_REDIRECT_URI}
+      
+      - FACEBOOK_CLIENT_ID=${FACEBOOK_CLIENT_ID}
+      - FACEBOOK_CLIENT_SECRET=${FACEBOOK_CLIENT_SECRET}
+      - FACEBOOK_REDIRECT_URI=${FACEBOOK_REDIRECT_URI}
+      
+      - BASE_CALLBACK_URL=${BASE_CALLBACK_URL:-http://localhost:8001}
+    volumes:
+      # OAuth service is in parent directory
+      - ../social-oauth-service:/app
+    depends_on:
+      oauth-db:
+        condition: service_healthy
+    networks:
+      - fullstack_network
+    restart: unless-stopped
+
+  # PostgreSQL for OAuth Service
+  oauth-db:
+    image: postgres:15-alpine
+    container_name: coffee_oauth_db
+    ports:
+      - "${OAUTH_DB_PORT:-5435}:5432"
+    environment:
+      - POSTGRES_USER=${OAUTH_DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${OAUTH_DB_PASSWORD:-oauth_pass}
+      - POSTGRES_DB=${OAUTH_DB_NAME:-oauth_db}
+    volumes:
+      - oauth_db_data:/var/lib/postgresql/data
+      # OAuth migrations are in parent directory
+      - ../social-oauth-service/migrations/init_oauth_schema.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - fullstack_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${OAUTH_DB_USER:-postgres}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Backend API
+  backend:
+    build:
+      # Backend files are in current directory
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: coffee_backend
+    ports:
+      - "${API_PORT:-8000}:8000"
+    environment:
+      # Database
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=${DB_NAME:-reddit_db}
+      - DB_USER=${DB_USER:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres123}
+      
+      # Ollama
+      - OLLAMA_URL=http://ollama:11434
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-phi3:mini}
+      
+      # OAuth Service
+      - OAUTH_SERVICE_URL=http://oauth-service:8001
+      - OAUTH_SERVICE_API_KEY=${OAUTH_SERVICE_API_KEY:-dev-service-key}
+      
+      # AI API Keys (optional)
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - HUGGINGFACE_API_KEY=${HUGGINGFACE_API_KEY}
+      
+      # Application
+      - PORT=8000
+      - HOST=0.0.0.0
+      - DEBUG=${DEBUG:-false}
+    volumes:
+      # Mount current directory (backend/)
+      - .:/app
+      - /app/__pycache__
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ollama:
+        condition: service_healthy
+      oauth-service:
+        condition: service_started
+    networks:
+      - fullstack_network
+    restart: unless-stopped
+
+  # Frontend Nginx Server
+  frontend:
+    build:
+      # Frontend is in sibling directory
+      context: ../frontend
+      dockerfile: Dockerfile.frontend
+    container_name: coffee_frontend
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    depends_on:
+      - backend
+    networks:
+      - fullstack_network
+    restart: unless-stopped
+
+networks:
+  fullstack_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+  oauth_db_data:
+    driver: local
+  ollama_data:
+    driver: local
+

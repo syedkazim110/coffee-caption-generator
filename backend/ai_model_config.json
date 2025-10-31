@@ -1,0 +1,149 @@
+{
+  "default_model": "ollama_phi3",
+  "fallback_model": "ollama_phi3",
+  "ai_models": {
+    "ollama_phi3": {
+      "provider": "ollama",
+      "model_name": "phi3:mini",
+      "display_name": "Ollama Phi3 Mini (Local)",
+      "description": "Fast, lightweight local model. No API costs, runs in Docker.",
+      "api_endpoint": "http://ollama:11434",
+      "api_key": null,
+      "parameters": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "num_predict": 250,
+        "num_ctx": 2048,
+        "repeat_penalty": 1.1
+      },
+      "capabilities": {
+        "max_tokens": 4096,
+        "context_window": 4096,
+        "supports_streaming": true,
+        "supports_vision": false,
+        "supports_function_calling": false,
+        "cost_per_1m_tokens": 0.0,
+        "speed": "fast",
+        "quality": "good",
+        "language_support": ["english", "multilingual"]
+      },
+      "is_local": true,
+      "requires_setup": true,
+      "setup_instructions": "Install Ollama from https://ollama.ai and run: ollama pull phi3:mini",
+      "status": "recommended"
+    },
+    "gemini_flash": {
+      "provider": "google",
+      "model_name": "gemini-2.5-flash",
+      "display_name": "Google Gemini 2.5 Flash",
+      "description": "Fast and efficient Gemini model. Good for high-volume usage.",
+      "api_endpoint": "https://generativelanguage.googleapis.com/v1beta",
+      "api_key_env": "GEMINI_API_KEY",
+      "parameters": {
+        "temperature": 0.7,
+        "max_output_tokens": 1000
+      },
+      "capabilities": {
+        "max_tokens": 8192,
+        "context_window": 1000000,
+        "supports_streaming": true,
+        "supports_vision": true,
+        "supports_function_calling": true,
+        "cost_per_1m_tokens": 0.075,
+        "speed": "very_fast",
+        "quality": "good",
+        "language_support": ["english", "multilingual"]
+      },
+      "is_local": false,
+      "requires_setup": true,
+      "setup_instructions": "Get API key from https://makersuite.google.com/app/apikey",
+      "status": "available"
+    },
+    "anthropic_claude_sonnet": {
+      "provider": "anthropic",
+      "model_name": "claude-3-sonnet-20240229",
+      "display_name": "Anthropic Claude 3 Sonnet",
+      "description": "Balanced performance and cost. Great for creative content.",
+      "api_endpoint": "https://api.anthropic.com/v1",
+      "api_key_env": "ANTHROPIC_API_KEY",
+      "parameters": {
+        "temperature": 0.7,
+        "max_tokens": 250,
+        "top_p": 0.9
+      },
+      "capabilities": {
+        "max_tokens": 4096,
+        "context_window": 200000,
+        "supports_streaming": true,
+        "supports_vision": true,
+        "supports_function_calling": false,
+        "cost_per_1m_tokens": 3.0,
+        "speed": "fast",
+        "quality": "excellent",
+        "language_support": ["english", "multilingual"]
+      },
+      "is_local": false,
+      "requires_setup": true,
+      "setup_instructions": "Get API key from https://console.anthropic.com/",
+      "status": "available"
+    },
+    "openai_gpt4": {
+      "provider": "openai",
+      "model_name": "gpt-4",
+      "display_name": "OpenAI GPT-4",
+      "description": "Most capable model with excellent quality. Best for premium content.",
+      "api_endpoint": "https://api.openai.com/v1",
+      "api_key_env": "OPENAI_API_KEY",
+      "parameters": {
+        "temperature": 0.7,
+        "max_tokens": 250,
+        "top_p": 0.9
+      },
+      "capabilities": {
+        "max_tokens": 8192,
+        "context_window": 8192,
+        "supports_streaming": true,
+        "supports_vision": true,
+        "supports_function_calling": true,
+        "cost_per_1m_tokens": 30.0,
+        "speed": "medium",
+        "quality": "excellent",
+        "language_support": ["english", "multilingual"]
+      },
+      "is_local": false,
+      "requires_setup": true,
+      "setup_instructions": "Get API key from https://platform.openai.com/api-keys",
+      "status": "available"
+    }
+  },
+  "provider_info": {
+    "ollama": {
+      "name": "Ollama",
+      "description": "Run large language models locally on your machine",
+      "website": "https://ollama.ai",
+      "requires_api_key": false,
+      "cost_model": "free"
+    },
+    "openai": {
+      "name": "OpenAI",
+      "description": "Industry-leading AI models with excellent quality",
+      "website": "https://platform.openai.com",
+      "requires_api_key": true,
+      "cost_model": "pay_per_use"
+    },
+    "anthropic": {
+      "name": "Anthropic",
+      "description": "Advanced AI models focused on safety and reliability",
+      "website": "https://console.anthropic.com",
+      "requires_api_key": true,
+      "cost_model": "pay_per_use"
+    },
+    "google": {
+      "name": "Google AI",
+      "description": "Powerful multimodal models from Google",
+      "website": "https://ai.google.dev",
+      "requires_api_key": true,
+      "cost_model": "pay_per_use"
+    }
+  }
+}

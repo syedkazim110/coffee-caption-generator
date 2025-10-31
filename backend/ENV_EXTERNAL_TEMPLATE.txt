@@ -1,0 +1,111 @@
+# ============================================================================
+# EXTERNAL DATABASE ENVIRONMENT TEMPLATE
+# ============================================================================
+# Copy this content to: backend/.env.external
+# Then edit with your actual database credentials
+# ============================================================================
+
+# ========================================
+# EXTERNAL DATABASE (REQUIRED)
+# ========================================
+DB_HOST=your-database-hostname.rds.amazonaws.com
+DB_PORT=5432
+DB_NAME=reddit_db
+DB_USER=postgres
+DB_PASSWORD=your_secure_password_here
+DB_SSL_MODE=require
+
+# ========================================
+# OAUTH DATABASE (Optional - if separate)
+# ========================================
+# OAUTH_DB_HOST=your-oauth-db-hostname.rds.amazonaws.com
+# OAUTH_DB_PORT=5432
+# OAUTH_DB_NAME=oauth_db
+# OAUTH_DB_USER=postgres
+# OAUTH_DB_PASSWORD=your_oauth_db_password
+
+# ========================================
+# OLLAMA CONFIGURATION
+# ========================================
+OLLAMA_URL=http://ollama:11434
+OLLAMA_MODEL=phi3:mini
+OLLAMA_PORT=11434
+
+# ========================================
+# OAUTH SERVICE
+# ========================================
+OAUTH_SERVICE_URL=http://oauth-service:8001
+OAUTH_SERVICE_API_KEY=your-service-api-key-change-this
+OAUTH_PORT=8001
+
+# ========================================
+# SECURITY (REQUIRED)
+# ========================================
+ENCRYPTION_KEY=your-32-byte-encryption-key-here
+SECRET_KEY=your-secret-key-change-this
+SERVICE_API_KEY=your-service-api-key
+
+# ========================================
+# AI API KEYS (Optional)
+# ========================================
+GEMINI_API_KEY=
+OPENAI_API_KEY=
+ANTHROPIC_API_KEY=
+HUGGINGFACE_API_KEY=
+
+# ========================================
+# OAUTH CREDENTIALS (Optional)
+# ========================================
+INSTAGRAM_CLIENT_ID=
+INSTAGRAM_CLIENT_SECRET=
+INSTAGRAM_REDIRECT_URI=https://yourdomain.com/api/v1/oauth/instagram/callback
+
+FACEBOOK_CLIENT_ID=
+FACEBOOK_CLIENT_SECRET=
+FACEBOOK_REDIRECT_URI=https://yourdomain.com/api/v1/oauth/facebook/callback
+
+BASE_CALLBACK_URL=https://yourdomain.com
+
+# ========================================
+# APPLICATION
+# ========================================
+API_PORT=8000
+FRONTEND_PORT=3000
+DEBUG=false
+
+# ========================================
+# EXAMPLES
+# ========================================
+
+# AWS RDS:
+# DB_HOST=myapp.abc123xyz.us-east-1.rds.amazonaws.com
+# DB_PORT=5432
+# DB_NAME=coffee_production
+# DB_USER=dbadmin
+# DB_PASSWORD=SuperSecureRDSPassword123!
+# DB_SSL_MODE=require
+
+# Azure Database:
+# DB_HOST=myserver.postgres.database.azure.com
+# DB_PORT=5432
+# DB_NAME=coffee_db
+# DB_USER=dbadmin@myserver
+# DB_PASSWORD=AzureSecurePassword123!
+# DB_SSL_MODE=require
+
+# Google Cloud SQL:
+# DB_HOST=34.123.45.67
+# DB_PORT=5432
+# DB_NAME=coffee_db
+# DB_USER=postgres
+# DB_PASSWORD=GCPSecurePassword123!
+# DB_SSL_MODE=require
+
+# ============================================================================
+# USAGE:
+# ============================================================================
+# 1. Copy this to backend/.env.external
+# 2. Edit with your actual values
+# 3. Run: cd backend && docker-compose --env-file .env.external -f docker-compose.external-db.yml up
+# ============================================================================
+

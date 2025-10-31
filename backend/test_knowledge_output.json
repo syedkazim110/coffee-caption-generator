@@ -1,0 +1,46 @@
+{
+  "caption": "Embrace energy with Warpath Coffee's verdant touch \u2013 every sip of our matcha treasure brings not just flavor but a burst of vitality wrapped in comforting warmth. Join us for an invigorating experience that tastes as rich and deep as the earth itself.\n\n#matcha #matchalatte #greentea #matcharecipes #coffee",
+  "base_caption": "Embrace energy with Warpath Coffee's verdant touch \u2013 every sip of our matcha treasure brings not just flavor but a burst of vitality wrapped in comforting warmth. Join us for an invigorating experience that tastes as rich and deep as the earth itself.",
+  "hashtags": [
+    "#matcha",
+    "#matchalatte",
+    "#greentea",
+    "#matcharecipes",
+    "#coffee"
+  ],
+  "keyword": "matcha",
+  "context_snippets": [
+    "Guided tea tours and tasting sessions showcase a variety of estate-grown brews, offering a deeper appreciation of Kangras rich and often overlooked tea heritage",
+    "By the 1800s, Britains global empire was faced with the challenge of supplying tea to the obsessive tea-drinking population back home",
+    "In the face of an increasingly divisive world, this series of drinks brings together coffee professionals from every continentand each beverage tells a powerful story of its own",
+    "BY CAROLINE CORMIER FOR BARISTA MAGAZINE Photos by Laura Vied Allen for Little Waves Coffee In a world too often defined by division, Durham, N",
+    "San Fran Coffee: Cold Brew Nogroni and Pineapple Cold Brew Photos courtesy of San Fran Coffee"
+  ],
+  "coffee_knowledge": {
+    "keyword": "matcha",
+    "color": "rich brown",
+    "nature": "matcha coffee beverage",
+    "texture": "smooth liquid",
+    "flavor_profile": [
+      "rich",
+      "aromatic",
+      "flavorful"
+    ],
+    "preparation": "brewed",
+    "visual_traits": [
+      "coffee cup",
+      "steam rising",
+      "aromatic"
+    ],
+    "mood": [
+      "energizing",
+      "comforting"
+    ],
+    "unique_traits": [
+      "flavorful",
+      "aromatic"
+    ]
+  },
+  "method": "LLM + Dynamic Knowledge + RAG + Hashtags",
+  "timestamp": "2025-10-02T15:20:36.351538"
+}

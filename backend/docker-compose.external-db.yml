@@ -1,0 +1,211 @@
+# External Database Docker Compose for Coffee Caption Generator
+# This runs backend and frontend services that connect to an external database
+# Use this for production with AWS RDS, Azure Database, or other managed database services
+# Run from backend/ folder: docker-compose -f docker-compose.external-db.yml up --build
+
+version: '3.8'
+
+services:
+  # Backend API
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: coffee_backend_external
+    ports:
+      - "${API_PORT:-8000}:8000"
+    environment:
+      # External Database Configuration
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT:-5432}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_SSL_MODE=${DB_SSL_MODE:-require}
+      
+      # Optional: External OAuth Database (if separate)
+      - OAUTH_DB_HOST=${OAUTH_DB_HOST:-${DB_HOST}}
+      - OAUTH_DB_PORT=${OAUTH_DB_PORT:-5432}
+      - OAUTH_DB_NAME=${OAUTH_DB_NAME:-oauth_db}
+      - OAUTH_DB_USER=${OAUTH_DB_USER:-${DB_USER}}
+      - OAUTH_DB_PASSWORD=${OAUTH_DB_PASSWORD:-${DB_PASSWORD}}
+      
+      # Ollama (optional - can use external Ollama service too)
+      - OLLAMA_URL=${OLLAMA_URL:-http://ollama:11434}
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-phi3:mini}
+      
+      # OAuth Service
+      - OAUTH_SERVICE_URL=${OAUTH_SERVICE_URL:-http://oauth-service:8001}
+      - OAUTH_SERVICE_API_KEY=${OAUTH_SERVICE_API_KEY}
+      
+      # AI API Keys
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - HUGGINGFACE_API_KEY=${HUGGINGFACE_API_KEY}
+      
+      # Security
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - SECRET_KEY=${SECRET_KEY}
+      
+      # Application
+      - PORT=8000
+      - HOST=0.0.0.0
+      - DEBUG=${DEBUG:-false}
+    volumes:
+      - .:/app
+      - /app/__pycache__
+    depends_on:
+      - ollama
+      - oauth-service
+    networks:
+      - external_db_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Frontend Nginx Server
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile.frontend
+    container_name: coffee_frontend_external
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - external_db_network
+    restart: unless-stopped
+
+  # Ollama Service for Local LLM (optional - can be disabled if using external LLM)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: coffee_ollama_external
+    ports:
+      - "${OLLAMA_PORT:-11434}:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - external_db_network
+    healthcheck:
+      test: ["CMD-SHELL", "ollama list || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+    # Uncomment for GPU support (requires nvidia-docker)
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+  # OAuth Service
+  oauth-service:
+    build:
+      context: ../social-oauth-service
+      dockerfile: Dockerfile
+    container_name: coffee_oauth_service_external
+    ports:
+      - "${OAUTH_PORT:-8001}:8001"
+    environment:
+      # Application
+      - APP_NAME=Social OAuth Service
+      - DEBUG=${DEBUG:-false}
+      - HOST=0.0.0.0
+      - PORT=8001
+      
+      # External OAuth Database
+      - DB_HOST=${OAUTH_DB_HOST:-${DB_HOST}}
+      - DB_PORT=${OAUTH_DB_PORT:-5432}
+      - DB_NAME=${OAUTH_DB_NAME:-oauth_db}
+      - DB_USER=${OAUTH_DB_USER:-${DB_USER}}
+      - DB_PASSWORD=${OAUTH_DB_PASSWORD:-${DB_PASSWORD}}
+      - DB_SSL_MODE=${DB_SSL_MODE:-require}
+      
+      # Security
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - SERVICE_API_KEY=${OAUTH_SERVICE_API_KEY}
+      - SECRET_KEY=${SECRET_KEY}
+      
+      # OAuth Credentials
+      - INSTAGRAM_CLIENT_ID=${INSTAGRAM_CLIENT_ID}
+      - INSTAGRAM_CLIENT_SECRET=${INSTAGRAM_CLIENT_SECRET}
+      - INSTAGRAM_REDIRECT_URI=${INSTAGRAM_REDIRECT_URI}
+      
+      - FACEBOOK_CLIENT_ID=${FACEBOOK_CLIENT_ID}
+      - FACEBOOK_CLIENT_SECRET=${FACEBOOK_CLIENT_SECRET}
+      - FACEBOOK_REDIRECT_URI=${FACEBOOK_REDIRECT_URI}
+      
+      - BASE_CALLBACK_URL=${BASE_CALLBACK_URL}
+    volumes:
+      - ../social-oauth-service:/app
+    networks:
+      - external_db_network
+    restart: unless-stopped
+
+networks:
+  external_db_network:
+    driver: bridge
+
+volumes:
+  ollama_data:
+    driver: local
+
+# =============================================================================
+# EXTERNAL DATABASE CONFIGURATION NOTES
+# =============================================================================
+#
+# This compose file is designed for production use with external databases.
+# You need to provide database connection details via environment variables.
+#
+# REQUIRED ENVIRONMENT VARIABLES:
+# --------------------------------
+# DB_HOST              - External database hostname (e.g., my-db.us-east-1.rds.amazonaws.com)
+# DB_NAME              - Database name (e.g., reddit_db)
+# DB_USER              - Database username
+# DB_PASSWORD          - Database password
+#
+# OPTIONAL ENVIRONMENT VARIABLES:
+# --------------------------------
+# DB_PORT              - Database port (default: 5432)
+# DB_SSL_MODE          - SSL mode (default: require) - Options: disable, allow, prefer, require, verify-ca, verify-full
+# OAUTH_DB_HOST        - Separate OAuth database host (defaults to DB_HOST)
+# OAUTH_DB_PORT        - OAuth database port (default: 5432)
+# OAUTH_DB_NAME        - OAuth database name (default: oauth_db)
+# OAUTH_DB_USER        - OAuth database username (defaults to DB_USER)
+# OAUTH_DB_PASSWORD    - OAuth database password (defaults to DB_PASSWORD)
+#
+# SETUP INSTRUCTIONS:
+# -------------------
+# 1. Create .env.external file with your database credentials
+# 2. Ensure your external database is initialized with required schemas:
+#    - Run init.sql, init_brand_schema.sql, migration_schema.sql on main DB
+#    - Run init_oauth_schema.sql on OAuth DB (if separate)
+# 3. Configure firewall rules to allow Docker containers to access database
+# 4. For AWS RDS: Enable public accessibility or use VPC peering
+# 5. For SSL/TLS: Set DB_SSL_MODE=require or verify-full
+#
+# USAGE:
+# ------
+# docker-compose --env-file .env.external -f docker-compose.external-db.yml up --build -d
+#
+# AWS RDS EXAMPLE:
+# ----------------
+# DB_HOST=mydb.abc123.us-east-1.rds.amazonaws.com
+# DB_NAME=coffee_db
+# DB_USER=admin
+# DB_PASSWORD=super_secure_password
+# DB_SSL_MODE=require
+#
+# =============================================================================
+

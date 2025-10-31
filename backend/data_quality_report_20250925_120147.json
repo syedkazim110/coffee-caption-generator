@@ -1,0 +1,64 @@
+{
+  "database": {
+    "reddit_data": {
+      "total_records": 836,
+      "clean_titles": 826,
+      "clean_content": 159,
+      "valid_keywords": 836,
+      "valid_subreddits": 836,
+      "potential_duplicates": 544,
+      "title_quality_percent": 98.8,
+      "content_quality_percent": 19.02,
+      "keyword_completeness_percent": 100.0
+    },
+    "coffee_articles": {
+      "total_records": 37,
+      "clean_titles": 34,
+      "valid_urls": 37,
+      "standardized_ratings": 0,
+      "valid_authors": 12,
+      "valid_sources": 37,
+      "potential_duplicates": 0,
+      "title_quality_percent": 91.89,
+      "url_quality_percent": 100.0,
+      "rating_standardization_percent": 0.0
+    },
+    "twitter_data": {
+      "total_records": 0,
+      "clean_text": 0,
+      "valid_tweet_ids": 0,
+      "potential_duplicates": 0,
+      "text_quality_percent": 0
+    },
+    "timestamp": "2025-09-25T12:01:47.492421"
+  },
+  "csv_files": {
+    "reddit_data_export.csv": {
+      "total_rows": 836,
+      "clean_rows": 720,
+      "null_values": 409,
+      "duplicate_rows": 544,
+      "data_type": "reddit",
+      "clean_percentage": 86.12,
+      "null_percentage": 5.44
+    },
+    "coffee_articles_export.csv": {
+      "total_rows": 37,
+      "clean_rows": 33,
+      "null_values": 82,
+      "duplicate_rows": 0,
+      "data_type": "coffee",
+      "clean_percentage": 89.19,
+      "null_percentage": 22.16
+    },
+    "coffee_articles.csv": {
+      "total_rows": 22,
+      "clean_rows": 10,
+      "null_values": 47,
+      "duplicate_rows": 0,
+      "data_type": "coffee",
+      "clean_percentage": 45.45,
+      "null_percentage": 26.7
+    }
+  }
+}

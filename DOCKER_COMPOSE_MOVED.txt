@@ -1,0 +1,100 @@
+════════════════════════════════════════════════════════════════
+   📦 DOCKER-COMPOSE FULL-STACK MOVED ✅
+════════════════════════════════════════════════════════════════
+
+📋 WHAT CHANGED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ docker-compose.full-stack.yml MOVED to backend/ folder
+✅ All paths updated to work from backend/ directory
+✅ Documentation updated (DOCKER_DEPLOYMENT.md)
+✅ Summary updated (DOCKER_SEPARATION_SUMMARY.txt)
+✅ Old file removed from root
+
+════════════════════════════════════════════════════════════════
+
+📁 NEW LOCATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+OLD: ./docker-compose.full-stack.yml (REMOVED)
+NEW: backend/docker-compose.full-stack.yml ✅
+
+════════════════════════════════════════════════════════════════
+
+🚀 HOW TO USE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+OLD COMMAND (no longer works):
+❌ docker-compose -f docker-compose.full-stack.yml up
+
+NEW COMMAND (use this instead):
+✅ cd backend/
+   docker-compose -f docker-compose.full-stack.yml up --build
+
+Or in one line:
+✅ cd backend && docker-compose -f docker-compose.full-stack.yml up --build
+
+════════════════════════════════════════════════════════════════
+
+🔄 PATHS UPDATED IN FILE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ SQL files: ./ (current directory = backend/)
+✓ Backend build context: . (current directory = backend/)
+✓ Frontend build context: ../frontend
+✓ OAuth service context: ../social-oauth-service
+✓ Backend volume: . (current directory = backend/)
+
+All paths properly adjusted for backend/ location!
+
+════════════════════════════════════════════════════════════════
+
+📊 SERVICES INCLUDED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ Frontend (nginx) - Port 3000
+✓ Backend API - Port 8000
+✓ PostgreSQL (main) - Port 5433
+✓ PostgreSQL (OAuth) - Port 5435
+✓ Ollama (LLM) - Port 11434
+✓ OAuth Service - Port 8001
+
+════════════════════════════════════════════════════════════════
+
+✨ BENEFITS OF THIS CHANGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ Logical organization - Full-stack compose with backend files
+✓ Cleaner root directory
+✓ Backend-centric deployment
+✓ All backend-related compose files in one place
+✓ Easier to manage from backend/ folder
+
+════════════════════════════════════════════════════════════════
+
+🎯 QUICK REFERENCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Start Full-Stack:
+cd backend
+docker-compose -f docker-compose.full-stack.yml up --build -d
+
+View Logs:
+docker-compose -f docker-compose.full-stack.yml logs -f
+
+Stop:
+docker-compose -f docker-compose.full-stack.yml down
+
+Stop + Remove Volumes:
+docker-compose -f docker-compose.full-stack.yml down -v
+
+════════════════════════════════════════════════════════════════
+
+📚 UPDATED DOCUMENTATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ DOCKER_DEPLOYMENT.md - All commands updated
+✓ DOCKER_SEPARATION_SUMMARY.txt - Updated location
+✓ backend/docker-compose.full-stack.yml - New paths
+
+════════════════════════════════════════════════════════════════
